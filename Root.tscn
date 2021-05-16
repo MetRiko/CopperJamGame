@@ -15,3 +15,9 @@ self_modulate = Color( 0, 1, 0.647059, 1 )
 position = Vector2( 762, 124 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
+
+[node name="MetRiko" type="Sprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 256.808, 140.001 )
+rotation = 0.785397
+texture = ExtResource( 1 )
