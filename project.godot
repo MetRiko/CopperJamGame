@@ -24,6 +24,10 @@ config/name="Copper Jam"
 run/main_scene="res://Root.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Game="*res://Game.tscn"
+
 [gdnative]
 
 singletons=[ "res://git_api.gdnlib" ]
