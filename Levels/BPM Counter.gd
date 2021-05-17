@@ -4,4 +4,5 @@ export var BPM = 60
 
 
 func _ready():
-	wait_time = BPM / 60
+	wait_time =  60 / BPM
+	start()
