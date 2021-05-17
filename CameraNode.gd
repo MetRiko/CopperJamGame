@@ -37,5 +37,7 @@ func _unhandled_input(event):
 		# Inside a given class, we need to either write `self._zoom_level = ...` or explicitly
 		# call the setter function to use it.
 		_set_zoom_level(_zoom_level - zoom_factor)
+		get_parent().speed -= 100
 	if event.is_action_pressed("zoom_out"):
 		_set_zoom_level(_zoom_level + zoom_factor)
+		get_parent().speed += 100
