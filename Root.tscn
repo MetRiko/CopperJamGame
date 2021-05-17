@@ -26,6 +26,7 @@ rotation = 0.785397
 texture = ExtResource( 1 )
 
 [node name="Camera" parent="." instance=ExtResource( 2 )]
+position = Vector2( 512, 296 )
 
 [node name="NoNoiseLevel" parent="." instance=ExtResource( 3 )]
 
