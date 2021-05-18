@@ -2,13 +2,13 @@ extends Node2D
 
 export var drawLines := bool(false)
 
-onready var tilemap = Game.tilemap2
+onready var tilemap = Game.tilemap
 
+var astar = AStar2D.new()
 const BASE_LINE_WIDTH = 1.0
 const DRAW_COLOR = Color('#fff')
 
-var astar = AStar.new()
-export(Vector2) var map_size = Vector2(16,16)
+export(Vector2) var map_size = Vector2(128,128)
 
 var path_start_position = Vector2() setget _set_path_start_position
 var path_end_position = Vector2() setget _set_path_end_position
@@ -29,6 +29,10 @@ func _input(event):
 		self.path_end_position = tilemap.world_to_map(get_global_mouse_position())
 
 func _ready():
+	Game.beatController.connect("beat",self,"_onBeat")
+
+func _onBeat():
+	astar = AStar2D.new()
 	_half_cell_size = tilemap.cell_size / 2
 	obstacles = tilemap.get_used_cells_by_id(0)
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
@@ -44,7 +48,7 @@ func astar_add_walkable_cells(obstacles = []):
 				
 			points_array.append(point)
 			var point_index = calculate_point_index(point)
-			astar.add_point(point_index, Vector3(point.x,point.y,0.0))
+			astar.add_point(point_index, Vector2(point.x,point.y))
 	return points_array
 
 func astar_connect_walkable_cells(points_array):

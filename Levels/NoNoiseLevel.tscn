@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://ActualPathfinding.gd" type="Script" id=1]
+[ext_resource path="res://Pathfinding.gd" type="Script" id=1]
 [ext_resource path="res://Levels/BPM Counter.gd" type="Script" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://Levels/Generator.gd" type="Script" id=4]
@@ -8,7 +8,7 @@
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=7]
 [ext_resource path="res://Levels/Enemy.gd" type="Script" id=8]
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=1]
 
 [node name="NoNoiseLevel" type="Node2D"]
 
@@ -36,7 +36,7 @@ script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Generator/KinematicBody2D"]
 scale = Vector2( 6, 6 )
-shape = SubResource( 5 )
+shape = SubResource( 1 )
 
 [node name="Enemy" type="Sprite" parent="."]
 self_modulate = Color( 1, 0.613281, 0.613281, 1 )
