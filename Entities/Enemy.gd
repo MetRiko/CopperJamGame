@@ -3,10 +3,10 @@ extends EntityBase
 
 func _input(event):
 	if event.is_action_pressed('i'):
-		var pointPath = tilemap.get_node('Pathfinding').pathfind(self.global_position, tilemap.world_to_map(get_global_mouse_position()))
-		print(pointPath)
-		if pointPath.empty() == false:
-			var point = pointPath[1]
+		var pointPath = tilemap.get_node('Pathfinding').pathfind(currentCellIdx, tilemap.world_to_map(get_global_mouse_position()))
+		#print(currentCellIdx, ' ', pointPath)
+		if pointPath.size() >= 2:
+			var point =  pointPath[1] - pointPath[0]
 			move(Vector2(point.x, point.y))
 
 

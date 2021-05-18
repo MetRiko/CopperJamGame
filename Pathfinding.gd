@@ -13,11 +13,14 @@ export(Vector2) var map_size = Vector2(128,128)
 var path_start_position = Vector2() setget _set_path_start_position
 var path_end_position = Vector2() setget _set_path_end_position
 
-var obstacles
+var obstacles = []
 var _point_path = []
 var _half_cell_size = Vector2()
 
 func pathfind(start : Vector2, end : Vector2):
+	print(start, end)
+	if start == end:
+		return [Vector3(start.x, start.y, 0.0)]
 	self.path_start_position = start
 	self.path_end_position = end
 	return _point_path
@@ -30,8 +33,9 @@ func _input(event):
 
 func _ready():
 	Game.beatController.connect("beat",self,"_onBeat")
+	_onBeat(0, 0)
 
-func _onBeat():
+func _onBeat(currentBeat, beatsCount):
 	astar = AStar2D.new()
 	_half_cell_size = tilemap.cell_size / 2
 	obstacles = tilemap.get_used_cells_by_id(0)
@@ -68,7 +72,9 @@ func astar_connect_walkable_cells(points_array):
 			astar.connect_points(point_index, point_relative_index, true)
 
 func is_outside_map_bounds(point):
-	return point.x < 0 or point.y < 0 or point.x >= map_size.x or point.y >= map_size.y
+	var cell = tilemap.get_cell(point.x, point.y)
+	return cell == -1
+#	return point.x < 0 or point.y < 0 or point.x >= map_size.x or point.y >= map_size.y
 
 func calculate_point_index(point):
 	return point.x + map_size.x * point.y
