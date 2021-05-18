@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Core/Camera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Core/BeatController.gd" type="Script" id=3]
 [ext_resource path="res://Levels/Level.tscn" type="PackedScene" id=4]
 
 [node name="Root" type="Node2D"]
@@ -28,3 +29,10 @@ texture = ExtResource( 1 )
 position = Vector2( 512, 296 )
 
 [node name="Level" parent="." instance=ExtResource( 4 )]
+
+[node name="BeatController" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="Timer" type="Timer" parent="BeatController"]
+wait_time = 0.8
+autostart = true

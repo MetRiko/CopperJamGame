@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://res/entities.png" type="Texture" id=1]
+[ext_resource path="res://Entities/Generator.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Move"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.12, 0.89866, 1, -0.76, 0.0535369, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Sprite:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.12, 0.899, 1, -0.76, 0.0535369, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Center:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.12, 0.899, 90, -0.76, 0.0535369, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+
+[node name="Generator" type="Node2D"]
+position = Vector2( 96, 128 )
+script = ExtResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+anims/Move = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 16, 16 )
+texture = ExtResource( 1 )
+hframes = 4
+vframes = 3
+
+[node name="Center" type="Sprite" parent="."]
+position = Vector2( 16, 16 )
+rotation = 1.5708
+texture = ExtResource( 1 )
+hframes = 4
+vframes = 3
+frame = 6

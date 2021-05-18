@@ -11,12 +11,11 @@ func _input(event):
 #func _ready():
 #	Game.tilemap.get_node("FogOfWar").revealTerrain(currentCellIdx, true)
 
-
 func _ready():
 	Game.beatController.connect("beat", self, "_onBeat")
 	
 func _onBeat(currentBeat, beats):
-	moveForward()
+	playAnimation()
 
 func moveForward():
 	var result = .moveForward()
