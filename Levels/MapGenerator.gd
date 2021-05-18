@@ -55,6 +55,9 @@ func _ready():
 	generateChunk(1, 0)
 	generateChunk(2, 0)
 	generateChunk(0, 2)
+	generateChunk(-1, 0)
+	generateChunk(-1, -1)
+	generateChunk(0, -1)
 
 func fract(x : float) -> float:
 	return x - floor(x)
