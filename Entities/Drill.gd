@@ -22,6 +22,5 @@ func moveForward():
 	var result = .moveForward()
 	
 	if result.success == false:
-		Game.tilemap.set_cell(result.targetCellIdx.x, result.targetCellIdx.y, 1)
-		Game.tilemap.get_node("FogOfWar").revealTerrain(result.targetCellIdx)
+		Game.level.removeObstacle(result.targetCellIdx)
 		playAnimation()

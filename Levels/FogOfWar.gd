@@ -20,22 +20,6 @@ func getCellIdx(pos : Vector2) -> Vector2:
 func getCell(cellIdx : Vector2) -> int:
 	return tilemap.get_cell(cellIdx.x, cellIdx.y) 
 
-func _input(event):
-	if event.is_action_pressed("x"): #just remove tile
-		var cellIdx := getCellIdx(tilemap.get_global_mouse_position())
-		var cell := getCell(cellIdx)
-		if cell == 1:
-			revealTerrain(cellIdx)
-		elif cell == 0:
-			tilemap.set_cell(cellIdx.x, cellIdx.y, 1)
-			revealTerrain(cellIdx)
-	if event.is_action_pressed("z"): #reveal tiles
-		var cellIdx := getCellIdx(tilemap.get_global_mouse_position())
-		var cell := getCell(cellIdx)
-		if cell == 1:
-			revealTerrain(cellIdx, true)
-			
-
 func hashCellIdx(cellIdx):
 	return cellIdx.x * 10000000 + cellIdx.y
 

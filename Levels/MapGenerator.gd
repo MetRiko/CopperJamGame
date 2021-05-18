@@ -52,10 +52,6 @@ func _input(event):
 
 func _ready():
 	randomize()
-	for x in range(5):
-		for y in range(5):
-			generateChunk(x - 2, y - 2)
-
 
 func fract(x : float) -> float:
 	return x - floor(x)
