@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Levels/Drill.gd" type="Script" id=1]
 [ext_resource path="res://Levels/BPM Counter.gd" type="Script" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://Levels/Generator.gd" type="Script" id=4]
 [ext_resource path="res://Levels/BuilderManager.gd" type="Script" id=5]
+[ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -89,6 +90,9 @@ tile_data = PoolIntArray( -917521, 2, 0, -917520, 2, 0, -917519, 2, 0, -917518, 
 
 [node name="BuilderManager" type="Node" parent="TileMap"]
 script = ExtResource( 5 )
+
+[node name="MapGenerator" type="Node" parent="TileMap"]
+script = ExtResource( 6 )
 
 [node name="Drill" type="Sprite" parent="."]
 self_modulate = Color( 1, 0.968627, 0.219608, 1 )
