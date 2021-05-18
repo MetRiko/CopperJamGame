@@ -49,6 +49,7 @@ func _input(event):
 		]
 		generateChunk(chunkId[0], chunkId[1])
 
+
 func _ready():
 	randomize()
 	generateChunk(0, 0)
@@ -58,6 +59,7 @@ func _ready():
 	generateChunk(-1, 0)
 	generateChunk(-1, -1)
 	generateChunk(0, -1)
+
 
 func fract(x : float) -> float:
 	return x - floor(x)
