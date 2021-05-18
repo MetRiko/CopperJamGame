@@ -3,7 +3,7 @@ extends Camera2D
 # Lower cap for the `_zoom_level`.
 export var min_zoom := 0.5
 # Upper cap for the `_zoom_level`.
-export var max_zoom := 5.0
+export var max_zoom := 7.5
 # Controls how much we increase or decrease the `_zoom_level` on every turn of the scroll wheel.
 export var zoom_factor := 0.3
 # Duration of the zoom's tween animation.

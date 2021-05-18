@@ -22,7 +22,7 @@ func get_input(delta):
 	if Input.is_action_pressed("up"):
 		dir.y -= 1
 		
-	velocity += dir.normalized() * speed * delta * 60.0 * 0.3
+	velocity += dir.normalized() * speed * delta * 20.0
 
 func _physics_process(delta):
 	get_input(delta)

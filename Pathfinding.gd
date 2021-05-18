@@ -26,11 +26,11 @@ func pathfind(start : Vector2, end : Vector2):
 	self.path_end_position = end
 	return _point_path
 
-func _input(event):
-	if event.is_action_pressed('LMB') and Input.is_key_pressed(KEY_SHIFT):
-		self.path_start_position = tilemap.world_to_map(get_global_mouse_position())
-	elif event.is_action_pressed('LMB'):
-		self.path_end_position = tilemap.world_to_map(get_global_mouse_position())
+#func _input(event):
+#	if event.is_action_pressed('LMB') and Input.is_key_pressed(KEY_SHIFT):
+#		self.path_start_position = tilemap.world_to_map(get_global_mouse_position())
+#	elif event.is_action_pressed('LMB'):
+#		self.path_end_position = tilemap.world_to_map(get_global_mouse_position())
 
 func astar_remove_point(point): 
 	var point_index = calculate_point_index(point)
