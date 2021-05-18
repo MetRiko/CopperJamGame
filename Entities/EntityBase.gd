@@ -2,6 +2,8 @@ extends Node2D
 
 class_name EntityBase
 
+signal moved
+
 onready var tilemap = Game.tilemap
 
 var currentCellIdx := Vector2()
@@ -51,6 +53,7 @@ func playAnimation():
 
 func move(offset : Vector2):
 	
+	var oldCellIdx = currentCellIdx
 	var targetCellIdx = currentCellIdx + offset
 	var targetCell = tilemap.get_cell(targetCellIdx.x, targetCellIdx.y)
 	
@@ -73,6 +76,8 @@ func move(offset : Vector2):
 		targetCellidx = targetCellIdx, 
 		targetCell = targetCell
 	}
+	
+	emit_signal("moved", oldCellIdx, targetCellIdx) #from -> to
 	
 #
 #func moveRight():

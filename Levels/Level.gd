@@ -39,35 +39,46 @@ func _ready():
 			
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
+	
+
+func getCellIdxFromMousePos() -> Vector2:
+	return tilemap.world_to_map(get_global_mouse_position())
+
+func getCellType(cellIdx) -> int:
+	return tilemap.get_cell(cellIdx.x, cellIdx.y)
+
+func getCellIdxFromPos(pos) -> Vector2:
+	return tilemap.world_to_map(pos)
 
 func _input(event):
 	if event.is_action_pressed("num4"):
-		var cellIdx = tilemap.world_to_map(get_global_mouse_position())
-		createEntity('drill', cellIdx)
-		fogOfWar.revealTerrain(cellIdx, true)
+		createEntity('drill', getCellIdxFromMousePos())
 	if event.is_action_pressed("num5"):
-		var cellIdx = tilemap.world_to_map(get_global_mouse_position())
-		createEntity('generator', cellIdx)
-		fogOfWar.revealTerrain(cellIdx, true)
+		createEntity('generator', getCellIdxFromMousePos())
 		
 	if event.is_action_pressed("x"): #just remove tile
-		var cellIdx : Vector2 = tilemap.world_to_map(get_global_mouse_position())
-		var cell : int = tilemap.get_cell(cellIdx.x, cellIdx.y)
+		var cellIdx := getCellIdxFromMousePos()
+		var cell : = getCellType(cellIdx)
 		if cell == 0:
 			removeObstacle(cellIdx)
 	if event.is_action_pressed("z"): #reveal tiles
-		var cellIdx : Vector2 = tilemap.world_to_map(get_global_mouse_position())
-		var cell : int = tilemap.get_cell(cellIdx.x, cellIdx.y)
+		var cellIdx := getCellIdxFromMousePos()
+		var cell := getCellType(cellIdx)
 		if cell == 1:
 			fogOfWar.revealTerrain(cellIdx, true)
 
-func createEntity(entityId : String, cellIdx : Vector2):
+func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
 	if ENTITIES.has(entityId):
 		var entity = ENTITIES[entityId].instance()
 		entity.global_position = tilemap.map_to_world(cellIdx)
 		entities.add_child(entity)
+		fogOfWar.revealTerrain(cellIdx, revealTerrain)
 		
 func _onChunkGenerated(newCells):
-	for cell in newCells:
-		if cell == 1 or cell == 2:
+	for cellIdx in newCells:
+		var cell : int = tilemap.get_cell(cellIdx)
+		if cell == 1:
+			fogOfWar.revealTerrain(cellIdx)
+			pathfinding.astar_add_point(cell)
+		elif cell == 2:
 			pathfinding.astar_add_point(cell)

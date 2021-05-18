@@ -5,15 +5,6 @@ signal cells_revealed
 onready var tilemap = get_parent()
 onready var mapGenerator = tilemap.get_node("MapGenerator")
 
-func _on_new_generated_chunk(newCells):
-	for cellIdx in newCells:
-		var cell = getCell(cellIdx)
-		if cell == 1:
-			revealTerrain(cellIdx)
-
-func _ready():
-	mapGenerator.connect("new_chunk_generated", self, "_on_new_generated_chunk")
-
 func getCellIdx(pos : Vector2) -> Vector2:
 	return tilemap.world_to_map(pos)
 
