@@ -49,7 +49,7 @@ func moveForward():
 func playAnimation():
 	$Anim.play("Move", -1, 5.0)
 
-func move(offset):
+func move(offset : Vector2):
 	
 	var targetCellIdx = currentCellIdx + offset
 	var targetCell = tilemap.get_cell(targetCellIdx.x, targetCellIdx.y)
