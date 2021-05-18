@@ -1,5 +1,6 @@
 extends Node
 
+signal cells_revealed
 
 onready var tilemap = get_parent()
 onready var mapGenerator = tilemap.get_node("MapGenerator")
@@ -50,6 +51,8 @@ func reavealTerrain(cellIdx, forceLight := false):
 		spreadedCells.erase('shouldSpread')
 		for cellIdx in spreadedCells.values():
 			tilemap.set_cell(cellIdx.x, cellIdx.y, 2)
+		
+		emit_signal("cells_revealed", spreadedCells.values())
 
 const CELLS_OFFSETS = [
 	Vector2(-1, 0),
