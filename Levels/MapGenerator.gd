@@ -1,6 +1,6 @@
 extends Node
 
-const CHUNK_SIZE := 16
+const CHUNK_SIZE : int = 16
 
 onready var tilemap : TileMap = get_parent()
 
@@ -19,7 +19,7 @@ func checkIfChunkExists(x, y):
 			return true
 	return false
 
-func generateChunk(x, y):
+func generateChunk(x : int, y : int):
 	
 	if checkIfChunkExists(x, y):
 		return
@@ -28,8 +28,9 @@ func generateChunk(x, y):
 	
 	for ix in range(CHUNK_SIZE):
 		for iy in range(CHUNK_SIZE):
-			var cellPos = [x * CHUNK_SIZE + ix, y * CHUNK_SIZE + iy]
-			tilemap.set_cell(cellPos[0], cellPos[1], noiseFunction(cellPos[0], cellPos[1]))
+			var cellIdx = Vector2(x * CHUNK_SIZE + ix, y * CHUNK_SIZE + iy)
+			var cell = noiseFunction(cellIdx.x, cellIdx.y)
+			tilemap.set_cell(cellIdx.x, cellIdx.y, cell)
 
 func _input(event):
 	if event.is_action_pressed("lmb"):
