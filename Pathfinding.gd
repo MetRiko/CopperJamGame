@@ -86,7 +86,15 @@ func is_outside_map_bounds(point):
 	return cell == -1
 
 func calculate_point_index(point):
-	return point.x + 10000000 * point.y
+	
+	var x = point.x
+	var y = point.y
+	
+	var a = -2*point.x-1 if x < 0 else 2 * x
+	var b = -2*point.y-1 if y < 0 else 2 * y
+	
+	return (a + b) * (a + b + 1) * 0.5 + b
+#	return point.x + 10000000 * point.y
 
 func _recalculate_path():
 	if drawLines == true:
