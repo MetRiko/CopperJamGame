@@ -39,7 +39,6 @@ func _ready():
 			
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
-	
 
 func getCellIdxFromMousePos() -> Vector2:
 	return tilemap.world_to_map(get_global_mouse_position())
@@ -76,9 +75,9 @@ func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
 		
 func _onChunkGenerated(newCells):
 	for cellIdx in newCells:
-		var cell : int = tilemap.get_cell(cellIdx)
+		var cell : int = getCellType(cellIdx)
 		if cell == 1:
 			fogOfWar.revealTerrain(cellIdx)
-			pathfinding.astar_add_point(cell)
+			pathfinding.astar_add_point(cellIdx)
 		elif cell == 2:
-			pathfinding.astar_add_point(cell)
+			pathfinding.astar_add_point(cellIdx)
