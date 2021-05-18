@@ -1,8 +1,10 @@
 extends Node
 
-const CHUNK_SIZE := 200
+const CHUNK_SIZE := 16
 
 onready var tilemap : TileMap = get_parent()
+
+var generatedChunks = []
 
 func noiseFunction(x, y):
 		
@@ -11,15 +13,39 @@ func noiseFunction(x, y):
 	var value := noise(Vector2(x * noiseZoom, y * noiseZoom), cos(x * 0.4) * sin(y * 0.4) * 0.2)
 	return 1.0 if value < 0.00000001 else 0.0
 
+func checkIfChunkExists(x, y):
+	for chunk in generatedChunks:
+		if chunk[0] == x and chunk[1] == y:
+			return true
+	return false
+
 func generateChunk(x, y):
+	
+	if checkIfChunkExists(x, y):
+		return
+	
+	generatedChunks.append([x, y])
+	
 	for ix in range(CHUNK_SIZE):
 		for iy in range(CHUNK_SIZE):
 			var cellPos = [x * CHUNK_SIZE + ix, y * CHUNK_SIZE + iy]
 			tilemap.set_cell(cellPos[0], cellPos[1], noiseFunction(cellPos[0], cellPos[1]))
 
+func _input(event):
+	if event.is_action_pressed("lmb"):
+		var mousePos := tilemap.get_global_mouse_position()
+		var chunkId = [
+			floor(mousePos.x / (16 * 32)),
+			floor(mousePos.y / (16 * 32))
+		]
+		generateChunk(chunkId[0], chunkId[1])
+
 func _ready():
 	randomize()
 	generateChunk(0, 0)
+	generateChunk(1, 0)
+	generateChunk(2, 0)
+	generateChunk(0, 2)
 
 func fract(x : float) -> float:
 	return x - floor(x)
