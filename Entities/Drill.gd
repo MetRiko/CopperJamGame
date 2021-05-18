@@ -8,8 +8,8 @@ func _input(event):
 	if event.is_action_pressed('num3'):
 		rotateCC()
 
-func _ready():
-	Game.tilemap.get_node("FogOfWar").revealTerrain(currentCellIdx, true)
+#func _ready():
+#	Game.tilemap.get_node("FogOfWar").revealTerrain(currentCellIdx, true)
 
 func moveForward():
 	var result = .moveForward()
