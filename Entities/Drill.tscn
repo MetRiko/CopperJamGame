@@ -36,7 +36,7 @@ script = ExtResource( 2 )
 anims/Move = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 17, 16 )
+position = Vector2( 16, 16 )
 texture = ExtResource( 1 )
 hframes = 4
 vframes = 3

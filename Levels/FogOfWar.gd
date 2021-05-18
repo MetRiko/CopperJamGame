@@ -9,7 +9,7 @@ func _on_new_generated_chunk(newCells):
 	for cellIdx in newCells:
 		var cell = getCell(cellIdx)
 		if cell == 1:
-			reavealTerrain(cellIdx)
+			revealTerrain(cellIdx)
 
 func _ready():
 	mapGenerator.connect("new_chunk_generated", self, "_on_new_generated_chunk")
@@ -25,27 +25,27 @@ func _input(event):
 		var cellIdx := getCellIdx(tilemap.get_global_mouse_position())
 		var cell := getCell(cellIdx)
 		if cell == 1:
-			reavealTerrain(cellIdx)
+			revealTerrain(cellIdx)
 		elif cell == 0:
 			tilemap.set_cell(cellIdx.x, cellIdx.y, 1)
-			reavealTerrain(cellIdx)
+			revealTerrain(cellIdx)
 	if event.is_action_pressed("z"): #reveal tiles
 		var cellIdx := getCellIdx(tilemap.get_global_mouse_position())
 		var cell := getCell(cellIdx)
 		if cell == 1:
-			reavealTerrain(cellIdx, true)
+			revealTerrain(cellIdx, true)
 			
 
 func hashCellIdx(cellIdx):
 	return cellIdx.x * 10000000 + cellIdx.y
 
-func reavealTerrain(cellIdx, forceLight := false):
+func revealTerrain(cellIdx, forceLight := false):
 	var cell = getCell(cellIdx)
 	if cell != 1:
 		return
 	
 	var spreadedCells := {shouldSpread = forceLight}
-	_reavealTerrain(cellIdx, spreadedCells)
+	_revealTerrain(cellIdx, spreadedCells)
 	
 	if spreadedCells.shouldSpread == true:
 		spreadedCells.erase('shouldSpread')
@@ -61,7 +61,7 @@ const CELLS_OFFSETS = [
 	Vector2(0, 1),
 ]
 
-func _reavealTerrain(cellIdx, spreadedCells):
+func _revealTerrain(cellIdx, spreadedCells):
 	var hashedCell = hashCellIdx(cellIdx)
 	
 	if not spreadedCells.has(hashedCell):
@@ -71,6 +71,6 @@ func _reavealTerrain(cellIdx, spreadedCells):
 			var offsetedCellIdx = cellIdx + offset
 			var cell = getCell(offsetedCellIdx)
 			if cell == 1:
-				_reavealTerrain(offsetedCellIdx, spreadedCells)
+				_revealTerrain(offsetedCellIdx, spreadedCells)
 			elif cell == 2:
 				spreadedCells.shouldSpread = true
