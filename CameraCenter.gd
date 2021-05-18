@@ -1,25 +1,29 @@
 extends KinematicBody2D
 
-export var min_speed := 900
+export var min_speed := 400
 
-export var max_speed := 2000
+export var max_speed := 2400
 
-export (int) var speed = 1300
+export (int) var speed = 800
 
 var velocity = Vector2()
 
-func get_input():
-	velocity = Vector2()
+func get_input(delta):
+	
+	var dir = Vector2()
+	
+	velocity *= 0.86
 	if Input.is_action_pressed("right"):
-		velocity.x += 1
+		dir.x += 1
 	if Input.is_action_pressed("left"):
-		velocity.x -= 1
+		dir.x -= 1
 	if Input.is_action_pressed("down"):
-		velocity.y += 1
+		dir.y += 1
 	if Input.is_action_pressed("up"):
-		velocity.y -= 1
-	velocity = velocity.normalized() * speed
+		dir.y -= 1
+		
+	velocity += dir.normalized() * speed * delta * 60.0 * 0.3
 
 func _physics_process(delta):
-	get_input()
-	velocity = move_and_slide(velocity)
+	get_input(delta)
+	move_and_slide(velocity)
