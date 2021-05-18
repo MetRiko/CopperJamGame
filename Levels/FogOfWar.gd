@@ -2,6 +2,16 @@ extends Node
 
 
 onready var tilemap = get_parent()
+onready var mapGenerator = tilemap.get_node("MapGenerator")
+
+func _on_new_generated_chunk(newCells):
+	for cellIdx in newCells:
+		var cell = getCell(cellIdx)
+		if cell == 1:
+			reavealTerrain(cellIdx)
+
+func _ready():
+	mapGenerator.connect("new_chunk_generated", self, "_on_new_generated_chunk")
 
 func getCellIdx(pos : Vector2) -> Vector2:
 	return tilemap.world_to_map(pos)
@@ -13,23 +23,33 @@ func _input(event):
 	if event.is_action_pressed("LMB"):
 		var cellIdx := getCellIdx(tilemap.get_global_mouse_position())
 		var cell := getCell(cellIdx)
-		if cell != -1:
+		if cell == 1:
 			reavealTerrain(cellIdx)
-		
-var spreadedCells := {}
+		elif cell == 0:
+			tilemap.set_cell(cellIdx.x, cellIdx.y, 1)
+			reavealTerrain(cellIdx)
+	if event.is_action_pressed("RMB"):
+		var cellIdx := getCellIdx(tilemap.get_global_mouse_position())
+		var cell := getCell(cellIdx)
+		if cell == 1:
+			reavealTerrain(cellIdx, true)
+			
 
 func hashCellIdx(cellIdx):
 	return cellIdx.x * 10000000 + cellIdx.y
 
-func reavealTerrain(cellIdx):
+func reavealTerrain(cellIdx, forceLight := false):
 	var cell = getCell(cellIdx)
 	if cell != 1:
 		return
 	
-	_reavealTerrain(cellIdx)
+	var spreadedCells := {shouldSpread = forceLight}
+	_reavealTerrain(cellIdx, spreadedCells)
 	
-	for cellIdx in spreadedCells.values():
-		tilemap.set_cell(cellIdx.x, cellIdx.y, 2)
+	if spreadedCells.shouldSpread == true:
+		spreadedCells.erase('shouldSpread')
+		for cellIdx in spreadedCells.values():
+			tilemap.set_cell(cellIdx.x, cellIdx.y, 2)
 
 const CELLS_OFFSETS = [
 	Vector2(-1, 0),
@@ -38,7 +58,7 @@ const CELLS_OFFSETS = [
 	Vector2(0, 1),
 ]
 
-func _reavealTerrain(cellIdx):
+func _reavealTerrain(cellIdx, spreadedCells):
 	var hashedCell = hashCellIdx(cellIdx)
 	
 	if not spreadedCells.has(hashedCell):
@@ -48,4 +68,6 @@ func _reavealTerrain(cellIdx):
 			var offsetedCellIdx = cellIdx + offset
 			var cell = getCell(offsetedCellIdx)
 			if cell == 1:
-				_reavealTerrain(offsetedCellIdx)
+				_reavealTerrain(offsetedCellIdx, spreadedCells)
+			elif cell == 2:
+				spreadedCells.shouldSpread = true

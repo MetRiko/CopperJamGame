@@ -1,5 +1,7 @@
 extends Node
 
+signal new_chunk_generated
+
 const CHUNK_SIZE : int = 16
 
 onready var tilemap : TileMap = get_parent()
@@ -26,11 +28,17 @@ func generateChunk(x : int, y : int):
 	
 	generatedChunks.append([x, y])
 	
+	var newCells = []
+	
 	for ix in range(CHUNK_SIZE):
 		for iy in range(CHUNK_SIZE):
 			var cellIdx = Vector2(x * CHUNK_SIZE + ix, y * CHUNK_SIZE + iy)
+			newCells.append(cellIdx)
 			var cell = noiseFunction(cellIdx.x, cellIdx.y)
 			tilemap.set_cell(cellIdx.x, cellIdx.y, cell)
+	
+	emit_signal("new_chunk_generated", newCells)
+	
 
 func _input(event):
 	if event.is_action_pressed("lmb"):
