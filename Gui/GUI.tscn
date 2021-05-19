@@ -22,7 +22,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Counter" type="HBoxContainer" parent="."]
+[node name="MiedzCounter" type="HBoxContainer" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 240.0
 margin_top = 456.0
@@ -34,7 +34,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="Counter"]
+[node name="TextureRect" type="TextureRect" parent="MiedzCounter"]
 margin_right = 64.0
 margin_bottom = 64.0
 texture = ExtResource( 1 )
@@ -42,7 +42,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Counter"]
+[node name="Label" type="Label" parent="MiedzCounter"]
 margin_left = 69.0
 margin_top = 16.0
 margin_right = 93.0
@@ -68,6 +68,7 @@ margin_bottom = -25.1985
 [node name="TextureRect" type="TextureRect" parent="Settings"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 
 [node name="PauseResume" type="Button" parent="."]
 self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
@@ -86,6 +87,10 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="PauseResume"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Control" type="Control" parent="."]
 anchor_top = 1.0

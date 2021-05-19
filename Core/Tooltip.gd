@@ -48,6 +48,9 @@ const data = [
 	}
 ]
 
+#	$MiedzCounter/Label.text = copperAmmount
+
+
 func _ready():
 	var groupId = 0
 	for tab in tabCont.get_children():
@@ -72,6 +75,7 @@ func button_exit(groupId, buttonId):
 		print(data[groupId].elements[buttonId].name)
 	else:
 		print("unknown element")
+
 
 
 
