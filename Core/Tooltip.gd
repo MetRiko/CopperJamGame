@@ -1,5 +1,7 @@
 extends Control
 
+signal module_button_pressed
+
 onready var tabCont = get_node("Control/TabContainer")
 var buttonNum := int()
 
@@ -8,13 +10,20 @@ const data = [
 		'groupName': "Group 1",
 		'elements': [
 			{
-				'name': "Tank" 
+				'name': "Drill",
+				'moduleId': "drill",
+				'frameId':16
+			},
+			{
+				'name': "Generator",
+				'moduleId' : "generator",
+				'frameId':25
 			},
 			{
 				'name': "Turret" 
 			},
 			{
-				'name': "Drill" 
+				'name': "Tank" 
 			}
 		]
 	},
@@ -59,6 +68,7 @@ func _ready():
 			buttonNum += 1
 			button.connect("mouse_entered", self, "button_enter", [groupId, buttonId])
 			button.connect("mouse_exited", self, "button_exit", [groupId, buttonId])
+			button.connect("pressed", self, "button_pressed", [groupId, buttonId])
 			buttonId += 1
 		groupId += 1
 
@@ -76,6 +86,8 @@ func button_exit(groupId, buttonId):
 	else:
 		print("unknown element")
 
-
+func button_pressed(groupId, buttonId):
+	var moduleData = data[groupId].elements[buttonId]
+	emit_signal("module_button_pressed", moduleData)
 
 
