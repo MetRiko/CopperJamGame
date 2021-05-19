@@ -20,7 +20,8 @@ func revealTerrain(cellIdx, forceLight := false):
 		return
 	
 	var spreadedCells := {shouldSpread = forceLight}
-	_revealTerrain(cellIdx, spreadedCells)
+	var spreadedCellsArr := []
+	_revealTerrain(cellIdx, spreadedCells, spreadedCellsArr)
 	
 	if spreadedCells.shouldSpread == true:
 		spreadedCells.erase('shouldSpread')
@@ -36,16 +37,36 @@ const CELLS_OFFSETS = [
 	Vector2(0, 1),
 ]
 
-func _revealTerrain(cellIdx, spreadedCells):
-	var hashedCell = hashCellIdx(cellIdx)
+func _revealTerrain(firstCellIdx : Vector2, spreadedCells : Dictionary, spreadedCellsArr : Array):
 	
-	if not spreadedCells.has(hashedCell):
-		spreadedCells[hashedCell] = cellIdx
-		
+#	var c := 0
+	
+	spreadedCellsArr.append(firstCellIdx)
+	var hashedFirstCellIdx = hashCellIdx(firstCellIdx)
+	spreadedCells[hashedFirstCellIdx] = firstCellIdx
+	
+	for cellIdx in spreadedCellsArr:
 		for offset in CELLS_OFFSETS:
 			var offsetedCellIdx = cellIdx + offset
 			var cell = getCell(offsetedCellIdx)
 			if cell == 1:
-				_revealTerrain(offsetedCellIdx, spreadedCells)
+				var hashedOffsetedCellIdx = hashCellIdx(offsetedCellIdx)
+				if not spreadedCells.has(hashedOffsetedCellIdx):
+					spreadedCells[hashedOffsetedCellIdx] = offsetedCellIdx
+					spreadedCellsArr.append(offsetedCellIdx)
 			elif cell == 2:
 				spreadedCells.shouldSpread = true
+
+#func _revealTerrain(cellIdx, spreadedCells, spreadedCellsArr):
+#	var hashedCell = hashCellIdx(cellIdx)
+#
+#	if not spreadedCells.has(hashedCell):
+#		spreadedCells[hashedCell] = cellIdx
+#
+#		for offset in CELLS_OFFSETS:
+#			var offsetedCellIdx = cellIdx + offset
+#			var cell = getCell(offsetedCellIdx)
+#			if cell == 1:
+#				_revealTerrain(offsetedCellIdx, spreadedCells, spreadedCellsArr)
+#			elif cell == 2:
+#				spreadedCells.shouldSpread = true
