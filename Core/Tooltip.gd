@@ -20,10 +20,14 @@ const data = [
 				'frameId':25
 			},
 			{
-				'name': "Turret" 
+				'name': "Turret", 
+				'moduleId' : "turret",
+				'frameId':null
 			},
 			{
-				'name': "Tank" 
+				'name': "Tank", 
+				'moduleId' : "tank",
+				'frameId':null
 			}
 		]
 	},
@@ -31,13 +35,19 @@ const data = [
 		'groupName': "Group 2",
 		'elements': [
 			{
-				'name': "Tank" 
+				'name': "Tank",
+				'moduleId' : "turret",
+				'frameId':null
 			},
 			{
-				'name': "Turret" 
+				'name': "Turret",
+				'moduleId' : "turret",
+				'frameId':null 
 			},
 			{
-				'name': "Drill" 
+				'name': "Drill",
+				'moduleId' : "turret",
+				'frameId':null 
 			}
 		]
 	},
@@ -45,13 +55,19 @@ const data = [
 		'groupName': "Group 3",
 		'elements': [
 			{
-				'name': "Tank" 
+				'name': "Tank",
+				'moduleId' : "turret",
+				'frameId':null 
 			},
 			{
-				'name': "Turret" 
+				'name': "Turret",
+				'moduleId' : "turret",
+				'frameId':null
 			},
 			{
-				'name': "Drill" 
+				'name': "Drill",
+				'moduleId' : "turret",
+				'frameId':null
 			}
 		]
 	}
@@ -71,6 +87,10 @@ func _ready():
 			button.connect("pressed", self, "button_pressed", [groupId, buttonId])
 			buttonId += 1
 		groupId += 1
+	$Settings.connect("pressed", self, "button_settings")
+	$PauseResume.connect("pressed", self, "button_pause")
+
+
 
 func button_enter(groupId, buttonId):
 	print(groupId, buttonId)
@@ -90,4 +110,10 @@ func button_pressed(groupId, buttonId):
 	var moduleData = data[groupId].elements[buttonId]
 	emit_signal("module_button_pressed", moduleData)
 
+func button_settings():
+	#kod pod ustawienia
+	pass
 
+func button_pause():
+	#kod pod pauze
+	pass

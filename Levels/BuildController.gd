@@ -17,7 +17,7 @@ func build_object(moduleData):
 
 func _process(delta):
 	if entityData != null:
-		$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))
+		$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("LMB") && entityData != null:
