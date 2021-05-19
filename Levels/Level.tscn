@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://Pathfinding.gd" type="Script" id=7]
 [ext_resource path="res://Entities/Player.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Levels/BuildController.gd" type="Script" id=9]
+[ext_resource path="res://Entities/Modules/ModuleBuilder.gd" type="Script" id=10]
+[ext_resource path="res://Entities/Modules/Module.tscn" type="PackedScene" id=11]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
@@ -34,6 +36,8 @@ script = ExtResource( 7 )
 
 [node name="Enemy" parent="Entities" instance=ExtResource( 6 )]
 
+[node name="Module" parent="Entities" instance=ExtResource( 11 )]
+
 [node name="Player" parent="." instance=ExtResource( 8 )]
 position = Vector2( 64, 64 )
 
@@ -41,3 +45,6 @@ position = Vector2( 64, 64 )
 
 [node name="BuildController" type="Node2D" parent="Controllers"]
 script = ExtResource( 9 )
+
+[node name="ModuleBuilder" type="Node2D" parent="Controllers"]
+script = ExtResource( 10 )
