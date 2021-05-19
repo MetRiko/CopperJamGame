@@ -1,0 +1,332 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Core/Tooltip.gd" type="Script" id=2]
+[ext_resource path="res://font/OpenSans-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Gui/ElementButton.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+size = 11
+font_data = ExtResource( 3 )
+
+[node name="GUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.12244
+margin_right = -1.12244
+mouse_filter = 2
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Counter" type="HBoxContainer" parent="."]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 240.0
+margin_top = 456.0
+margin_right = 423.0
+margin_bottom = 520.0
+theme = SubResource( 1 )
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Counter"]
+margin_right = 64.0
+margin_bottom = 64.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Counter"]
+margin_left = 69.0
+margin_top = 16.0
+margin_right = 93.0
+margin_bottom = 47.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "221
+"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Settings" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -65.8284
+margin_top = -65.1985
+margin_right = -25.8284
+margin_bottom = -25.1985
+
+[node name="TextureRect" type="TextureRect" parent="Settings"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PauseResume" type="Button" parent="."]
+self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -110.24
+margin_top = -65.1985
+margin_right = -70.2405
+margin_bottom = -25.1985
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="PauseResume"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Control" type="Control" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = -134.0
+margin_right = 400.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="Control"]
+margin_left = 3.77551
+margin_right = 383.776
+margin_bottom = 114.0
+tab_align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tabs" type="Tabs" parent="Control/TabContainer"]
+modulate = Color( 1, 0, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+tab_align = 0
+
+[node name="GridContainer" type="GridContainer" parent="Control/TabContainer/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_right = -4.0
+margin_bottom = -14.0
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+
+[node name="Button2" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_left = 68.0
+margin_right = 132.0
+
+[node name="Button3" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_left = 136.0
+margin_right = 200.0
+
+[node name="Button4" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_left = 204.0
+margin_right = 268.0
+
+[node name="Button5" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_top = 34.0
+margin_bottom = 64.0
+
+[node name="Button6" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_left = 68.0
+margin_top = 34.0
+margin_right = 132.0
+margin_bottom = 64.0
+
+[node name="Button7" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_left = 136.0
+margin_top = 34.0
+margin_right = 200.0
+margin_bottom = 64.0
+
+[node name="Button8" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_left = 204.0
+margin_top = 34.0
+margin_right = 268.0
+margin_bottom = 64.0
+
+[node name="Tabs2" type="Tabs" parent="Control/TabContainer"]
+visible = false
+modulate = Color( 0, 1, 0.811765, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+tab_align = 0
+
+[node name="GridContainer" type="GridContainer" parent="Control/TabContainer/Tabs2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.136
+margin_top = -0.471924
+margin_right = 81.1361
+margin_bottom = 54.5281
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+
+[node name="Button2" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_left = 68.0
+margin_right = 132.0
+
+[node name="Button3" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_left = 136.0
+margin_right = 200.0
+
+[node name="Button4" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_left = 204.0
+margin_right = 268.0
+
+[node name="Button5" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_top = 34.0
+margin_bottom = 64.0
+
+[node name="Button6" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_left = 68.0
+margin_top = 34.0
+margin_right = 132.0
+margin_bottom = 64.0
+
+[node name="Button7" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_left = 136.0
+margin_top = 34.0
+margin_right = 200.0
+margin_bottom = 64.0
+
+[node name="Button8" parent="Control/TabContainer/Tabs2/GridContainer" instance=ExtResource( 4 )]
+margin_left = 204.0
+margin_top = 34.0
+margin_right = 268.0
+margin_bottom = 64.0
+
+[node name="Tabs3" type="Tabs" parent="Control/TabContainer"]
+visible = false
+modulate = Color( 0.0392157, 0.505882, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+tab_align = 0
+
+[node name="GridContainer" type="GridContainer" parent="Control/TabContainer/Tabs3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.136
+margin_top = -0.471924
+margin_right = 81.1361
+margin_bottom = 54.5281
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+
+[node name="Button2" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_left = 68.0
+margin_right = 132.0
+
+[node name="Button3" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_left = 136.0
+margin_right = 200.0
+
+[node name="Button4" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_left = 204.0
+margin_right = 268.0
+
+[node name="Button5" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_top = 34.0
+margin_bottom = 64.0
+
+[node name="Button6" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_left = 68.0
+margin_top = 34.0
+margin_right = 132.0
+margin_bottom = 64.0
+
+[node name="Button7" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_left = 136.0
+margin_top = 34.0
+margin_right = 200.0
+margin_bottom = 64.0
+
+[node name="Button8" parent="Control/TabContainer/Tabs3/GridContainer" instance=ExtResource( 4 )]
+margin_left = 204.0
+margin_top = 34.0
+margin_right = 268.0
+margin_bottom = 64.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+self_modulate = Color( 0.2, 0.2, 0.2, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 32.0
+margin_right = -284.0
+margin_bottom = -8.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Control/VBoxContainer"]
+margin_right = 88.0
+margin_bottom = 74.0
+size_flags_vertical = 3
+color = Color( 0.14902, 0.14902, 0.14902, 1 )
+
+[node name="ColorRect2" type="ColorRect" parent="Control/VBoxContainer/ColorRect"]
+self_modulate = Color( 0.32549, 0.32549, 0.32549, 1 )
+show_behind_parent = true
+margin_left = 2.12372
+margin_top = -1.65179
+margin_right = 90.1237
+margin_bottom = 72.3482
+size_flags_vertical = 3
+color = Color( 0.14902, 0.14902, 0.14902, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tooltip" type="Label" parent="Control/VBoxContainer/ColorRect"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -44.5
+margin_top = 1.88773
+margin_right = 44.5
+margin_bottom = 15.8877
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+text = "Tooltip"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

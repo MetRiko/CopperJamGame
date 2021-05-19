@@ -8,11 +8,14 @@ export (int) var speed = 800
 
 var velocity = Vector2()
 
+func _ready():
+	speed = 500.0 * sqrt($CameraNode._zoom_level)
+
 func get_input(delta):
 	
 	var dir = Vector2()
 	
-	velocity *= 0.86
+	velocity *= 0.88
 	if Input.is_action_pressed("right"):
 		dir.x += 1
 	if Input.is_action_pressed("left"):
@@ -22,7 +25,7 @@ func get_input(delta):
 	if Input.is_action_pressed("up"):
 		dir.y -= 1
 		
-	velocity += dir.normalized() * speed * delta * 20.0
+	velocity += dir.normalized() * speed * delta * (pow(velocity.length(), 0.5) + 20.0) * 0.5
 
 func _physics_process(delta):
 	get_input(delta)

@@ -48,6 +48,9 @@ func getCellType(cellIdx) -> int:
 
 func getCellIdxFromPos(pos) -> Vector2:
 	return tilemap.world_to_map(pos)
+	
+func getPosFromCellIdx(cellIdx) -> Vector2:
+	return tilemap.map_to_world(cellIdx)
 
 func _input(event):
 	if event.is_action_pressed("num4"):
