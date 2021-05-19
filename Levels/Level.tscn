@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Levels/BuildController.gd" type="Script" id=9]
 [ext_resource path="res://Entities/Modules/ModuleBuilder.gd" type="Script" id=10]
 [ext_resource path="res://Entities/Modules/Module.tscn" type="PackedScene" id=11]
+[ext_resource path="res://res/modules.png" type="Texture" id=12]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
@@ -45,6 +46,15 @@ position = Vector2( 64, 64 )
 
 [node name="BuildController" type="Node2D" parent="Controllers"]
 script = ExtResource( 9 )
+
+[node name="Sprite" type="Sprite" parent="Controllers/BuildController"]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.470588 )
+position = Vector2( 16.9271, 16.4816 )
+texture = ExtResource( 12 )
+hframes = 8
+vframes = 6
+frame = 16
 
 [node name="ModuleBuilder" type="Node2D" parent="Controllers"]
 script = ExtResource( 10 )
