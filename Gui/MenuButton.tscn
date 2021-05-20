@@ -1,0 +1,10 @@
+[gd_scene format=2]
+
+[node name="Start" type="Button"]
+margin_top = 240.0
+margin_right = 300.0
+margin_bottom = 260.0
+rect_min_size = Vector2( 150, 70 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

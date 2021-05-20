@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Core/Menu.gd" type="Script" id=2]
+[ext_resource path="res://Gui/MenuButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://font/OpenSans-ExtraBold.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 90
+use_mipmaps = true
+font_data = ExtResource( 4 )
+
+[node name="Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -231.07
+margin_top = -0.0278406
+margin_right = 230.93
+margin_bottom = -0.027832
+custom_constants/separation = 30
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TextureRect/VBoxContainer"]
+margin_top = 88.0
+margin_right = 462.0
+margin_bottom = 212.0
+rect_min_size = Vector2( 0, 100 )
+custom_fonts/font = SubResource( 1 )
+text = "THE GAME"
+
+[node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 242.0
+margin_right = 462.0
+margin_bottom = 312.0
+
+[node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 342.0
+margin_right = 462.0
+margin_bottom = 412.0
+
+[node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 442.0
+margin_right = 462.0
+margin_bottom = 512.0
