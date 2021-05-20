@@ -43,7 +43,6 @@ func _input(event):
 	if event.is_action_pressed("ui_right"):
 		justCallInstruction(Vector2(0, 0), 'move_right')
 
-
 ############### Positions and idxes
 
 func getPossibleConnectionsForModule(moduleId : String, rot : int):
@@ -62,7 +61,7 @@ func convertToGlobalIdx(localIdx : Vector2):
 
 func getAvailableGlobalFreeSlots():
 	var ret = []
-	for localIdx in availableIdxes:
+	for localIdx in availableIdxes.values():
 		ret.append(convertToGlobalIdx(localIdx))
 	return ret
 	
@@ -146,7 +145,6 @@ func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot :
 	if installedModules.empty():
 		return true
 	var availableConnections = getAvailableConnections(moduleId, moduleLocalIdx, rot)
-	print(availableConnections)
 	for localIdx in availableConnections:
 		var hashedLocalIdx = hashIdx(localIdx)
 		if installedModules.get(hashedLocalIdx) != null:
@@ -154,9 +152,15 @@ func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot :
 	return false
 
 func canDetachModule(localIdx : Vector2):
+	if installedModules.size() == 1 and installedModules.values()[0].localIdx == localIdx:
+		return true
 	var modulesChecked = {}
-	var firstModuleData = installedModules.values()[0].localIdx
-	_canDetachModule(localIdx, firstModuleData, modulesChecked)
+	var firstModuleIdx = installedModules.values()[0].localIdx
+	if firstModuleIdx == localIdx:
+		firstModuleIdx = installedModules.values()[1].localIdx
+	var hashedFirstModuleIdx = hashIdx(firstModuleIdx)
+	modulesChecked[hashedFirstModuleIdx] = firstModuleIdx
+	_canDetachModule(localIdx, firstModuleIdx, modulesChecked)
 	return modulesChecked.size() == installedModules.size() - 1
 	
 func _canDetachModule(ignoredIdx : Vector2, localIdx : Vector2, modulesChecked : Dictionary):
