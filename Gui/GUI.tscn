@@ -112,7 +112,6 @@ __meta__ = {
 }
 
 [node name="Tabs" type="Tabs" parent="Control/TabContainer"]
-modulate = Color( 1, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -170,7 +169,6 @@ margin_bottom = 64.0
 
 [node name="Tabs2" type="Tabs" parent="Control/TabContainer"]
 visible = false
-modulate = Color( 0, 1, 0.811765, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -228,7 +226,6 @@ margin_bottom = 64.0
 
 [node name="Tabs3" type="Tabs" parent="Control/TabContainer"]
 visible = false
-modulate = Color( 0.0392157, 0.505882, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
