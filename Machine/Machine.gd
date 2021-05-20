@@ -96,6 +96,12 @@ func move(offset : Vector2):
 
 ############### Getters
 
+func hasModules():
+	return installedModules.empty()
+
+func getModulesCount():
+	return installedModules.size()
+
 func getModuleFromLocalIdx(localIdx):
 	var hashedLocalIdx = hashIdx(localIdx)
 	var module = installedModules.get(hashedLocalIdx).module
@@ -182,9 +188,8 @@ func _canDetachModule(ignoredIdx : Vector2, localIdx : Vector2, modulesChecked :
 func recalculateAvailableIdxes():
 	if installedModules.empty():
 		var hashedIdx = hashIdx(Vector2(0, 0))
-		self.availableIdxes = {
-			[hashedIdx]: Vector2(0, 0)
-		}
+		self.availableIdxes = {}
+		self.availableIdxes[hashedIdx] = Vector2(0, 0)
 		return
 		
 	var newAvailableIdxes = {}
@@ -202,17 +207,17 @@ func detachModule(localIdx : Vector2):
 		push_error("Cannot detach this module!")
 		return 
 	
+	
 	var hashedLocalIdx = hashIdx(localIdx)
 	var moduleData = installedModules[hashedLocalIdx]
-	moduleData.module.queue_free()
-	
 	if installedModules.size() == 1:
-		print(baseGlobalIdx)
 		baseGlobalIdx = convertToGlobalIdx(moduleData.localIdx)
-		print(baseGlobalIdx)
+		global_position = level.getPosFromCellIdx(baseGlobalIdx)
 	
+	moduleData.module.queue_free()
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
+	print(availableIdxes)
 	
 
 func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
@@ -220,7 +225,7 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 	if not checkIfIdxAvailable(localIdx):
 		printerr("Unavailable module idx!")
 		push_error("Unavailable module idx!")
-		return 
+		return
 
 	if not isAnyConnectionAvailable(moduleId, localIdx, rot):
 		push_error("No available connection for this module!")
