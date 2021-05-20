@@ -1,8 +1,9 @@
 extends Control
 
 signal module_button_pressed
-signal tooltip_hovered
+#signal tooltip_hovered
 
+onready var pauseMenu = Game.pauseMenu
 onready var tabCont = get_node("Control/TabContainer")
 var buttonNum := int()
 var copperAmmount :=int()
@@ -118,8 +119,7 @@ func _ready():
 					button.get_child(0).set_text(str(data[groupId].elements[buttonId].cost))
 			buttonId += 1
 		groupId += 1
-	$Settings.connect("pressed", self, "button_settings")
-	$PauseResume.connect("pressed", self, "button_pause")
+	$Settings.connect("pressed", self, "button_pause")
 #$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
 
@@ -133,7 +133,7 @@ func button_enter(groupId, buttonId):
 		
 	
 
-func button_exit(groupId, buttonId):
+func button_exit():
 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"
 
 func button_pressed(groupId, buttonId):
@@ -144,13 +144,11 @@ func button_pressed(groupId, buttonId):
 		copper_counter(copperAmmount)
 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
 
-func button_settings():
-	#kod pod ustawienia
-	pass
-
 func button_pause():
-	#kod pod pauze
-	pass
+	if pauseMenu.isPaused == false:
+		pauseMenu.visible = true
+		pauseMenu.isPaused = true
+
 
 func copper_counter(copperAmmount):
 	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))

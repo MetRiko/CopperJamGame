@@ -75,6 +75,9 @@ margin_left = -65.8284
 margin_top = -65.1985
 margin_right = -25.8284
 margin_bottom = -25.1985
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="TextureRect" parent="Settings"]
 anchor_left = 0.074
@@ -86,34 +89,6 @@ margin_top = -0.00151372
 margin_right = -0.00919342
 margin_bottom = -0.00151825
 mouse_filter = 2
-
-[node name="PauseResume" type="Button" parent="."]
-self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -110.24
-margin_top = -65.1985
-margin_right = -70.2405
-margin_bottom = -25.1985
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="PauseResume"]
-anchor_left = -0.016
-anchor_top = 0.03
-anchor_right = 0.984
-anchor_bottom = 1.03
-margin_left = 0.00241899
-margin_top = -0.00151372
-margin_right = 0.00241852
-margin_bottom = -0.00151825
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Control" type="Control" parent="."]
 anchor_top = 1.0

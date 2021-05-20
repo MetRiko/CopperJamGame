@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Gui/PasueMenuButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://font/OpenSans-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Gui/PauseMenu.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 2 )
+
+[node name="PauseMenu" type="Control"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.235294 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -112.0
+margin_right = 112.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 200 )
+custom_fonts/font = SubResource( 1 )
+text = "PAUSE"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 400.0
+margin_top = 250.0
+margin_right = -400.0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PasueMenuButton" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_bottom = 40.0
+
+[node name="PasueMenuButton2" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 50.0
+margin_bottom = 90.0
+
+[node name="PasueMenuButton3" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 100.0
+margin_bottom = 140.0

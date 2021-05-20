@@ -43,4 +43,4 @@ func display_settings():
 	pass
 
 func exit_game():
-	pass
+	get_tree().quit

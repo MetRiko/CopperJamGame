@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -12,9 +12,14 @@
 [ext_resource path="res://Entities/Modules/ModuleBuilder.gd" type="Script" id=10]
 [ext_resource path="res://Entities/Modules/Machine.tscn" type="PackedScene" id=11]
 [ext_resource path="res://res/modules.png" type="Texture" id=12]
+[ext_resource path="res://Gui/GUI.tscn" type="PackedScene" id=13]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" parent="CanvasLayer" instance=ExtResource( 13 )]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
