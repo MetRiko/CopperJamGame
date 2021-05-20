@@ -66,7 +66,8 @@ func _unhandled_input(event):
 		var mouseIdx = getLocalMouseIdx()
 		var hashedMouseIdx = hashIdx(mouseIdx)
 		if hashedMouseIdx in availableIdxes:
-			attachModule('empty_module', mouseIdx)
+			if not level.isObstacle(mouseIdx + baseGlobalIdx):
+				attachModule('empty_module', mouseIdx)
 
 func _process(delta):
 	update()
@@ -74,15 +75,16 @@ func _process(delta):
 func _draw():
 
 	var mouseIdx = getLocalMouseIdx()
-	var hashedMouseIdx = hashIdx(getLocalMouseIdx())
+	var hashedMouseIdx = hashIdx(mouseIdx)
 	if hashedMouseIdx in availableIdxes:
 		var rectPos = level.getPosFromCellIdx(mouseIdx)
 		draw_rect(Rect2(rectPos, level.tilemap.cell_size), Color.wheat, false, 1.0)
 	
 	for idx in availableIdxes.values():
 		var globalIdx = baseGlobalIdx + idx
-		var pos = level.getPosFromCellIdx(globalIdx) - global_position + level.tilemap.cell_size * 0.5
-		draw_circle(pos, 6.0, Color.wheat)
+		if not level.isObstacle(globalIdx):
+			var pos = level.getPosFromCellIdx(globalIdx) - global_position + level.tilemap.cell_size * 0.5
+			draw_circle(pos, 6.0, Color.wheat)
 
 func hashIdx(idx):
 	var x = idx.x
