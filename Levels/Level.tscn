@@ -10,7 +10,7 @@
 [ext_resource path="res://Entities/Player.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Levels/BuildController.gd" type="Script" id=9]
 [ext_resource path="res://Entities/Modules/ModuleBuilder.gd" type="Script" id=10]
-[ext_resource path="res://Entities/Modules/Module.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Entities/Modules/Machine.tscn" type="PackedScene" id=11]
 [ext_resource path="res://res/modules.png" type="Texture" id=12]
 
 [node name="Level" type="Node2D"]
@@ -37,7 +37,8 @@ script = ExtResource( 7 )
 
 [node name="Enemy" parent="Entities" instance=ExtResource( 6 )]
 
-[node name="Module" parent="Entities" instance=ExtResource( 11 )]
+[node name="Machine" parent="Entities" instance=ExtResource( 11 )]
+position = Vector2( 0, 64 )
 
 [node name="Player" parent="." instance=ExtResource( 8 )]
 position = Vector2( 64, 64 )

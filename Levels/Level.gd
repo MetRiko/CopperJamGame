@@ -39,6 +39,8 @@ func _ready():
 			
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
+	
+	$Entities/Machine.setupPos(Vector2(-1, 2))
 
 func getCellIdxFromMousePos() -> Vector2:
 	return tilemap.world_to_map(get_global_mouse_position())
