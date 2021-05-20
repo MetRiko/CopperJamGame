@@ -17,44 +17,52 @@ const data = [
 				'moduleId': "drill",
 				'frameId':16,
 				'tooltip': "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
-				'cost': 10
+				'cost': 10,
+				'state':true
 			},
 			{
 				'name': "Generator",
 				'moduleId' : "generator",
 				'frameId':25,
 				'tooltip' : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
-				'cost': 10
+				'cost': 10,
+				'state':true
 			},
 			{
 				'name': "Turret", 
 				'moduleId' : "turret",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Tank", 
 				'moduleId' : "tank",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Turret", 
 				'moduleId' : "turret",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Tank", 
 				'moduleId' : "tank",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Turret", 
 				'moduleId' : "turret",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Tank", 
 				'moduleId' : "tank",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			}
 		]
 	},
@@ -64,17 +72,20 @@ const data = [
 			{
 				'name': "Tank",
 				'moduleId' : "turret",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Turret",
 				'moduleId' : "turret",
-				'frameId':null 
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Drill",
 				'moduleId' : "turret",
-				'frameId':null 
+				'frameId':null,
+				'state':false
 			}
 		]
 	},
@@ -84,17 +95,20 @@ const data = [
 			{
 				'name': "Tank",
 				'moduleId' : "turret",
-				'frameId':null 
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Turret",
 				'moduleId' : "turret",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			},
 			{
 				'name': "Drill",
 				'moduleId' : "turret",
-				'frameId':null
+				'frameId':null,
+				'state':false
 			}
 		]
 	}
@@ -114,9 +128,14 @@ func _ready():
 			button.connect("mouse_exited", self, "button_exit", [groupId, buttonId])
 			button.connect("pressed", self, "button_pressed", [groupId, buttonId])
 			if groupId < 1:
-				if data[groupId].elements[buttonId].frameId != null:
-					button.setFrame(data[groupId].elements[buttonId].frameId)
-					button.get_child(0).set_text(str(data[groupId].elements[buttonId].cost))
+				if data[groupId].elements[buttonId].state == true:
+					if data[groupId].elements[buttonId].frameId != null:
+						button.setFrame(data[groupId].elements[buttonId].frameId)
+						button.get_child(0).set_text(str(data[groupId].elements[buttonId].cost))
+				elif data[groupId].elements[buttonId].state == false:
+					button.setFrame(0)
+					button.get_child(0).set_text("")
+					button.set_modulate(Color(0.5,0.5,0.5,1))
 			buttonId += 1
 		groupId += 1
 	$Settings.connect("pressed", self, "button_pause")
@@ -125,10 +144,11 @@ func _ready():
 
 
 func button_enter(groupId, buttonId):
-	if buttonId != null:
-		if data[groupId].elements[buttonId].tooltip != null:
-			if data[groupId].elements[buttonId].name != null:
-				$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
+	if data[groupId].elements[buttonId].state == true:
+		if buttonId != null:
+			if data[groupId].elements[buttonId].tooltip != null:
+				if data[groupId].elements[buttonId].name != null:
+					$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
 			
 		
 	
@@ -137,12 +157,13 @@ func button_exit():
 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"
 
 func button_pressed(groupId, buttonId):
-	if copperAmmount - data[groupId].elements[buttonId].cost >= 0:
-		copperAmmount = copperAmmount - data[groupId].elements[buttonId].cost
-		var moduleData = data[groupId].elements[buttonId]
-		emit_signal("module_button_pressed", moduleData)
-		copper_counter(copperAmmount)
-	$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
+	if data[groupId].elements[buttonId].state == true:
+		if copperAmmount - data[groupId].elements[buttonId].cost >= 0:
+			copperAmmount = copperAmmount - data[groupId].elements[buttonId].cost
+			var moduleData = data[groupId].elements[buttonId]
+			emit_signal("module_button_pressed", moduleData)
+			copper_counter(copperAmmount)
+		$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
 
 func button_pause():
 	if pauseMenu.isPaused == false:

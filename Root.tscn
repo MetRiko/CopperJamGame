@@ -12,6 +12,7 @@
 position = Vector2( 512, 296 )
 
 [node name="Level" parent="." instance=ExtResource( 4 )]
+position = Vector2( -2, 0 )
 
 [node name="BeatController" type="Node" parent="."]
 script = ExtResource( 3 )
