@@ -23,8 +23,8 @@ const data = [
 				'state':true
 			},
 			{
-				'name': "Generator",
-				'moduleId' : "generator",
+				'name': "Dpad",
+				'moduleId' : "dpad_module",
 				'frameId':25,
 				'tooltip' : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
 				'cost': 10,
@@ -142,6 +142,7 @@ func _ready():
 		groupId += 1
 	$Settings.connect("pressed", self, "button_pause")
 	$BuildMode.connect("pressed", self, "build_mode")
+	$ExitBuildMode.connect("pressed", self, "exit_build_mode")
 #$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
 func button_enter(groupId, buttonId):
@@ -169,8 +170,11 @@ func button_pause():
 
 func build_mode():
 	level.get_node("Controllers/BuildController").hide_gui()
-	level.get_node("Controllers/BuildController").inBuildMode = true
+	level.get_node("Controllers/BuildController").state = 1
 
+func exit_build_mode():
+	level.get_node("Controllers/BuildController").hide_gui()
+	level.get_node("Controllers/BuildController").state = 0
 
 func copper_counter(copperAmmount):
 	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))

@@ -250,34 +250,34 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 func getLocalMouseIdx():
 	return level.getCellIdxFromPos(get_global_mouse_position()) - baseGlobalIdx
 
-func _unhandled_input(event):
-	if event.is_action_pressed("LMB"):
-		var mouseIdx = getLocalMouseIdx()
-		var hashedMouseIdx = hashIdx(mouseIdx)
-		if hashedMouseIdx in availableIdxes:
-			if not level.isObstacle(mouseIdx + baseGlobalIdx):
-				attachModule('empty_module', mouseIdx)
-	if event.is_action_pressed("RMB"):
-		var mouseIdx = getLocalMouseIdx()
-		var hashedMouseIdx = hashIdx(mouseIdx)
-		if hashedMouseIdx in installedModules:
-			detachModule(mouseIdx)
+#func _unhandled_input(event):
+#	if event.is_action_pressed("LMB"):
+#		var mouseIdx = getLocalMouseIdx()
+#		var hashedMouseIdx = hashIdx(mouseIdx)
+#		if hashedMouseIdx in availableIdxes:
+#			if not level.isObstacle(mouseIdx + baseGlobalIdx):
+#				attachModule('empty_module', mouseIdx)
+#	if event.is_action_pressed("RMB"):
+#		var mouseIdx = getLocalMouseIdx()
+#		var hashedMouseIdx = hashIdx(mouseIdx)
+#		if hashedMouseIdx in installedModules:
+#			detachModule(mouseIdx)
 
 func _process(delta):
 	update()
 
-func _draw():
-	var mouseIdx = getLocalMouseIdx()
-	var hashedMouseIdx = hashIdx(mouseIdx)
-	if hashedMouseIdx in availableIdxes:
-		var rectPos = level.getPosFromCellIdx(mouseIdx)
-		draw_rect(Rect2(rectPos, level.tilemap.cell_size), Color.wheat, false, 1.0)
-	
-	for idx in availableIdxes.values():
-		var globalIdx = baseGlobalIdx + idx
-		if not level.isObstacle(globalIdx):
-			var pos = level.getPosFromCellIdx(globalIdx) - global_position + level.tilemap.cell_size * 0.5
-			draw_circle(pos, 6.0, Color.wheat)
+#func _draw():
+#	var mouseIdx = getLocalMouseIdx()
+#	var hashedMouseIdx = hashIdx(mouseIdx)
+#	if hashedMouseIdx in availableIdxes:
+#		var rectPos = level.getPosFromCellIdx(mouseIdx)
+#		draw_rect(Rect2(rectPos, level.tilemap.cell_size), Color.wheat, false, 1.0)
+#
+#	for idx in availableIdxes.values():
+#		var globalIdx = baseGlobalIdx + idx
+#		if not level.isObstacle(globalIdx):
+#			var pos = level.getPosFromCellIdx(globalIdx) - global_position + level.tilemap.cell_size * 0.5
+#			draw_circle(pos, 6.0, Color.wheat)
 
 func hashIdx(idx : Vector2) -> int:
 	var x = idx.x
