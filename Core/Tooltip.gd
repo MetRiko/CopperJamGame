@@ -3,6 +3,8 @@ extends Control
 signal module_button_pressed
 #signal tooltip_hovered
 
+onready var tilemap = Game.tilemap
+onready var level = Game.level
 onready var pauseMenu = Game.pauseMenu
 onready var tabCont = get_node("Control/TabContainer")
 var buttonNum := int()
@@ -117,6 +119,7 @@ const data = [
 
 
 func _ready():
+	get_node("Control").set_visible(false)
 	copperAmmount = 200
 	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
 	var groupId = 0
@@ -138,6 +141,7 @@ func _ready():
 			buttonId += 1
 		groupId += 1
 	$Settings.connect("pressed", self, "button_pause")
+	$BuildMode.connect("pressed", self, "build_mode")
 #$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
 func button_enter(groupId, buttonId):
@@ -162,6 +166,10 @@ func button_pause():
 	if pauseMenu.isPaused == false:
 		pauseMenu.visible = true
 		pauseMenu.isPaused = true
+
+func build_mode():
+	level.get_node("Controllers/BuildController").hide_gui()
+	level.get_node("Controllers/BuildController").inBuildMode = true
 
 
 func copper_counter(copperAmmount):
