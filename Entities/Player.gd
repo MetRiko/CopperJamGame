@@ -4,8 +4,8 @@ var moveTargetIdx = null
 
 var step = 0
 
-func _input(event):
-	if event.is_action_pressed('LMB'):
+func _unhandled_input(event):
+	if event.is_action_pressed('RMB'):
 		
 		var targetCellIdx = tilemap.world_to_map(get_global_mouse_position())
 		var cell = tilemap.get_cell(targetCellIdx.x, targetCellIdx.y)
