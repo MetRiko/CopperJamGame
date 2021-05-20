@@ -127,15 +127,14 @@ func _ready():
 			button.connect("mouse_entered", self, "button_enter", [groupId, buttonId])
 			button.connect("mouse_exited", self, "button_exit", [groupId, buttonId])
 			button.connect("pressed", self, "button_pressed", [groupId, buttonId])
-			if groupId < 1:
-				if data[groupId].elements[buttonId].state == true:
-					if data[groupId].elements[buttonId].frameId != null:
-						button.setFrame(data[groupId].elements[buttonId].frameId)
-						button.get_child(0).set_text(str(data[groupId].elements[buttonId].cost))
-				elif data[groupId].elements[buttonId].state == false:
-					button.setFrame(0)
-					button.get_child(0).set_text("")
-					button.set_modulate(Color(0.5,0.5,0.5,1))
+			if data[groupId].elements.size() > buttonId && data[groupId].elements[buttonId].state == true:
+				if data[groupId].elements[buttonId].get("cost") != null: 
+					button.setFrame(data[groupId].elements[buttonId].frameId)
+					button.get_child(0).set_text(str(data[groupId].elements[buttonId].cost))
+			else:
+				button.setFrame(0)
+				button.get_child(0).set_text("")
+				button.set_modulate(Color(0.5,0.5,0.5,1))
 			buttonId += 1
 		groupId += 1
 	$Settings.connect("pressed", self, "button_pause")
@@ -144,16 +143,12 @@ func _ready():
 
 
 func button_enter(groupId, buttonId):
-	if data[groupId].elements[buttonId].state == true:
-		if buttonId != null:
-			if data[groupId].elements[buttonId].tooltip != null:
-				if data[groupId].elements[buttonId].name != null:
-					$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
-			
-		
-	
+	if data[groupId].elements.size() >buttonId && data[groupId].elements[buttonId].state == true:
+		if data[groupId].elements[buttonId].tooltip != null:
+			$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
 
-func button_exit():
+
+func button_exit(groupId, buttonId):
 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"
 
 func button_pressed(groupId, buttonId):
