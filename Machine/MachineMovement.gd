@@ -12,18 +12,19 @@ const MOVES = [
 	Vector2(-0, -1)
 ]
 
-func _input(event):
-	if event.is_action_pressed("ui_up"):
-		move(Vector2(0, -1))
-	if event.is_action_pressed("ui_down"):
-		move(Vector2(0, 1))
-	if event.is_action_pressed("ui_left"):
-		move(Vector2(-1, 0))
-	if event.is_action_pressed("ui_right"):
-		move(Vector2(1, 0))
+#func _input(event):
+#	if event.is_action_pressed("ui_up"):
+#		move(Vector2(0, -1))
+#	if event.is_action_pressed("ui_down"):
+#		move(Vector2(0, 1))
+#	if event.is_action_pressed("ui_left"):
+#		move(Vector2(-1, 0))
+#	if event.is_action_pressed("ui_right"):
+#		move(Vector2(1, 0))
 
 func canMove(offset : Vector2):
-	for localIdx in machine.modulesIdxes:
+	for installedModule in machine.installedModules.values():
+		var localIdx = installedModule.localIdx
 		var globalIdx = machine.baseGlobalIdx + localIdx + offset
 		if level.isObstacle(globalIdx):
 			return false

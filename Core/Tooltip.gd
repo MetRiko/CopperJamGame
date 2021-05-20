@@ -140,8 +140,6 @@ func _ready():
 	$Settings.connect("pressed", self, "button_pause")
 #$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
-
-
 func button_enter(groupId, buttonId):
 	if data[groupId].elements.size() >buttonId && data[groupId].elements[buttonId].state == true:
 		if data[groupId].elements[buttonId].tooltip != null:
