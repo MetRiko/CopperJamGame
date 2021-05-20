@@ -62,7 +62,8 @@ func convertToGlobalIdx(localIdx : Vector2):
 func getAvailableGlobalFreeSlots():
 	var ret = []
 	for localIdx in availableIdxes.values():
-		ret.append(convertToGlobalIdx(localIdx))
+		if (level.isObstacle(convertToGlobalIdx(localIdx))):
+			ret.append(convertToGlobalIdx(localIdx))
 	return ret
 	
 func getAvailableLocalFreeSlots():
@@ -179,6 +180,13 @@ func _canDetachModule(ignoredIdx : Vector2, localIdx : Vector2, modulesChecked :
 				_canDetachModule(ignoredIdx, moduleIdx, modulesChecked)
 
 func recalculateAvailableIdxes():
+	if installedModules.empty():
+		var hashedIdx = hashIdx(Vector2(0, 0))
+		self.availableIdxes = {
+			hashedIdx = Vector2(0, 0)
+		}
+		return
+		
 	var newAvailableIdxes = {}
 	for moduleData in installedModules.values():
 		var availableIdxes = moduleData.availableIdxes
@@ -197,6 +205,10 @@ func detachModule(localIdx : Vector2):
 	var hashedLocalIdx = hashIdx(localIdx)
 	var moduleData = installedModules[hashedLocalIdx]
 	moduleData.module.queue_free()
+	
+	if installedModules.size() == 1:
+		baseGlobalIdx = moduleData
+	
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
 
