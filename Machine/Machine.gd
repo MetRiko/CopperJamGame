@@ -62,7 +62,7 @@ func convertToGlobalIdx(localIdx : Vector2):
 func getAvailableGlobalFreeSlots():
 	var ret = []
 	for localIdx in availableIdxes.values():
-		if (level.isObstacle(convertToGlobalIdx(localIdx))):
+		if not level.isObstacle(convertToGlobalIdx(localIdx)):
 			ret.append(convertToGlobalIdx(localIdx))
 	return ret
 	
@@ -185,6 +185,8 @@ func recalculateAvailableIdxes():
 		self.availableIdxes = {
 			hashedIdx = Vector2(0, 0)
 		}
+		self.availableIdxes = {}
+		self.availableIdxes[hashedIdx] = getGlobalIdx()
 		return
 		
 	var newAvailableIdxes = {}
