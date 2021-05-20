@@ -183,10 +183,8 @@ func recalculateAvailableIdxes():
 	if installedModules.empty():
 		var hashedIdx = hashIdx(Vector2(0, 0))
 		self.availableIdxes = {
-			hashedIdx = Vector2(0, 0)
+			[hashedIdx]: Vector2(0, 0)
 		}
-		self.availableIdxes = {}
-		self.availableIdxes[hashedIdx] = getGlobalIdx()
 		return
 		
 	var newAvailableIdxes = {}
@@ -209,10 +207,13 @@ func detachModule(localIdx : Vector2):
 	moduleData.module.queue_free()
 	
 	if installedModules.size() == 1:
-		baseGlobalIdx = moduleData
+		print(baseGlobalIdx)
+		baseGlobalIdx = convertToGlobalIdx(moduleData.localIdx)
+		print(baseGlobalIdx)
 	
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
+	
 
 func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 	
@@ -263,21 +264,20 @@ func getLocalMouseIdx():
 #		if hashedMouseIdx in installedModules:
 #			detachModule(mouseIdx)
 
-func _process(delta):
-	update()
-
+#func _process(delta):
+#	update()
+#
 #func _draw():
 #	var mouseIdx = getLocalMouseIdx()
 #	var hashedMouseIdx = hashIdx(mouseIdx)
 #	if hashedMouseIdx in availableIdxes:
 #		var rectPos = level.getPosFromCellIdx(mouseIdx)
 #		draw_rect(Rect2(rectPos, level.tilemap.cell_size), Color.wheat, false, 1.0)
+#		print(rectPos)
 #
-#	for idx in availableIdxes.values():
-#		var globalIdx = baseGlobalIdx + idx
-#		if not level.isObstacle(globalIdx):
-#			var pos = level.getPosFromCellIdx(globalIdx) - global_position + level.tilemap.cell_size * 0.5
-#			draw_circle(pos, 6.0, Color.wheat)
+#	for idx in getAvailableGlobalFreeSlots():
+#		var pos = level.getPosFromCellIdx(convertToLocalIdx(idx)) + level.tilemap.cell_size * 0.5
+#		draw_circle(pos, 6.0, Color.wheat)
 
 func hashIdx(idx : Vector2) -> int:
 	var x = idx.x
