@@ -12,7 +12,7 @@ func _ready():
 func build_object(moduleData):
 	entityData = moduleData.moduleId
 	if entityData != null:
-		$Sprite.frame = moduleData.frameId
+		$Sprite.frame = moduleData.frameId if moduleData.frameId != null else 0
 		$Sprite.visible = true
 
 func _process(delta):

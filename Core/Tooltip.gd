@@ -1,9 +1,12 @@
 extends Control
 
 signal module_button_pressed
+signal tooltip_hovered
 
 onready var tabCont = get_node("Control/TabContainer")
 var buttonNum := int()
+var copperAmmount = 200
+
 
 const data = [
 	{
@@ -12,12 +15,34 @@ const data = [
 			{
 				'name': "Drill",
 				'moduleId': "drill",
-				'frameId':16
+				'frameId':16,
+				'tooltip': "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id."
 			},
 			{
 				'name': "Generator",
 				'moduleId' : "generator",
-				'frameId':25
+				'frameId':25,
+				'tooltip' : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id."
+			},
+			{
+				'name': "Turret", 
+				'moduleId' : "turret",
+				'frameId':null
+			},
+			{
+				'name': "Tank", 
+				'moduleId' : "tank",
+				'frameId':null
+			},
+			{
+				'name': "Turret", 
+				'moduleId' : "turret",
+				'frameId':null
+			},
+			{
+				'name': "Tank", 
+				'moduleId' : "tank",
+				'frameId':null
 			},
 			{
 				'name': "Turret", 
@@ -73,7 +98,6 @@ const data = [
 	}
 ]
 
-#	$MiedzCounter/Label.text = copperAmmount
 
 
 func _ready():
@@ -85,26 +109,28 @@ func _ready():
 			button.connect("mouse_entered", self, "button_enter", [groupId, buttonId])
 			button.connect("mouse_exited", self, "button_exit", [groupId, buttonId])
 			button.connect("pressed", self, "button_pressed", [groupId, buttonId])
+			if groupId < 1:
+				if data[groupId].elements[buttonId].frameId != null:
+					button.setFrame(data[groupId].elements[buttonId].frameId)
 			buttonId += 1
 		groupId += 1
 	$Settings.connect("pressed", self, "button_settings")
 	$PauseResume.connect("pressed", self, "button_pause")
+#$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
 
 
 func button_enter(groupId, buttonId):
-	print(groupId, buttonId)
-	if buttonId < data[groupId].elements.size():
-		print(data[groupId].elements[buttonId].name)
-	else:
-		print("unknown element")
+	if buttonId != null:
+		if data[groupId].elements[buttonId].tooltip != null:
+			if data[groupId].elements[buttonId].name != null:
+				$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
+			
+		
 	
+
 func button_exit(groupId, buttonId):
-	print(groupId, buttonId)
-	if buttonId < data[groupId].elements.size():
-		print(data[groupId].elements[buttonId].name)
-	else:
-		print("unknown element")
+	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"
 
 func button_pressed(groupId, buttonId):
 	var moduleData = data[groupId].elements[buttonId]
@@ -117,3 +143,7 @@ func button_settings():
 func button_pause():
 	#kod pod pauze
 	pass
+
+func copper_counter(copperAmmount):
+	$MiedzCounter/Label.text = copperAmmount
+
