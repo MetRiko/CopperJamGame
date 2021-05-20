@@ -14,8 +14,7 @@ var availableIdxes := {} #local
 
 var baseModule = null
 
-var baseGlobalIdx = null
-
+var baseGlobalIdx := Vector2()
 
 func _ready():
 	$Base/DPadModule.queue_free()
@@ -53,6 +52,7 @@ func attachModule(moduleId : String, idx : Vector2): #local idx
 	$Modules.add_child(newModule)
 	newModule.position = level.getPosFromCellIdx(idx)
 	removeAvailableIdx(idx)
+	modulesIdxes.append(idx)
 	addAvailableIdx(idx + Vector2(0, 1))
 	addAvailableIdx(idx + Vector2(0, -1))
 	addAvailableIdx(idx + Vector2(1, 0))

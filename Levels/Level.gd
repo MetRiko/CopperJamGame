@@ -29,6 +29,8 @@ func removeObstacle(pos):
 	fogOfWar.revealTerrain(pos)
 	pathfinding.astar_add_point(pos)
 
+func isObstacle(idx : Vector2):
+	return tilemap.get_cell(idx.x, idx.y) == 0
 #func updateCell(pos, state):
 #	tilemap.set_cell(pos.x, pos.y, state)
 

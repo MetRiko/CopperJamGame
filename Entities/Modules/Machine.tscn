@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Entities/Modules/DrillModule.gd" type="Script" id=1]
 [ext_resource path="res://res/modules.png" type="Texture" id=2]
 [ext_resource path="res://Entities/Modules/Machine.gd" type="Script" id=3]
 [ext_resource path="res://Entities/Modules/DPadModule.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Entities/Modules/EmptyModule.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Entities/Modules/MachineMovement.gd" type="Script" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Move"
@@ -31,6 +32,11 @@ tracks/1/keys = {
 
 [node name="Machine" type="Node2D"]
 script = ExtResource( 3 )
+
+[node name="Movement" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="Tween" type="Tween" parent="Movement"]
 
 [node name="Base" type="Node2D" parent="."]
 
