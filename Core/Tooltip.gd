@@ -3,6 +3,8 @@ extends Control
 signal module_button_pressed
 #signal tooltip_hovered
 
+onready var tilemap = Game.tilemap
+onready var level = Game.level
 onready var pauseMenu = Game.pauseMenu
 onready var tabCont = get_node("Control/TabContainer")
 var buttonNum := int()
@@ -117,6 +119,7 @@ const data = [
 
 
 func _ready():
+	get_node("Control").set_visible(false)
 	copperAmmount = 200
 	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
 	var groupId = 0
@@ -138,6 +141,7 @@ func _ready():
 			buttonId += 1
 		groupId += 1
 	$Settings.connect("pressed", self, "button_pause")
+	$BuildMode.connect("pressed", self, "build_mode")
 #$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
 func button_enter(groupId, buttonId):
@@ -163,7 +167,48 @@ func button_pause():
 		pauseMenu.visible = true
 		pauseMenu.isPaused = true
 
+func build_mode():
+	level.get_node("Controllers/BuildController").hide_gui()
+	level.get_node("Controllers/BuildController").inBuildMode = true
+
 
 func copper_counter(copperAmmount):
 	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
+
+
+func lock_shop_item(moduleName: String):
+	var groupCount = 0
+	for group in data:
+		var elementCount = 0
+		for element in group:
+			if element.get('moduleId') == moduleName:
+				element.state = false
+				var button = tabCont.get_child(groupCount).get_node("GridContainer").get_child(elementCount)
+				button.lock_shop_item()
+				return
+			elementCount += 1
+		groupCount += 1
+
+
+func unlock_shop_item(moduleName: String,groupId, buttonId):
+	var groupCount = 0
+	for group in data:
+		var elementCount = 0
+		for element in group:
+			if element.get('moduleId') == moduleName:
+				element.state = true
+				var button = tabCont.get_child(groupCount).get_node("GridContainer").get_child(elementCount)
+				button.unlock_shop_item()
+				return
+			elementCount +=1
+		groupCount +=1
+
+
+func _unhandled_input(event):
+	var moduleName = 'drill'
+	if event.is_action_pressed("lock"):
+		tabCont.get_child(0).get_node("GridContainer").get_child(0).lock_shop_item()
+	if event.is_action_pressed("unlock"):
+		var lockData = data[0].elements[0]
+		tabCont.get_child(0).get_node("GridContainer").get_child(0).unlock_shop_item(lockData)
 
