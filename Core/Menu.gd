@@ -25,13 +25,13 @@ func _ready():
 
 
 func main_menu_button_pressed(numOfButton):
-	if numOfButton == 1:
+	if numOfButton == 0:
 		print("starting the game")
 		start_game()
-	elif numOfButton == 2:
+	elif numOfButton == 1:
 		print("displaying the settings")
 		display_settings()
-	elif numOfButton == 3:
+	elif numOfButton == 2:
 		print("exiting")
 		exit_game()
 

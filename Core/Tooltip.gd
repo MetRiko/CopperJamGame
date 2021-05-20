@@ -5,8 +5,7 @@ signal tooltip_hovered
 
 onready var tabCont = get_node("Control/TabContainer")
 var buttonNum := int()
-var copperAmmount = 200
-
+var copperAmmount :=int()
 
 const data = [
 	{
@@ -16,13 +15,15 @@ const data = [
 				'name': "Drill",
 				'moduleId': "drill",
 				'frameId':16,
-				'tooltip': "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id."
+				'tooltip': "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
+				'cost': 10
 			},
 			{
 				'name': "Generator",
 				'moduleId' : "generator",
 				'frameId':25,
-				'tooltip' : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id."
+				'tooltip' : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
+				'cost': 10
 			},
 			{
 				'name': "Turret", 
@@ -101,6 +102,8 @@ const data = [
 
 
 func _ready():
+	copperAmmount = 200
+	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
 	var groupId = 0
 	for tab in tabCont.get_children():
 		var buttonId = 0
@@ -112,6 +115,7 @@ func _ready():
 			if groupId < 1:
 				if data[groupId].elements[buttonId].frameId != null:
 					button.setFrame(data[groupId].elements[buttonId].frameId)
+					button.get_child(0).set_text(str(data[groupId].elements[buttonId].cost))
 			buttonId += 1
 		groupId += 1
 	$Settings.connect("pressed", self, "button_settings")
@@ -133,8 +137,12 @@ func button_exit(groupId, buttonId):
 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"
 
 func button_pressed(groupId, buttonId):
-	var moduleData = data[groupId].elements[buttonId]
-	emit_signal("module_button_pressed", moduleData)
+	if copperAmmount - data[groupId].elements[buttonId].cost >= 0:
+		copperAmmount = copperAmmount - data[groupId].elements[buttonId].cost
+		var moduleData = data[groupId].elements[buttonId]
+		emit_signal("module_button_pressed", moduleData)
+		copper_counter(copperAmmount)
+	$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
 
 func button_settings():
 	#kod pod ustawienia
@@ -145,5 +153,5 @@ func button_pause():
 	pass
 
 func copper_counter(copperAmmount):
-	$MiedzCounter/Label.text = copperAmmount
+	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
 
