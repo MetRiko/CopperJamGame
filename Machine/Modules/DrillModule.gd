@@ -1,26 +1,45 @@
-extends EntityBase
+extends ModuleBase
 
-func _input(event):
-	if event.is_action_pressed('num1'):
-		rotateC()
-	if event.is_action_pressed('num2'):
-		moveForward()
-	if event.is_action_pressed('num3'):
-		rotateCC()
+############## Module base - BEGIN
 
-#func _ready():
-#	Game.tilemap.get_node("FogOfWar").revealTerrain(currentCellIdx, true)
-
+const INSTRUCTIONS = {
+	'move_left': {
+		'functionName': "moveLeft"
+	},
+	'move_right': {
+		'functionName': "moveRight"
+	},
+	'move_up': {
+		'functionName': "moveUp"
+	},
+	'move_down': {
+		'functionName': "moveDown"
+	}
+}
 
 func _ready():
-	Game.beatController.connect("beat", self, "_onBeat")
-	
-func _onBeat(currentBeat, beats):
-	moveForward()
+	_setupNode("drill_module", self, INSTRUCTIONS)
 
-func moveForward():
-	var result = .moveForward()
+##############  Module base - END
 	
-	if result.success == false:
-		Game.level.removeObstacle(result.targetCellIdx)
-		playAnimation()
+func moveLeft():
+	var dir = Vector2(-1, 0)
+	if getMachine().canMove(dir):
+		playAnimationPulse($Sprite)
+		playAnimationRotateC($Sprite)
+		getMachine().move(dir)
+	
+func moveRight():
+	var dir = Vector2(1, 0)
+	if getMachine().canMove(dir):
+		getMachine().move(dir)
+		
+func moveUp():
+	var dir = Vector2(0, -1)
+	if getMachine().canMove(dir):
+		getMachine().move(dir)
+		
+func moveDown():
+	var dir = Vector2(0, 1)
+	if getMachine().canMove(dir):
+		getMachine().move(dir)

@@ -2,6 +2,13 @@ extends ModuleBase
 
 ############## Module base - BEGIN
 
+const CONNECTIONS = {
+	'top_side': true,
+	'right_side': true,
+	'bottom_side': true,
+	'left': true
+}
+
 const INSTRUCTIONS = {
 	'move_left': {
 		'functionName': "moveLeft"
@@ -18,7 +25,7 @@ const INSTRUCTIONS = {
 }
 
 func _ready():
-	_setupNode(self, INSTRUCTIONS)
+	_setupNode("dpad_module", self, INSTRUCTIONS, CONNECTIONS)
 
 ##############  Module base - END
 	
@@ -33,7 +40,7 @@ func moveRight():
 	var dir = Vector2(1, 0)
 	if getMachine().canMove(dir):
 		getMachine().move(dir)
-		
+
 func moveUp():
 	var dir = Vector2(0, -1)
 	if getMachine().canMove(dir):

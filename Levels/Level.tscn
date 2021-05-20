@@ -19,6 +19,8 @@ script = ExtResource( 5 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GUI" parent="CanvasLayer" instance=ExtResource( 13 )]
+margin_left = 0.0
+margin_right = 0.0
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
