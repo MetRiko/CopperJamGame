@@ -10,6 +10,7 @@ export var playerBuildRange := 180.0
 var entityData
 var currentMouseIdx = Vector2()
 var currentHoveredMachine = null
+var spriteRotation := 0
 
 func _ready():
 	gui.connect("module_button_pressed", self, "build_object")
@@ -23,6 +24,7 @@ func build_object(moduleData):
 func _process(delta):
 	if entityData != null:
 		$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+		drawAllowedSides()
 	update()
 	
 	var mouseIdx = level.getCellIdxFromMousePos()
@@ -32,9 +34,7 @@ func _process(delta):
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
 				if state == 0 || state == 2:
-					for vector in calcRange():
-						if vector.length() <= playerBuildRange:
-							hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
+					hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
 				else: 
 					hoveredMachine.setOutline(0)
 			if currentHoveredMachine != null:
@@ -42,6 +42,13 @@ func _process(delta):
 			currentHoveredMachine = hoveredMachine 
 
 func _unhandled_input(event):
+	if entityData != null:
+		if event.is_action_pressed("rotate_right"):
+			$Sprite.rotate(PI/2)
+			spriteRotation = (spriteRotation+1)%4
+		if event.is_action_pressed("rotate_left"):
+			$Sprite.rotate(-PI/2)
+			spriteRotation = (spriteRotation-1)%4
 	if state ==0:
 		if currentHoveredMachine != null:
 			if event.is_action_pressed("LMB"):
@@ -85,9 +92,10 @@ func _unhandled_input(event):
 		$Sprite.visible = false
 
 func _draw():
-	if state == 0 and currentHoveredMachine == null:
+	if state == 0: #and currentHoveredMachine == null:
 		for idx in calcRange():
-			draw_rect(Rect2(level.getPosFromCellIdx(idx),tilemap.cell_size),Color(0,1,1,0.8),false,1,false)
+			if level.isObstacle(idx) == false && level.getMachineFromIdx(idx) == null: 
+				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(tilemap.cell_size*0.25),tilemap.cell_size*0.5),Color(0,1,1,0.2),false,1,false)
 		drawCursorSquare(Color(0,1,0,0.8))
 	if state == 1:
 		drawCursorSquare(Color(0,0,1,0.8))
@@ -119,6 +127,9 @@ func machine_mode():
 func drawCursorSquare(col: Color):
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
 		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.0,false)
+
+func drawAllowedSides():
+	pass
 
 func calcRange():
 	var positArray = []
