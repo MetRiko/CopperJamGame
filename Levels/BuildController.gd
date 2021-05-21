@@ -3,6 +3,7 @@ extends Node2D
 onready var tilemap = Game.tilemap
 onready var level = Game.level
 onready var gui = Game.gui
+onready var nodeEditor = Game.nodeEditor
 
 var state := 0
 var currentEditingMachine = null
@@ -11,6 +12,11 @@ var entityData
 var currentMouseIdx = Vector2()
 var currentHoveredMachine = null
 var spriteRotation := 0
+var isTargeted := 0
+var targetBackup = null
+var target = null
+const defaultColor = Color.white
+const selectedColor = Color('#65e67a')
 
 
 func _ready():
@@ -49,6 +55,7 @@ func _unhandled_input(event):
 		if event.is_action_pressed("rotate_left"):
 			$Sprite.rotate(-PI/2)
 			spriteRotation = (spriteRotation-1)%4
+
 	if state == 0:
 		if currentHoveredMachine != null:
 			if event.is_action_pressed("LMB"):
@@ -63,34 +70,45 @@ func _unhandled_input(event):
 			show_gui()
 			machine_mode()
 			gui.get_node("ExitBuildMode").set_visible(true)
-			state = 2
+			changeState(2)
 	elif state == 1:
 		if event.is_action_pressed("RMB"):
-			state = 0
+			changeState(0)
+
 
 	elif state == 2:
+
+		var mouseIdx = currentEditingMachine.getLocalMouseIdx()
+		if targetBackup == null:
+			targetBackup = currentEditingMachine.getModuleFromLocalIdx(mouseIdx)
+			target = targetBackup
+
 		if event.is_action_pressed("LMB"):
+			if target != null:
+				nodeEditor.selectModule(currentEditingMachine,mouseIdx)
+				target.set_modulate(selectedColor)
+			if target != targetBackup:
+				clear_target()
 			if currentHoveredMachine != null:
 				currentEditingMachine = currentHoveredMachine
-			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			if entityData != null:
 				currentEditingMachine.attachModule(entityData, mouseIdx, spriteRotation)
 			else:
-				 push_error("jestes glupi af")
+				 push_error("cannot attach module")
+
 		if event.is_action_pressed("RMB"):
-			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			currentEditingMachine.detachModule(mouseIdx)
-	if event.is_action_pressed("LMB") && entityData != null:
-		level.createEntity(entityData,level.getCellIdxFromPos(get_global_mouse_position()),false)
-		entityData = null
-	elif event.is_action_pressed("RMB") && entityData != null:
-		entityData = null
-	if event.is_action_pressed("LMB") && entityData == null:
-		$Sprite.visible = false
-	elif event.is_action_pressed("RMB") && entityData == null:
-		$Sprite.visible = false
+			clear_target()
 
-
+		if event.is_action_pressed("LMB") && entityData != null:
+			level.createEntity(entityData,level.getCellIdxFromPos(get_global_mouse_position()),false)
+			entityData = null
+		elif event.is_action_pressed("RMB") && entityData != null:
+			entityData = null
+		if event.is_action_pressed("LMB") && entityData == null:
+			$Sprite.visible = false
+		elif event.is_action_pressed("RMB") && entityData == null:
+			$Sprite.visible = false
 
 func _draw():
 	var mouseIdx = level.getCellIdxFromMousePos()
@@ -113,8 +131,6 @@ func _draw():
 			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.4))
 		drawAllowedSides()
 
-
-
 func changeState(stateNum: int):
 	state = stateNum
 	if state != 2 && currentEditingMachine != null && currentEditingMachine.hasModules() == false:
@@ -130,6 +146,11 @@ func show_gui():
 func machine_mode():
 	if state == 1:
 		currentEditingMachine = level.createNewMachine(level.getCellIdxFromMousePos())
+
+func clear_target():
+	target.set_modulate(defaultColor)
+	target = null
+	targetBackup = null
 
 func drawCursorSquare(col: Color):
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
@@ -149,8 +170,6 @@ func drawAllowedSides():
 				draw_line(posOfSprite+Vector2(tilemap.cell_size.x*0.25,tilemap.cell_size.y*0.5),posOfSprite-Vector2(tilemap.cell_size.x*0.25,-tilemap.cell_size.y*0.5),colorOfLine,3,false)
 			if offsetsId == 3:
 				draw_line(posOfSprite-Vector2(tilemap.cell_size.x*0.5,tilemap.cell_size.y*0.25),posOfSprite-Vector2(tilemap.cell_size.x*0.5,-tilemap.cell_size.y*0.25),colorOfLine,3,false)
-
-
 
 func calcRange():
 	var positArray = []

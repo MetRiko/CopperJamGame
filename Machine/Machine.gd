@@ -107,8 +107,10 @@ func getModulesCount():
 
 func getModuleFromLocalIdx(localIdx):
 	var hashedLocalIdx = hashIdx(localIdx)
-	var module = installedModules.get(hashedLocalIdx).module
-	return module
+	var module = installedModules.get(hashedLocalIdx)
+	if module != null:
+		return module.module
+	return null
 	
 ############### Core
 	
