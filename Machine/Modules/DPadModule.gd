@@ -2,13 +2,6 @@ extends ModuleBase
 
 ############## Module base - BEGIN
 
-const CONNECTIONS = {
-	'top_side': true,
-	'right_side': true,
-	'bottom_side': true,
-	'left': true
-}
-
 const INSTRUCTIONS = {
 	'move_left': {
 		'functionName': "moveLeft"
@@ -24,8 +17,10 @@ const INSTRUCTIONS = {
 	}
 }
 
+const INSTRUCTIONS_ORDER = ['move_left', 'move_right', 'move_up', 'move_down']
+
 func _ready():
-	_setupNode("dpad_module", self, INSTRUCTIONS, CONNECTIONS)
+	_setupNode("dpad_module", self, INSTRUCTIONS, INSTRUCTIONS_ORDER)
 
 ##############  Module base - END
 	

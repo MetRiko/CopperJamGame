@@ -17,6 +17,9 @@ const MOVES = [
 	Vector2(-0, -1)
 ]
 
+func getCurrentCellIdx():
+	return currentCellIdx
+
 func getCellIdx(pos : Vector2):
 	return tilemap.world_to_map(pos)
 

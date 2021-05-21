@@ -14,6 +14,18 @@ const ENTITIES = {
 	'generator': preload("res://Entities/Generator.tscn")
 }
 
+onready var halfCellSize = tilemap.cell_size * 0.5
+onready var cellSize = tilemap.cell_size
+
+func getFirstMachine():
+	return $Machines.get_child(0)
+
+func getCellSize():
+	return cellSize
+
+func getHalfCellSize():
+	return halfCellSize
+
 func justPutObstacle(pos):
 	tilemap.set_cell(pos.x, pos.y, 0)
 
@@ -91,8 +103,8 @@ func createNewMachine(cellIdx : Vector2):
 func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
 	if ENTITIES.has(entityId):
 		var entity = ENTITIES[entityId].instance()
-		entity.global_position = tilemap.map_to_world(cellIdx)
 		entities.add_child(entity)
+		entity.global_position = tilemap.map_to_world(cellIdx)
 		fogOfWar.revealTerrain(cellIdx, revealTerrain)
 		
 func _onChunkGenerated(newCells):
