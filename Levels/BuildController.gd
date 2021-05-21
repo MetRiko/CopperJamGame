@@ -12,6 +12,7 @@ var currentMouseIdx = Vector2()
 var currentHoveredMachine = null
 var spriteRotation := 0
 
+
 func _ready():
 	gui.connect("module_button_pressed", self, "build_object")
 
@@ -22,12 +23,10 @@ func build_object(moduleData):
 		$Sprite.visible = true
 
 func _process(delta):
-	if entityData != null:
-		$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
-		drawAllowedSides()
-	update()
-	
 	var mouseIdx = level.getCellIdxFromMousePos()
+	if entityData != null:
+		if state == 2:
+			$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 	if currentMouseIdx != mouseIdx:
 		currentMouseIdx = mouseIdx
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
@@ -40,6 +39,7 @@ func _process(delta):
 			if currentHoveredMachine != null:
 				currentHoveredMachine.setOutline(0)
 			currentHoveredMachine = hoveredMachine 
+	update()
 
 func _unhandled_input(event):
 	if entityData != null:
@@ -49,7 +49,7 @@ func _unhandled_input(event):
 		if event.is_action_pressed("rotate_left"):
 			$Sprite.rotate(-PI/2)
 			spriteRotation = (spriteRotation-1)%4
-	if state ==0:
+	if state == 0:
 		if currentHoveredMachine != null:
 			if event.is_action_pressed("LMB"):
 				for idx in calcRange():
@@ -74,13 +74,12 @@ func _unhandled_input(event):
 				currentEditingMachine = currentHoveredMachine
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			if entityData != null:
-				currentEditingMachine.attachModule(entityData, mouseIdx)
+				currentEditingMachine.attachModule(entityData, mouseIdx, spriteRotation)
 			else:
 				 push_error("jestes glupi af")
 		if event.is_action_pressed("RMB"):
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			currentEditingMachine.detachModule(mouseIdx)
-
 	if event.is_action_pressed("LMB") && entityData != null:
 		level.createEntity(entityData,level.getCellIdxFromPos(get_global_mouse_position()),false)
 		entityData = null
@@ -91,8 +90,13 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("RMB") && entityData == null:
 		$Sprite.visible = false
 
+
+
 func _draw():
-	if state == 0: #and currentHoveredMachine == null:
+	var mouseIdx = level.getCellIdxFromMousePos()
+	var posOfSprite = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+	var hoveredMachine = level.getMachineFromIdx(mouseIdx)
+	if state == 0 and currentHoveredMachine == null:
 		for idx in calcRange():
 			if level.isObstacle(idx) == false && level.getMachineFromIdx(idx) == null: 
 				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(tilemap.cell_size*0.25),tilemap.cell_size*0.5),Color(0,1,1,0.2),false,1,false)
@@ -107,6 +111,9 @@ func _draw():
 		for slot in posit:
 			var vec = level.getPosFromCellIdx(slot)
 			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.4))
+		drawAllowedSides()
+
+
 
 func changeState(stateNum: int):
 	state = stateNum
@@ -129,7 +136,21 @@ func drawCursorSquare(col: Color):
 		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.0,false)
 
 func drawAllowedSides():
-	pass
+	var colorOfLine = Color(0.5, 0.5, 1, 0.9)
+	if entityData != null:
+		var posOfSprite = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+		var lineVectors = currentEditingMachine.getOffsetsIdForAvailableConnections(entityData,posOfSprite,spriteRotation)
+		for offsetsId in lineVectors:
+			if offsetsId == 0:
+				draw_line(posOfSprite-Vector2(tilemap.cell_size.x*0.25,tilemap.cell_size.y*0.5),posOfSprite+Vector2(tilemap.cell_size.x*0.25,-tilemap.cell_size.y*0.5),colorOfLine,3,false)
+			if offsetsId == 1:
+				draw_line(posOfSprite+Vector2(tilemap.cell_size.x*0.5,tilemap.cell_size.y*0.25),posOfSprite+Vector2(tilemap.cell_size.x*0.5,-tilemap.cell_size.y*0.25),colorOfLine,3,false)
+			if offsetsId == 2:
+				draw_line(posOfSprite+Vector2(tilemap.cell_size.x*0.25,tilemap.cell_size.y*0.5),posOfSprite-Vector2(tilemap.cell_size.x*0.25,-tilemap.cell_size.y*0.5),colorOfLine,3,false)
+			if offsetsId == 3:
+				draw_line(posOfSprite-Vector2(tilemap.cell_size.x*0.5,tilemap.cell_size.y*0.25),posOfSprite-Vector2(tilemap.cell_size.x*0.5,-tilemap.cell_size.y*0.25),colorOfLine,3,false)
+
+
 
 func calcRange():
 	var positArray = []
