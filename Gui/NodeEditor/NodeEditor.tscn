@@ -1,0 +1,170 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Gui/NodeEditor/NodeEditor.gd" type="Script" id=1]
+[ext_resource path="res://Gui/NodeEditor/InstructionButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://res/instructionIcons.png" type="Texture" id=3]
+[ext_resource path="res://Gui/NodeEditor/Editor.gd" type="Script" id=4]
+
+[node name="NodeEditor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -416.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -14.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+margin_right = 392.0
+margin_bottom = 580.0
+custom_constants/separation = 12
+
+[node name="Instructions" type="GridContainer" parent="Panel/Margin/VBox"]
+margin_right = 392.0
+margin_bottom = 84.0
+columns = 9
+
+[node name="InstructionButton" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+text = "A"
+
+[node name="InstructionButton2" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 44.0
+margin_right = 84.0
+text = "B"
+
+[node name="InstructionButton3" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 88.0
+margin_right = 128.0
+
+[node name="InstructionButton4" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 132.0
+margin_right = 172.0
+
+[node name="InstructionButton5" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 176.0
+margin_right = 216.0
+
+[node name="InstructionButton6" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 220.0
+margin_right = 260.0
+
+[node name="InstructionButton7" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 264.0
+margin_right = 304.0
+
+[node name="InstructionButton8" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 308.0
+margin_right = 348.0
+
+[node name="InstructionButton9" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 352.0
+margin_right = 392.0
+
+[node name="InstructionButton10" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_top = 44.0
+margin_bottom = 84.0
+
+[node name="InstructionButton11" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 44.0
+margin_top = 44.0
+margin_right = 84.0
+margin_bottom = 84.0
+
+[node name="InstructionButton12" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 88.0
+margin_top = 44.0
+margin_right = 128.0
+margin_bottom = 84.0
+
+[node name="InstructionButton13" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 132.0
+margin_top = 44.0
+margin_right = 172.0
+margin_bottom = 84.0
+
+[node name="InstructionButton14" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 176.0
+margin_top = 44.0
+margin_right = 216.0
+margin_bottom = 84.0
+
+[node name="InstructionButton15" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 220.0
+margin_top = 44.0
+margin_right = 260.0
+margin_bottom = 84.0
+
+[node name="InstructionButton16" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 264.0
+margin_top = 44.0
+margin_right = 304.0
+margin_bottom = 84.0
+
+[node name="InstructionButton17" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 308.0
+margin_top = 44.0
+margin_right = 348.0
+margin_bottom = 84.0
+
+[node name="InstructionButton18" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+margin_left = 352.0
+margin_top = 44.0
+margin_right = 392.0
+margin_bottom = 84.0
+
+[node name="ColorRect" type="ColorRect" parent="Panel/Margin/VBox"]
+margin_top = 96.0
+margin_right = 392.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 4 )
+color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+
+[node name="Editor" type="ColorRect" parent="Panel/Margin/VBox"]
+self_modulate = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+margin_top = 112.0
+margin_right = 392.0
+margin_bottom = 580.0
+rect_clip_content = true
+size_flags_vertical = 3
+script = ExtResource( 4 )
+
+[node name="Gizmo" type="Control" parent="Panel/Margin/VBox/Editor"]
+size_flags_horizontal = 0
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo"]
+modulate = Color( 0.301961, 0.690196, 0.607843, 1 )
+position = Vector2( 22, 6 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 8
+vframes = 6
+
+[node name="Background" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo/Sprite"]
+modulate = Color( 0.301961, 0.690196, 0.607843, 1 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 8
+vframes = 6
