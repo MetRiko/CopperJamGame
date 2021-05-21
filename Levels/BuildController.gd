@@ -6,9 +6,8 @@ onready var gui = Game.gui
 
 var state := 0
 var currentEditingMachine = null
-
+var playerBuildRange := 208.0
 var entityData
-
 var currentMouseIdx = Vector2()
 var currentHoveredMachine = null
 
@@ -35,7 +34,8 @@ func _process(delta):
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
 				if state == 0:
-					hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
+					if calcRange() <= playerBuildRange:
+						hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
 				else: 
 					hoveredMachine.setOutline(0)
 			if currentHoveredMachine != null:
@@ -44,12 +44,13 @@ func _process(delta):
 
 func _unhandled_input(event):
 	if state ==0:
-		if event.is_action_pressed("LMB"):
-			if currentHoveredMachine != null:
-				currentEditingMachine = currentHoveredMachine
-				changeState(2)
-				show_gui()
-				gui.get_node("ExitBuildMode").set_visible(true)
+		if currentHoveredMachine != null:
+			if event.is_action_pressed("LMB"):
+				if calcRange() <= playerBuildRange:
+					currentEditingMachine = currentHoveredMachine
+					changeState(2)
+					show_gui()
+					gui.get_node("ExitBuildMode").set_visible(true)
 
 	if state == 1:
 		if event.is_action_pressed("LMB"): #state 2 attach module
@@ -84,16 +85,15 @@ func _unhandled_input(event):
 
 func _draw():
 	if state == 0 and currentHoveredMachine == null:
-		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
-		draw_rect(Rect2(pos,Vector2(32,32)),Color(0,1,0,0.8),false, 1.0,false)
+		drawCircle()
+		drawCursorSquare(Color(0,1,0,0.8))
 	if state == 1:
-		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
-		draw_rect(Rect2(pos,Vector2(32,32)),Color(0,0,1,0.8),false, 1.0,false)
+		drawCursorSquare(Color(0,0,1,0.8))
 	if state == 2:
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
 		var posit = currentEditingMachine.getAvailableGlobalFreeSlots()
 		if posit.has(level.getCellIdxFromMousePos()):
-			draw_rect(Rect2(pos,Vector2(32,32)),Color(1,0,0,0.8),false, 1.0,false)
+			drawCursorSquare(Color(1,0,0,0.8))
 		for slot in posit:
 			var vec = level.getPosFromCellIdx(slot)
 			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.4))
@@ -114,3 +114,15 @@ func machine_mode():
 	if state == 1:
 		currentEditingMachine = level.createNewMachine(level.getCellIdxFromMousePos())
 
+func drawCircle():
+	var squareFromRange = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(level.get_node("Player").get_global_position() - Vector2(1,1)))+Vector2(tilemap.cell_size))
+	draw_circle((squareFromRange+(tilemap.cell_size/2)),playerBuildRange,Color(1,1,0,0.2))
+
+func drawCursorSquare(col: Color):
+		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
+		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.0,false)
+
+func calcRange():
+	var vecLength = Vector2(tilemap.map_to_world(level.getCellIdxFromMousePos() - level.getCellIdxFromPos(level.get_node("Player").get_global_position()))).length()
+	print(vecLength)
+	return vecLength
