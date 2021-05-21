@@ -6,7 +6,7 @@ onready var gui = Game.gui
 
 var state := 0
 var currentEditingMachine = null
-var playerBuildRange := 208.0
+export var playerBuildRange := 180.0
 var entityData
 var currentMouseIdx = Vector2()
 var currentHoveredMachine = null
@@ -14,13 +14,11 @@ var currentHoveredMachine = null
 func _ready():
 	gui.connect("module_button_pressed", self, "build_object")
 
-
 func build_object(moduleData):
 	entityData = moduleData.moduleId
 	if entityData != null:
 		$Sprite.frame = moduleData.frameId if moduleData.frameId != null else 0
 		$Sprite.visible = true
-
 
 func _process(delta):
 	if entityData != null:
@@ -33,9 +31,10 @@ func _process(delta):
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
-				if state == 0:
-					if calcRange() <= playerBuildRange:
-						hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
+				if state == 0 || state == 2:
+					for vector in calcRange():
+						if vector.length() <= playerBuildRange:
+							hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
 				else: 
 					hoveredMachine.setOutline(0)
 			if currentHoveredMachine != null:
@@ -46,14 +45,14 @@ func _unhandled_input(event):
 	if state ==0:
 		if currentHoveredMachine != null:
 			if event.is_action_pressed("LMB"):
-				if calcRange() <= playerBuildRange:
+				for idx in calcRange():
 					currentEditingMachine = currentHoveredMachine
 					changeState(2)
 					show_gui()
 					gui.get_node("ExitBuildMode").set_visible(true)
 
 	if state == 1:
-		if event.is_action_pressed("LMB"): #state 2 attach module
+		if event.is_action_pressed("LMB"):
 			show_gui()
 			machine_mode()
 			gui.get_node("ExitBuildMode").set_visible(true)
@@ -64,6 +63,8 @@ func _unhandled_input(event):
 
 	elif state == 2:
 		if event.is_action_pressed("LMB"):
+			if currentHoveredMachine != null:
+				currentEditingMachine = currentHoveredMachine
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			if entityData != null:
 				currentEditingMachine.attachModule(entityData, mouseIdx)
@@ -85,7 +86,8 @@ func _unhandled_input(event):
 
 func _draw():
 	if state == 0 and currentHoveredMachine == null:
-		drawCircle()
+		for idx in calcRange():
+			draw_rect(Rect2(level.getPosFromCellIdx(idx),tilemap.cell_size),Color(0,1,1,0.8),false,1,false)
 		drawCursorSquare(Color(0,1,0,0.8))
 	if state == 1:
 		drawCursorSquare(Color(0,0,1,0.8))
@@ -114,15 +116,18 @@ func machine_mode():
 	if state == 1:
 		currentEditingMachine = level.createNewMachine(level.getCellIdxFromMousePos())
 
-func drawCircle():
-	var squareFromRange = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(level.get_node("Player").get_global_position() - Vector2(1,1)))+Vector2(tilemap.cell_size))
-	draw_circle((squareFromRange+(tilemap.cell_size/2)),playerBuildRange,Color(1,1,0,0.2))
-
 func drawCursorSquare(col: Color):
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
 		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.0,false)
 
 func calcRange():
-	var vecLength = Vector2(tilemap.map_to_world(level.getCellIdxFromMousePos() - level.getCellIdxFromPos(level.get_node("Player").get_global_position()))).length()
-	print(vecLength)
-	return vecLength
+	var positArray = []
+	var playerIdx = level.get_node("Player").currentCellIdx
+	var playerPos = level.getPosFromCellIdx(playerIdx)
+	for  x in range(playerBuildRange*2/tilemap.cell_size.x):
+		for  y in range(playerBuildRange*2/tilemap.cell_size.y):
+			var posit = Vector2(x,y)+playerIdx - (floor(playerBuildRange/tilemap.cell_size.x)*Vector2(1,1))
+			if playerBuildRange > (level.getPosFromCellIdx(posit) - playerPos).length():
+				positArray.append(posit)
+	return positArray
+	positArray.clear()
