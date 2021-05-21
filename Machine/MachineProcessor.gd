@@ -28,20 +28,46 @@ const ALL_INSTRUCTIONS = {
 #	}
 #}
 
-var nodes = {
-	
-}
+var nodes = {}
 
 func getNodes():
 	return nodes
 
+func getNodeFromEditorIdx(editorIdx):
+	var hashedEditorIdx = machine.hashIdx(editorIdx)
+	return nodes.get(hashedEditorIdx)
+
+func connectNodes(firstNodeEditorIdx, targetNodeEditorIdx):
+	var firstNodeId = machine.hashIdx(firstNodeEditorIdx)
+	var targetNodeId = machine.hashIdx(targetNodeEditorIdx)
+	
+	var firstNode = nodes.get(firstNodeId)
+	var targetNode = nodes.get(targetNodeId)
+	if firstNode != null and targetNode != null:
+		firstNode.targetNodes.append(targetNodeId)
+		targetNode.sourceNodes.append(firstNodeId)
+		return [firstNodeEditorIdx, targetNodeEditorIdx]
+	return null
+
+func getAllConnectionsIdxes():
+	var idxes = []
+	for node in nodes.values():
+		var fromIdx = node.editorIdx
+		for targetId in node.targetNodes:
+			var toIdx = nodes[targetId].editorIdx
+			idxes.append([fromIdx, toIdx])
+	return idxes 
+
 func addNode(instructionId : String, editorIdx : Vector2, moduleLocalIdx : Vector2, additionalData = {}):
-	var nodeData = null
+	
 	var hashedEditorIdx = machine.hashIdx(editorIdx)
 	if nodes.has(hashedEditorIdx):
-		push_error("NodeEditor: This idx is occupied")
+		var node = nodes[hashedEditorIdx]
+		node.instructionId = instructionId
+		node.additionalData = additionalData
+		return node
 	else:
-		nodeData = {
+		var nodeData = {
 			'instructionId': instructionId,
 			'additionalData': {},
 			'targetNodes': [],
@@ -50,7 +76,7 @@ func addNode(instructionId : String, editorIdx : Vector2, moduleLocalIdx : Vecto
 			'moduleLocalIdx': moduleLocalIdx
 		}
 		nodes[hashedEditorIdx] = nodeData
-	return nodeData
+		return nodeData
 
 func justCallInstruction(localModuleIdx, instructionId):
 	var module = machine.getModuleFromLocalIdx(localModuleIdx)

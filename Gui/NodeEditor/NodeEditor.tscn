@@ -137,14 +137,79 @@ margin_bottom = 100.0
 rect_min_size = Vector2( 0, 4 )
 color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 
-[node name="Editor" type="ColorRect" parent="Panel/Margin/VBox"]
-self_modulate = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+[node name="Toolbar" type="HBoxContainer" parent="Panel/Margin/VBox"]
 margin_top = 112.0
+margin_right = 392.0
+margin_bottom = 144.0
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
+
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/PlayButton"]
+modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 8
+vframes = 6
+frame = 3
+
+[node name="StopButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
+
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/StopButton"]
+modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 8
+vframes = 6
+frame = 4
+
+[node name="RestartButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
+
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/RestartButton"]
+modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 8
+vframes = 6
+frame = 5
+
+[node name="Editor" type="ColorRect" parent="Panel/Margin/VBox"]
+margin_top = 156.0
 margin_right = 392.0
 margin_bottom = 580.0
 rect_clip_content = true
 size_flags_vertical = 3
+color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 script = ExtResource( 4 )
+
+[node name="Nodes" type="Control" parent="Panel/Margin/VBox/Editor"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Connections" type="Control" parent="Panel/Margin/VBox/Editor"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Gizmo" type="Control" parent="Panel/Margin/VBox/Editor"]
 size_flags_horizontal = 0
@@ -166,10 +231,3 @@ texture = ExtResource( 3 )
 centered = false
 hframes = 8
 vframes = 6
-
-[node name="Nodes" type="Control" parent="Panel/Margin/VBox/Editor"]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}

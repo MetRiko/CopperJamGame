@@ -9,6 +9,14 @@ var selectedMachine = null
 var selectedModuleLocalIdx = null
 
 const ALL_INSTRUCTIONS = {
+	'node_start': {
+		'frameId': 1,
+		'name': 'Node start'
+	},
+	'node_end': {
+		'frameId': 2,
+		'name': 'Node end'
+	},
 	'move_right': {
 		'frameId': 8,
 		'name': 'Move right'
@@ -59,6 +67,11 @@ func _updateButtons():
 			button.setInstructionData(ALL_INSTRUCTIONS[instructionsOrder[i]])
 		else:
 			button.setInstructionData(null)
+	
+	var secondFromLastButton = instructionsButtons.get_child(instructionsButtons.get_child_count() - 2)
+	var lastButton = instructionsButtons.get_child(instructionsButtons.get_child_count() - 1)
+	secondFromLastButton.setInstructionData(ALL_INSTRUCTIONS['node_start'])
+	lastButton.setInstructionData(ALL_INSTRUCTIONS['node_end'])
 
 func getSelectedModule():
 	if selectedMachine != null and selectedModuleLocalIdx != null:
@@ -66,7 +79,6 @@ func getSelectedModule():
 		return module
 
 func _ready():
-	visible = false
 	editor._setup(self)
 	for button in instructionsButtons.get_children():
 		button.connect("pressed", self, "onInstructionButtonPressed", [button.get_index()])
@@ -78,8 +90,6 @@ func _input(event):
 		selectModule(Game.level.getFirstMachine(), Vector2(0, 0))
 		
 func onInstructionButtonPressed(buttonId):
-	if buttonId < instructionsOrder.size():
-		var button = instructionsButtons.get_child(buttonId)
-		editor.selectInstructionFromToolbar(button.getInstructionData())
-	else:
-		editor.selectInstructionFromToolbar(null)
+	var button = instructionsButtons.get_child(buttonId)
+	var instructionData = button.getInstructionData()
+	editor.selectInstructionFromToolbar(instructionData)

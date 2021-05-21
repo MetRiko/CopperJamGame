@@ -47,10 +47,7 @@ func _input(event):
 		justCallInstruction(Vector2(0, 0), 'move_right')
 
 ############### Positions and idxes
-
-func getPossibleConnectionsForModule(moduleId : String, rot : int):
-	return [Vector2(0, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0)]
-
+	
 func getGlobalIdx():
 	return baseGlobalIdx
 
