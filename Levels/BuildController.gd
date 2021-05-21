@@ -43,11 +43,13 @@ func _process(delta):
 			currentHoveredMachine = hoveredMachine 
 
 func _unhandled_input(event):
-
-	if event.is_action_pressed("LMB"):
-		if currentHoveredMachine != null:
-			pass
-			#Tutaj kod do zaznaczania maszyny, maszyna na której jest kursor jest w zmiennej currentHoveredMachine
+	if state ==0:
+		if event.is_action_pressed("LMB"):
+			if currentHoveredMachine != null:
+				currentEditingMachine = currentHoveredMachine
+				changeState(2)
+				show_gui()
+				gui.get_node("ExitBuildMode").set_visible(true)
 
 	if state == 1:
 		if event.is_action_pressed("LMB"): #state 2 attach module
