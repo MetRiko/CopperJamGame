@@ -26,32 +26,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MiedzCounter" type="MarginContainer" parent="."]
+[node name="MiedzCounter" type="Control" parent="."]
 self_modulate = Color( 0, 0, 0, 1 )
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -250.0
-margin_top = -300.0
-margin_right = 250.0
+margin_top = 355.0
+margin_right = 300.0
+margin_bottom = 415.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 theme = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TextureRect" type="Sprite" parent="MiedzCounter"]
-position = Vector2( 0, 160 )
 texture = ExtResource( 1 )
 centered = false
 hframes = 8
 vframes = 6
 frame = 20
 
-[node name="Label" type="Label" parent="MiedzCounter/TextureRect"]
+[node name="Label" type="Label" parent="MiedzCounter"]
 margin_left = 30.0
 margin_top = 5.0
 margin_right = 530.0
@@ -71,10 +63,11 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -65.8284
-margin_top = -65.1985
-margin_right = -25.8284
-margin_bottom = -25.1985
+margin_left = -64.0
+margin_top = -65.0
+margin_right = -4.0
+margin_bottom = -35.0
+text = "setting"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -94,15 +87,11 @@ __meta__ = {
 }
 
 [node name="BuildMode" type="Button" parent="."]
-anchor_left = 0.407
-anchor_top = 0.891
-anchor_right = 0.446
-anchor_bottom = 0.958
-margin_left = -0.234314
-margin_top = 0.201477
-margin_right = -0.170319
-margin_bottom = 0.00146484
-rect_scale = Vector2( 0.997489, 1 )
+margin_left = 10.0
+margin_top = 390.0
+margin_right = 70.0
+margin_bottom = 420.0
+text = "build"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -122,15 +111,11 @@ __meta__ = {
 }
 
 [node name="ExitBuildMode" type="Button" parent="."]
-anchor_left = 0.407
-anchor_top = 0.891
-anchor_right = 0.446
-anchor_bottom = 0.958
-margin_left = 46.4348
-margin_top = 0.201477
-margin_right = 46.4987
-margin_bottom = 0.00146484
-rect_scale = Vector2( 0.997489, 1 )
+margin_left = 10.0
+margin_top = 430.0
+margin_right = 70.0
+margin_bottom = 460.0
+text = "nobuild"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -150,7 +135,6 @@ __meta__ = {
 }
 
 [node name="Control" type="Control" parent="."]
-visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 20.0

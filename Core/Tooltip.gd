@@ -121,7 +121,7 @@ const data = [
 func _ready():
 	get_node("Control").set_visible(false)
 	copperAmmount = 200
-	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
+	$MiedzCounter/Label.set_text(str(copperAmmount))
 	var groupId = 0
 	for tab in tabCont.get_children():
 		var buttonId = 0
@@ -157,10 +157,8 @@ func button_exit(groupId, buttonId):
 func button_pressed(groupId, buttonId):
 	if data[groupId].elements[buttonId].state == true:
 		if copperAmmount - data[groupId].elements[buttonId].cost >= 0:
-			copperAmmount = copperAmmount - data[groupId].elements[buttonId].cost
 			var moduleData = data[groupId].elements[buttonId]
 			emit_signal("module_button_pressed", moduleData)
-			copper_counter(copperAmmount)
 		$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
 
 func button_pause():
@@ -170,14 +168,16 @@ func button_pause():
 
 func build_mode():
 	level.get_node("Controllers/BuildController").hide_gui()
-	level.get_node("Controllers/BuildController").state = 1
+	level.get_node("Controllers/BuildController").changeState(1)
+	get_node("ExitBuildMode").set_visible(false)
 
 func exit_build_mode():
 	level.get_node("Controllers/BuildController").hide_gui()
-	level.get_node("Controllers/BuildController").state = 0
+	level.get_node("Controllers/BuildController").changeState(0)
+	get_node("ExitBuildMode").set_visible(false)
 
 func copper_counter(copperAmmount):
-	$MiedzCounter/TextureRect/Label.set_text(str(copperAmmount))
+	$MiedzCounter/Label.set_text(str(copperAmmount))
 
 
 func lock_shop_item(moduleName: String):
