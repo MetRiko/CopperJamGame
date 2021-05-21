@@ -9,6 +9,9 @@ var currentEditingMachine = null
 
 var entityData
 
+var currentMouseIdx = Vector2()
+var currenthoveredMachine = null
+
 func _ready():
 	gui.connect("module_button_pressed", self, "build_object")
 
@@ -24,6 +27,21 @@ func _process(delta):
 	if entityData != null:
 		$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 	update()
+	
+	var mouseIdx = level.getCellIdxFromMousePos()
+	if currentMouseIdx != mouseIdx:
+		currentMouseIdx = mouseIdx
+		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
+		if currenthoveredMachine != hoveredMachine:
+			if hoveredMachine != null:
+				print(hoveredMachine)
+				if state == 0:
+					hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
+				else: 
+					hoveredMachine.setOutline(0)
+			if currenthoveredMachine != null:
+				currenthoveredMachine.setOutline(0)
+			currenthoveredMachine = hoveredMachine 
 
 func _unhandled_input(event):
 
@@ -59,7 +77,7 @@ func _unhandled_input(event):
 		$Sprite.visible = false
 
 func _draw():
-	if state == 0:
+	if state == 0 and currenthoveredMachine == null:
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
 		draw_rect(Rect2(pos,Vector2(32,32)),Color(0,1,0,0.8),false, 1.0,false)
 	if state == 1:

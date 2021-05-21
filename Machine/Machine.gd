@@ -2,6 +2,8 @@ extends Node2D
 
 onready var level = Game.level
 
+onready var modules = $VC/Viewport/Modules
+
 const MODULES = {
 	'dpad_module': {
 		'tscn': preload("res://Machine/Modules/DPadModule.tscn"),
@@ -110,16 +112,53 @@ func getModuleFromLocalIdx(localIdx):
 ############### Core
 	
 func _ready():
-	for module in $Modules.get_children():
+	$VC.material = $VC.material.duplicate()
+	for module in modules.get_children():
 		module.queue_free()
 
 func setupPos(globalIdx : Vector2):
 	baseGlobalIdx = globalIdx
-	global_position = level.getPosFromCellIdx(globalIdx)
-	print(global_position)
+	var pos = level.getPosFromCellIdx(globalIdx)
+	global_position = pos
+#	print(pos)
 	addAvailableIdx(Vector2(0, 0))
 
+func _recalculateViewportSize():
+	
+	if installedModules.empty():
+		$VC/Viewport.size = level.tilemap.cell_size + Vector2(20, 20)
+	
+	var minPoint = Vector2(10000000, 10000000)
+	var maxPoint = Vector2(-10000000, -10000000)
+	
+	for moduleData in installedModules.values():
+		var localIdx = moduleData.localIdx
+		if localIdx.x < minPoint.x:
+			minPoint.x = localIdx.x
+		if localIdx.y < minPoint.y:
+			minPoint.y = localIdx.y
+		if localIdx.x > maxPoint.x:
+			maxPoint.x = localIdx.x
+		if localIdx.y > maxPoint.y:
+			maxPoint.y = localIdx.y
+		
+	var margin = Vector2(20.0, 20.0)
+		
+	var viewPosition = minPoint * level.tilemap.cell_size
+	$VC.rect_position = viewPosition - margin
+	
+	var viewSize = (maxPoint - minPoint + Vector2(1, 1)) * level.tilemap.cell_size
+	$VC.rect_size = viewSize + margin * 2
+	
+	var dif = baseGlobalIdx - convertToGlobalIdx(minPoint)
+	modules.position = dif * level.tilemap.cell_size + margin
+
+
 ############### Building
+
+func isIdxInMachine(globalIdx : Vector2):
+	var hashedLocalIdx = hashIdx(convertToLocalIdx(globalIdx))
+	return installedModules.has(hashedLocalIdx)
 
 func checkIfIdxAvailable(idx : Vector2):
 	var hashedIdx = hashIdx(idx)
@@ -217,7 +256,8 @@ func detachModule(localIdx : Vector2):
 	moduleData.module.queue_free()
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
-	print(availableIdxes)
+	
+	_recalculateViewportSize()
 	
 
 func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
@@ -246,12 +286,14 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 		'availableIdxes': availableIdxes
 	}
 
-	$Modules.add_child(newModule)
+	modules.add_child(newModule)
 	newModule.setupModule(self, localIdx)
 	newModule.position = level.getPosFromCellIdx(localIdx)
 	removeAvailableIdx(localIdx)
 	for offsetId in offsetsIdForConnections: 
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)
+	
+	_recalculateViewportSize()
 		
 func getLocalMouseIdx():
 	return level.getCellIdxFromPos(get_global_mouse_position()) - baseGlobalIdx
@@ -291,3 +333,8 @@ func hashIdx(idx : Vector2) -> int:
 	var b = -2*y-1 if y < 0 else 2 * y
 	return (a + b) * (a + b + 1) * 0.5 + b
 
+############### Outline
+
+func setOutline(width : float, color := Color.white):
+	$VC.material.set_shader_param('width', width)
+	$VC.material.set_shader_param('outline_color', color)

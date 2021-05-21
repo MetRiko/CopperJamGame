@@ -34,6 +34,12 @@ func removeObstacle(pos):
 func isObstacle(idx : Vector2):
 	return tilemap.get_cell(idx.x, idx.y) == 0
 
+func getMachineFromIdx(idx : Vector2):
+	for machine in $Machines.get_children():
+		if machine.isIdxInMachine(idx):
+			return machine
+	return null
+
 func _ready():
 	for x in range(5):
 		for y in range(5):
@@ -78,7 +84,7 @@ func _input(event):
 
 func createNewMachine(cellIdx : Vector2):
 	var newMachine = machineTscn.instance()
-	$Entities.add_child(newMachine)
+	$Machines.add_child(newMachine)
 	newMachine.setupPos(cellIdx)
 	return newMachine
 

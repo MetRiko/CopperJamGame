@@ -49,6 +49,13 @@ func _updateRotation(currRot, targetRot):
 func moveForward():
 	return move(MOVES[currentRotation])
 
+func _playMoveAnimation(targetPos):
+	$Tween.interpolate_property(machine, "global_position", machine.global_position, targetPos, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.start()
+#	yield($Tween, "tween_completed")
+#	print("x ",targetPos)
+#	machine.global_position = targetPos
+
 func move(offset : Vector2):
 	
 	var oldCellIdx = machine.baseGlobalIdx
@@ -65,8 +72,8 @@ func move(offset : Vector2):
 	machine.baseGlobalIdx.x += offset.x
 	machine.baseGlobalIdx.y += offset.y
 	var targetPos = level.getPosFromCellIdx(machine.baseGlobalIdx)
-	$Tween.interpolate_property(machine, "global_position", machine.global_position, targetPos, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
-	$Tween.start()
+	print(targetPos)
+	_playMoveAnimation(targetPos)
 	
 	return {
 		success = true, 

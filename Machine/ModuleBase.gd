@@ -85,16 +85,6 @@ func _setupNode(moduleId, derivedNode, instructions, connections):
 	_moduleId = moduleId
 	_instructions = instructions
 	
-	if connections.get('top_side') == true:
-		pass
-	if connections.get('right_side') == true:
-		pass
-	if connections.get('bottom_side') == true:
-		pass
-	if connections.get('bottom_side') == true:
-		pass
-	
 	_connections = connections
 	_tween = Tween.new()
-	print(derivedNode.name)
 	derivedNode.add_child(_tween)
