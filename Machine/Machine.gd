@@ -99,7 +99,7 @@ func move(offset : Vector2):
 ############### Getters
 
 func hasModules():
-	return installedModules.empty()
+	return not installedModules.empty()
 
 func getModulesCount():
 	return installedModules.size()
