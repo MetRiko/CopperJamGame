@@ -66,6 +66,7 @@ func getSelectedModule():
 		return module
 
 func _ready():
+	visible = false
 	editor._setup(self)
 	for button in instructionsButtons.get_children():
 		button.connect("pressed", self, "onInstructionButtonPressed", [button.get_index()])
