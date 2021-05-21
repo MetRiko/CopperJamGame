@@ -1,18 +1,27 @@
 extends ColorRect
 
+const nodeInstructionTscn = preload("res://Gui/NodeEditor/InstructionNode.tscn")
 
 onready var level = Game.level
 #onready var editor = $Panel/Margin/VBox/Editor
 onready var gizmoSprite = $Gizmo/Sprite
 
-var currentGizmoIdx := Vector2()
+var currentGizmoIdx = null
 
 var currentCameraPos = Vector2()
 
-var selectedInstructionFromToolbar = 0
+var selectedInstructionFromToolbar = null
+
+var nodeEditor = null
+
+const NODE_SIZE = Vector2(32.0, 32.0)
+
+func _setup(nodeEditor):
+	self.nodeEditor = nodeEditor
 
 func selectInstructionFromToolbar(instructionData):
 	selectedInstructionFromToolbar = instructionData
+	print(instructionData)
 	if instructionData != null:
 		gizmoSprite.frame = instructionData.frameId
 		gizmoSprite.visible = true
@@ -21,6 +30,32 @@ func selectInstructionFromToolbar(instructionData):
 
 func moveCamera(offset : Vector2):
 	currentCameraPos += offset
+	$Nodes.rect_position = currentCameraPos
+
+func _input(event):
+	if event.is_action_pressed("LMB"):
+		if selectedInstructionFromToolbar != null and nodeEditor.selectedMachine != null:
+			if currentGizmoIdx != null:
+				var instructionId = selectedInstructionFromToolbar.instructionId
+				var moduleLocalIdx = nodeEditor.selectedModuleLocalIdx
+				createNode(instructionId, currentGizmoIdx, moduleLocalIdx, {})
+			selectInstructionFromToolbar(null)
+
+func getPosFromEditorIdx(editorIdx):
+	var pos = rect_global_position + currentCameraPos + editorIdx * NODE_SIZE
+	return pos
+
+func createNode(instructionId, editorIdx, moduleLocalIdx, additionalData):
+	var processor = nodeEditor.selectedMachine.getProcessor()
+	var nodeData = processor.addNode(instructionId, currentGizmoIdx, moduleLocalIdx, {})
+	var newNode = nodeInstructionTscn.instance()
+	$Nodes.add_child(newNode)
+	newNode.setNodeData(nodeData, nodeEditor.ALL_INSTRUCTIONS[nodeData.instructionId].frameId)
+	newNode.rect_global_position = getPosFromEditorIdx(nodeData.editorIdx)
+	
+	
+#func _displayNodes():
+	
 
 func _process(delta):
 	
@@ -32,10 +67,11 @@ func _process(delta):
 		currentGizmoIdx = mouseIdx
 		var pos = level.tilemap.cell_size * mouseIdx + rect_global_position + currentCameraPos
 		gizmoSprite.global_position = pos
-		gizmoSprite.self_modulate.a = 1.0
+		gizmoSprite.modulate.a = 1.0
 	else:
+		currentGizmoIdx = null
 		var pos = get_global_mouse_position() - level.getHalfCellSize()
-		gizmoSprite.self_modulate.a = 0.4
+		gizmoSprite.modulate.a = 0.1
 		gizmoSprite.global_position = pos
 #		gizmoSprite.visible = false
 		

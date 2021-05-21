@@ -3,6 +3,7 @@ extends Node2D
 onready var level = Game.level
 
 onready var modules = $VC/Viewport/Modules
+onready var processor = $Processor
 
 const MODULES = {
 	'dpad_module': {
@@ -97,6 +98,9 @@ func move(offset : Vector2):
 	$Movement.move(offset)
 
 ############### Getters
+
+func getProcessor():
+	return processor
 
 func hasModules():
 	return not installedModules.empty()

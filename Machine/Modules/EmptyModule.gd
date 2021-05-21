@@ -2,17 +2,12 @@ extends ModuleBase
 
 ############## Module base - BEGIN
 
-const CONNECTIONS = {
-	'top_side': true,
-	'right_side': true,
-	'bottom_side': true,
-	'left': true
-}
-
 const INSTRUCTIONS = {
 }
 
+const INSTRUCTIONS_ORDER = []
+
 func _ready():
-	_setupNode("empty_module", self, INSTRUCTIONS, CONNECTIONS)
+	_setupNode("empty_module", self, INSTRUCTIONS, INSTRUCTIONS_ORDER)
 	
 ##############  Module base - END

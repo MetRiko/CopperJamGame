@@ -8,7 +8,7 @@ var _localIdx := Vector2()
 var _tween = null
 
 var _instructions = {}
-var _connections = []
+var _instructionsOrder = []
 
 var _rotation = 0
 var _moduleId := ''
@@ -51,6 +51,12 @@ func rotateModuleC(node):
 	
 # Getters
 
+func getInstructions():
+	return _instructions
+	
+func getInstructionsOrder():
+	return _instructionsOrder
+
 func getModuleId():
 	return _moduleId
 
@@ -81,10 +87,10 @@ func callInstruction(instructionId):
 	else:
 		print("Unknown instruction")
 
-func _setupNode(moduleId, derivedNode, instructions, connections):
+func _setupNode(moduleId, derivedNode, instructions, instructionsOrder):
 	_moduleId = moduleId
 	_instructions = instructions
+	_instructionsOrder = instructionsOrder
 	
-	_connections = connections
 	_tween = Tween.new()
 	derivedNode.add_child(_tween)

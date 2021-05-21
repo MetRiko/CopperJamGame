@@ -1,6 +1,21 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Gui/NodeEditor/InstructionButton.gd" type="Script" id=1]
+[ext_resource path="res://res/instructionIcons.png" type="Texture" id=2]
 
 [node name="InstructionButton" type="Button"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
+focus_mode = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.505882, 0.458824, 0.666667, 1 )
+position = Vector2( 20, 20 )
+texture = ExtResource( 2 )
+hframes = 8
+vframes = 6

@@ -8,6 +8,7 @@
 [node name="NodeEditor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -38,94 +39,92 @@ margin_right = 392.0
 margin_bottom = 580.0
 custom_constants/separation = 12
 
-[node name="Instructions" type="GridContainer" parent="Panel/Margin/VBox"]
+[node name="InstructionsButtons" type="GridContainer" parent="Panel/Margin/VBox"]
 margin_right = 392.0
 margin_bottom = 84.0
 columns = 9
 
-[node name="InstructionButton" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
-text = "A"
+[node name="InstructionButton" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 
-[node name="InstructionButton2" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton2" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 44.0
 margin_right = 84.0
-text = "B"
 
-[node name="InstructionButton3" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton3" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 88.0
 margin_right = 128.0
 
-[node name="InstructionButton4" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton4" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 132.0
 margin_right = 172.0
 
-[node name="InstructionButton5" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton5" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 176.0
 margin_right = 216.0
 
-[node name="InstructionButton6" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton6" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 220.0
 margin_right = 260.0
 
-[node name="InstructionButton7" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton7" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 264.0
 margin_right = 304.0
 
-[node name="InstructionButton8" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton8" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 308.0
 margin_right = 348.0
 
-[node name="InstructionButton9" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton9" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 352.0
 margin_right = 392.0
 
-[node name="InstructionButton10" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton10" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_top = 44.0
 margin_bottom = 84.0
 
-[node name="InstructionButton11" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton11" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 44.0
 margin_top = 44.0
 margin_right = 84.0
 margin_bottom = 84.0
 
-[node name="InstructionButton12" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton12" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 88.0
 margin_top = 44.0
 margin_right = 128.0
 margin_bottom = 84.0
 
-[node name="InstructionButton13" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton13" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 132.0
 margin_top = 44.0
 margin_right = 172.0
 margin_bottom = 84.0
 
-[node name="InstructionButton14" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton14" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 176.0
 margin_top = 44.0
 margin_right = 216.0
 margin_bottom = 84.0
 
-[node name="InstructionButton15" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton15" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 220.0
 margin_top = 44.0
 margin_right = 260.0
 margin_bottom = 84.0
 
-[node name="InstructionButton16" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton16" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 264.0
 margin_top = 44.0
 margin_right = 304.0
 margin_bottom = 84.0
 
-[node name="InstructionButton17" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton17" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 308.0
 margin_top = 44.0
 margin_right = 348.0
 margin_bottom = 84.0
 
-[node name="InstructionButton18" parent="Panel/Margin/VBox/Instructions" instance=ExtResource( 2 )]
+[node name="InstructionButton18" parent="Panel/Margin/VBox/InstructionsButtons" instance=ExtResource( 2 )]
 margin_left = 352.0
 margin_top = 44.0
 margin_right = 392.0
@@ -155,7 +154,7 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo"]
-modulate = Color( 0.301961, 0.690196, 0.607843, 1 )
+modulate = Color( 0.164706, 0.807843, 0.670588, 1 )
 position = Vector2( 22, 6 )
 texture = ExtResource( 3 )
 centered = false
@@ -163,8 +162,14 @@ hframes = 8
 vframes = 6
 
 [node name="Background" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo/Sprite"]
-modulate = Color( 0.301961, 0.690196, 0.607843, 1 )
 texture = ExtResource( 3 )
 centered = false
 hframes = 8
 vframes = 6
+
+[node name="Nodes" type="Control" parent="Panel/Margin/VBox/Editor"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
