@@ -79,16 +79,16 @@ func _unhandled_input(event):
 	elif state == 2:
 
 		var mouseIdx = currentEditingMachine.getLocalMouseIdx()
-		if targetBackup == null:
-			targetBackup = currentEditingMachine.getModuleFromLocalIdx(mouseIdx)
-			target = targetBackup
+		#if targetBackup == null:
+		targetBackup = currentEditingMachine.getModuleFromLocalIdx(mouseIdx)
+		target = targetBackup
 
 		if event.is_action_pressed("LMB"):
 			if target != null:
 				nodeEditor.selectModule(currentEditingMachine,mouseIdx)
-				target.set_modulate(selectedColor)
-			if target != targetBackup:
-				clear_target()
+				#target.set_modulate(selectedColor)
+			#if target != targetBackup:
+			#	clear_target()
 			if currentHoveredMachine != null:
 				currentEditingMachine = currentHoveredMachine
 			if entityData != null:
@@ -98,7 +98,7 @@ func _unhandled_input(event):
 
 		if event.is_action_pressed("RMB"):
 			currentEditingMachine.detachModule(mouseIdx)
-			clear_target()
+			#clear_target()
 
 		if event.is_action_pressed("LMB") && entityData != null:
 			level.createEntity(entityData,level.getCellIdxFromPos(get_global_mouse_position()),false)
