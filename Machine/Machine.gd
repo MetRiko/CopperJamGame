@@ -15,6 +15,10 @@ const MODULES = {
 	'empty_module': {
 		'tscn': preload("res://Machine/Modules/EmptyModule.tscn"),
 		'connections': ['left', 'right', 'up', 'down']
+	},
+	'diode_module': {
+		'tscn': preload("res://Machine/Modules/DiodeModule.tscn"),
+		'connections': ['left', 'right', 'up', 'down']
 	}
 }
 

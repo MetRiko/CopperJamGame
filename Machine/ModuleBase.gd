@@ -76,6 +76,10 @@ func getGlobalIdx():
 
 #func getPossibleConnectionsIdxex():
 
+func isConditionInstruction(instructionId):
+	var instruction = _instructions.get(instructionId)
+	return instruction.has('conditionFunctionName')
+
 func setupModule(machine, localIdx):
 	self._localIdx = localIdx
 	self._machine = machine
@@ -83,9 +87,18 @@ func setupModule(machine, localIdx):
 func callInstruction(instructionId):
 	var instruction = _instructions.get(instructionId)
 	if instruction != null:
-		call(instruction.functionName)
+		var functionName = instruction.get('functionName')
+		if functionName != null:
+			call(functionName)
+#		else:
+#			push_error('This intruction has no functionName')
+		var conditionFunctionName = instruction.get('conditionFunctionName')
+		if conditionFunctionName != null:
+			return call(conditionFunctionName)
+		return true
 	else:
 		print("Unknown instruction")
+		return false	
 
 func _setupNode(moduleId, derivedNode, instructions, instructionsOrder):
 	_moduleId = moduleId

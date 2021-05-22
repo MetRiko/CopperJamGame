@@ -20,6 +20,7 @@ const buttonData = [
 
 
 func _ready():
+	start_game()
 	var numOfButton = -1
 	for button in get_node("TextureRect/VBoxContainer").get_children():
 		button.connect("pressed", self, "main_menu_button_pressed", [numOfButton])
@@ -41,7 +42,6 @@ func main_menu_button_pressed(numOfButton):
 	elif numOfButton == 2:
 		print("exiting")
 		exit_game()
-
 
 func start_game():
 	gameStarted = true

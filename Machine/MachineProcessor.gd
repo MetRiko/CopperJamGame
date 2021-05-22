@@ -24,7 +24,7 @@ const ALL_INSTRUCTIONS = {
 #		targetNodes = [id, id, id]
 #		sourceNodes = [id, id, id]
 #		editorIdx,
-#		moduleLocalIdx,
+#		moduleLocalIdx
 #	}
 #}
 
@@ -46,31 +46,61 @@ func getNodes():
 func _resetProcessingInstructionsGroups():
 	processingInstructionsGroups = {}
 	
-func _addProcessingInstruction(instructionId, moduleLocalIdx):
+func _addProcessingInstruction(instructionId, moduleLocalIdx, processingNode):
 	if instructionId == 'node_end' or instructionId == 'node_start':
 		return
 	elif instructionId == 'move_left' or instructionId == 'move_right' or instructionId == 'move_up' or instructionId == 'move_down':
 		if not processingInstructionsGroups.has('move'):
 			processingInstructionsGroups['move'] = []
-		processingInstructionsGroups['move'].append([instructionId, moduleLocalIdx])
+		processingInstructionsGroups['move'].append([instructionId, moduleLocalIdx, processingNode])
 	else:
 		var hashedIdx = machine.hashIdx(moduleLocalIdx)
 		if not processingInstructionsGroups.has(hashedIdx):
 			processingInstructionsGroups[hashedIdx] = []
-		processingInstructionsGroups[hashedIdx].append([instructionId, moduleLocalIdx])
+		processingInstructionsGroups[hashedIdx].append([instructionId, moduleLocalIdx, processingNode])
 	
 func _calculateProcessingInstructionsGroups():
 	_resetProcessingInstructionsGroups()
 	for processingNode in processingNodes.values():
-		_addProcessingInstruction(processingNode.instructionId, processingNode.moduleLocalIdx)
-		
+		_addProcessingInstruction(processingNode.instructionId, processingNode.moduleLocalIdx, processingNode)
+
 func _callProperInstructions():
 	_calculateProcessingInstructionsGroups()
+	
+	var failedConditions = {}
+	
+	for group in processingInstructionsGroups.values():
+		var elementsToRemove = []
+		for groupElement in group:
+			var instructionId = groupElement[0]
+			var moduleLocalIdx = groupElement[1]
+			var module = machine.getModuleFromLocalIdx(moduleLocalIdx)
+			if module.isConditionInstruction(instructionId) == true:
+				var condition = justCallInstruction(moduleLocalIdx, instructionId)
+				if condition == false:
+					var processingNode = groupElement[2]
+					var processingNodeId = machine.hashIdx(processingNode.editorIdx)
+					processingNodes.erase(processingNodeId)
+				elementsToRemove.append(groupElement)
+		for elementToRemove in elementsToRemove:
+			group.erase(elementToRemove)
+	#					for processingNode in processingNodes.values():
+	#						if processingNode.moduleLocalIdx == moduleLocalIdx and processingNode.instructionId == instructionId:
+	#							var hashedProcessingNodeEditorIdx = machine.hashIdx(processingNode.editorIdx)
+	#							failedConditions[hashedProcessingNodeEditorIdx] = false
+	
+#	for failedCondition in failedConditions.keys():
+#		processingNodes.erase(failedCondition)
+		
+#	_calculateProcessingInstructionsGroups()
+	
+	
 	for group in processingInstructionsGroups.values():
 		var randomInstruction = group[randi() % group.size()]
-		var instructionId = randomInstruction[1]
-		var moduleLocalIdx = randomInstruction[0]
-		justCallInstruction(instructionId, moduleLocalIdx)
+		var instructionId = randomInstruction[0]
+		var moduleLocalIdx = randomInstruction[1]
+		justCallInstruction(moduleLocalIdx, instructionId)
+		
 	
 func restartProcess():
 	processingNodes = {}
@@ -196,6 +226,7 @@ func addNode(instructionId : String, editorIdx : Vector2, moduleLocalIdx : Vecto
 func justCallInstruction(localModuleIdx, instructionId):
 	var module = machine.getModuleFromLocalIdx(localModuleIdx)
 	if module != null:
-		module.callInstruction(instructionId)
+		return module.callInstruction(instructionId)
 	else:
 		printerr("module doesn't exist")
+	return false

@@ -9,32 +9,7 @@ onready var toolbar = $Panel/Margin/VBox/Toolbar
 var selectedMachine = null
 var selectedModuleLocalIdx = null
 
-const ALL_INSTRUCTIONS = {
-	'node_start': {
-		'frameId': 2,
-		'name': 'Node start'
-	},
-	'node_end': {
-		'frameId': 1,
-		'name': 'Node end'
-	},
-	'move_right': {
-		'frameId': 8,
-		'name': 'Move right'
-	},
-	'move_left': {
-		'frameId': 9,
-		'name': 'Move left'
-	},
-	'move_up': {
-		'frameId': 10,
-		'name': 'Move up'
-	},
-	'move_down': {
-		'frameId': 11,
-		'name': 'Move down'
-	}
-}
+const ALL_INSTRUCTIONS = preload("res://Gui/NodeEditor/AllInstructions.gd").ALL_INSTRUCTIONS
 
 func getToolbar():
 	return toolbar

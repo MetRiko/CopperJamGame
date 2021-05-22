@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://res/modules.png" type="Texture" id=1]
-[ext_resource path="res://Core/Tooltip.gd" type="Script" id=2]
+[ext_resource path="res://Gui/GUI.gd" type="Script" id=2]
 [ext_resource path="res://font/OpenSans-Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Gui/ElementButton.tscn" type="PackedScene" id=4]
 
