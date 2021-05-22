@@ -10,8 +10,15 @@ var _tween = null
 var _instructions = {}
 var _instructionsOrder = []
 
-var _rotation = 0
+var _rotation := 0
 var _moduleId := ''
+
+const OFFSETS = [
+	Vector2(0, -1),
+	Vector2(1, 0),
+	Vector2(0, 1),
+	Vector2(-1, 0)
+]
 
 # Animations
 
@@ -50,6 +57,9 @@ func rotateModuleC(node):
 	playAnimationRotate(node, oldRot, _rotation*90)
 	
 # Getters
+
+func getForwardVector():
+	return OFFSETS[_rotation % 4]
 
 func getInstructions():
 	return _instructions
