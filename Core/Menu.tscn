@@ -58,29 +58,26 @@ __meta__ = {
 margin_top = 337.0
 margin_right = 462.0
 margin_bottom = 407.0
+text = "Start game"
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
-margin_top = 522.0
+margin_top = 387.0
 margin_right = 462.0
-margin_bottom = 592.0
+margin_bottom = 457.0
+text = "Options"
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 437.0
 margin_right = 462.0
 margin_bottom = 507.0
+text = "Quit"
 
 [node name="KGHM" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 5 )
-
-[node name="TextureRect" type="TextureRect" parent="KGHM"]
-margin_right = 1920.0
-margin_bottom = 1080.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -89,3 +86,9 @@ __meta__ = {
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="Sprite" type="Sprite" parent="KGHM"]
+position = Vector2( -5, -3 )
+scale = Vector2( 0.755556, 0.755556 )
+texture = ExtResource( 1 )
+centered = false
