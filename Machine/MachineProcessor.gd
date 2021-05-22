@@ -224,6 +224,8 @@ func addNode(instructionId : String, editorIdx : Vector2, moduleLocalIdx : Vecto
 		return nodeData
 
 func justCallInstruction(localModuleIdx, instructionId):
+	if instructionId == 'nop':
+		return true
 	var module = machine.getModuleFromLocalIdx(localModuleIdx)
 	if module != null:
 		return module.callInstruction(instructionId)

@@ -65,8 +65,10 @@ func _updateButtons():
 		else:
 			button.setInstructionData(null)
 	
+	var thirdFromLastButton = instructionsButtons.get_child(instructionsButtons.get_child_count() - 3)
 	var secondFromLastButton = instructionsButtons.get_child(instructionsButtons.get_child_count() - 2)
 	var lastButton = instructionsButtons.get_child(instructionsButtons.get_child_count() - 1)
+	thirdFromLastButton.setInstructionData(ALL_INSTRUCTIONS['nop'])
 	secondFromLastButton.setInstructionData(ALL_INSTRUCTIONS['node_start'])
 	lastButton.setInstructionData(ALL_INSTRUCTIONS['node_end'])
 

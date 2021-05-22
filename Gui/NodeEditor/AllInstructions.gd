@@ -1,6 +1,10 @@
 extends Resource
 
 const ALL_INSTRUCTIONS = {
+	'nop': {
+		'frameId': 0,
+		'name': 'Empty instruction'
+	},
 	'node_start': {
 		'frameId': 2,
 		'name': 'Node start'

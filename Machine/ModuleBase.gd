@@ -78,7 +78,7 @@ func getGlobalIdx():
 
 func isConditionInstruction(instructionId):
 	var instruction = _instructions.get(instructionId)
-	return instruction.has('conditionFunctionName')
+	return instruction != null and instruction.has('conditionFunctionName')
 
 func setupModule(machine, localIdx):
 	self._localIdx = localIdx
