@@ -53,7 +53,7 @@ func _process(delta):
 				if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
 					currentHoveredModule.modulate = Color.white
 				currentHoveredModule = null
-		
+
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
 				if state == 0 or state == 2:
@@ -88,6 +88,7 @@ func selectModule(module):
 			nodeEditor.selectModule(null, Vector2(0, 0))
 			currentSelectedModule = null
 		state = 0
+		hide_gui()
 
 func _unhandled_input(event):
 	if entityData != null:
@@ -131,7 +132,6 @@ func _unhandled_input(event):
 				$Sprite.visible = false
 			else:
 				selectModule(currentHoveredModule)
-				#hide_gui()
 
 		if event.is_action_pressed("RMB"):
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
