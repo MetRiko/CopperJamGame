@@ -46,6 +46,11 @@ func _init():
 		ALL_INSTRUCTIONS[instructionId].instructionId = instructionId
 
 func _selectMachine(machine):
+	if selectedMachine != machine:
+		if selectedMachine != null:
+			selectedMachine.disconnect("module_removed", self, "onModuleRemoved")
+		if machine != null:
+			machine.connect("module_removed", self, "onModuleRemoved")
 	selectedMachine = machine
 
 func selectModule(machine, moduleLocalIdx):
@@ -95,6 +100,12 @@ func getSelectedModule():
 		var module = selectedMachine.getModuleFromLocalIdx(selectedModuleLocalIdx)
 		return module
 	return null
+
+func onModuleRemoved(machine, moduleLocalIdx, module):
+	if machine == selectedMachine and selectedModuleLocalIdx == moduleLocalIdx:
+		selectModule(selectedMachine, moduleLocalIdx)
+	else:
+		editor.updateEditor()
 
 func _ready():
 	editor._setup(self)

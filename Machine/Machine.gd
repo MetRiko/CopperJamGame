@@ -1,5 +1,7 @@
 extends Node2D
 
+signal module_removed
+
 onready var level = Game.level
 
 onready var modules = $VC/Viewport/Modules
@@ -256,11 +258,15 @@ func detachModule(localIdx : Vector2):
 		baseGlobalIdx = convertToGlobalIdx(moduleData.localIdx)
 		global_position = level.getPosFromCellIdx(baseGlobalIdx)
 	
+	processor.removeNodesRelatedToModule(localIdx)
+	emit_signal("module_removed", self, localIdx, moduleData.module)
 	moduleData.module.queue_free()
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
 	
 	_recalculateViewportSize()
+	
+	
 	
 
 func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx

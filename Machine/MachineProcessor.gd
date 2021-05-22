@@ -30,11 +30,48 @@ const ALL_INSTRUCTIONS = {
 
 var processingNodes = {}
 
+var processingInstructionsGroups = {
+	#'move': []
+	#per module
+}
+
 var nodes = {}
+
+func _ready():
+	randomize()
 
 func getNodes():
 	return nodes
 
+func _resetProcessingInstructionsGroups():
+	processingInstructionsGroups = {}
+	
+func _addProcessingInstruction(instructionId, moduleLocalIdx):
+	if instructionId == 'node_end' or instructionId == 'node_start':
+		return
+	elif instructionId == 'move_left' or instructionId == 'move_right' or instructionId == 'move_up' or instructionId == 'move_down':
+		if not processingInstructionsGroups.has('move'):
+			processingInstructionsGroups['move'] = []
+		processingInstructionsGroups['move'].append([instructionId, moduleLocalIdx])
+	else:
+		var hashedIdx = machine.hashIdx(moduleLocalIdx)
+		if not processingInstructionsGroups.has(hashedIdx):
+			processingInstructionsGroups[hashedIdx] = []
+		processingInstructionsGroups[hashedIdx].append([instructionId, moduleLocalIdx])
+	
+func _calculateProcessingInstructionsGroups():
+	_resetProcessingInstructionsGroups()
+	for processingNode in processingNodes.values():
+		_addProcessingInstruction(processingNode.instructionId, processingNode.moduleLocalIdx)
+		
+func _callProperInstructions():
+	_calculateProcessingInstructionsGroups()
+	for group in processingInstructionsGroups.values():
+		var randomInstruction = group[randi() % group.size()]
+		var instructionId = randomInstruction[1]
+		var moduleLocalIdx = randomInstruction[0]
+		justCallInstruction(instructionId, moduleLocalIdx)
+	
 func restartProcess():
 	processingNodes = {}
 	
@@ -46,6 +83,8 @@ func restartProcess():
 	makeStep()
 
 func makeStep():
+	
+	_callProperInstructions()
 	
 	var newProcessingNodes = {}
 	
@@ -91,11 +130,16 @@ func connectNodes(firstNodeEditorIdx, targetNodeEditorIdx):
 	
 	var firstNode = nodes.get(firstNodeId)
 	var targetNode = nodes.get(targetNodeId)
-	if firstNode != null and targetNode != null:
+	if firstNode != null and targetNode != null and firstNode.instructionId != 'node_end' and targetNode.instructionId != 'node_start':
 		firstNode.targetNodes.append(targetNodeId)
 		targetNode.sourceNodes.append(firstNodeId)
 		return [firstNodeEditorIdx, targetNodeEditorIdx]
 	return null
+
+func hasNode(editorIdx):
+	var hashedIdx = machine.hashIdx(editorIdx)
+	var node = nodes.get(hashedIdx)
+	return node != null
 
 func getAllConnectionsIdxes():
 	var idxes = []
@@ -104,7 +148,30 @@ func getAllConnectionsIdxes():
 		for targetId in node.targetNodes:
 			var toIdx = nodes[targetId].editorIdx
 			idxes.append([fromIdx, toIdx])
-	return idxes 
+	return idxes
+
+func removeNodesRelatedToModule(moduleLocalIdx):
+	for node in nodes.values():
+		if node.instructionId != 'node_start' and node.instructionId != 'node_end':
+			if node.moduleLocalIdx == moduleLocalIdx:
+				var hashedIdx = machine.hashIdx(node.editorIdx)
+				removeNode(node.editorIdx)
+
+func removeNode(editorIdx : Vector2):
+	var hashedEditorIdx = machine.hashIdx(editorIdx)
+	var node = nodes.get(hashedEditorIdx)
+	if node != null:
+		for sourceNodeId in node.sourceNodes:
+			var sourceNode = nodes[sourceNodeId]
+			sourceNode.targetNodes.erase(hashedEditorIdx)
+		for targetNodeId in node.targetNodes:
+			var targetNode = nodes[targetNodeId]
+			targetNode.sourceNodes.erase(hashedEditorIdx)
+		nodes.erase(hashedEditorIdx)
+		
+		processingNodes = {}
+		
+
 
 func addNode(instructionId : String, editorIdx : Vector2, moduleLocalIdx : Vector2, additionalData = {}):
 	
