@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+onready var beatController = Game.beatController
 onready var pauseMenu = Game.pauseMenu
 onready var menu = Game.menu
 
@@ -15,8 +16,8 @@ func _ready():
 	speed = 500.0 * sqrt($CameraNode._zoom_level)
 
 func get_input(delta):
-	if menu.gameStarted == true:
-		if pauseMenu.isPaused == false:
+	#if menu.gameStarted == true:
+		if beatController.isPaused() == false:
 			
 			var dir = Vector2()
 			
@@ -35,5 +36,5 @@ func get_input(delta):
 
 func _physics_process(delta):
 	get_input(delta)
-	if pauseMenu.isPaused == false:
+	if beatController.isPaused() == false:
 		move_and_slide(velocity)

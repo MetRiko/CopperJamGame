@@ -1,5 +1,6 @@
 extends Control
 
+onready var beatController = Game.beatController
 onready var gui = Game.gui
 onready var menu = Game.menu
 var isPaused = false
@@ -7,12 +8,12 @@ var isPaused = false
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("pause") && isPaused == false && menu.visible == false:
+	if event.is_action_pressed("pause") && beatController.isPaused() && menu.visible == false:
 		$".".visible = true
-		isPaused = true
-	elif event.is_action_pressed("pause") && isPaused == true:
+		beatController.setPause()
+	elif event.is_action_pressed("pause") && beatController.isPaused():
 		$".".visible = false
-		isPaused = false
+		beatController.setPause()
 
 #get_tree().quit()
 
