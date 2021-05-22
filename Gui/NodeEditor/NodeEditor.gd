@@ -4,17 +4,18 @@ onready var level = Game.level
 
 onready var editor = $Panel/Margin/VBox/Editor
 onready var instructionsButtons = $Panel/Margin/VBox/InstructionsButtons
+onready var toolbar = $Panel/Margin/VBox/Toolbar
 
 var selectedMachine = null
 var selectedModuleLocalIdx = null
 
 const ALL_INSTRUCTIONS = {
 	'node_start': {
-		'frameId': 1,
+		'frameId': 2,
 		'name': 'Node start'
 	},
 	'node_end': {
-		'frameId': 2,
+		'frameId': 1,
 		'name': 'Node end'
 	},
 	'move_right': {
@@ -35,6 +36,9 @@ const ALL_INSTRUCTIONS = {
 	}
 }
 
+func getToolbar():
+	return toolbar
+
 var instructionsOrder := []
 
 func _init():
@@ -45,9 +49,20 @@ func _selectMachine(machine):
 	selectedMachine = machine
 
 func selectModule(machine, moduleLocalIdx):
-	_selectMachine(machine)
-	selectedModuleLocalIdx = moduleLocalIdx
-	_updateButtons()
+	if machine != null:
+		_selectMachine(machine)
+		selectedModuleLocalIdx = moduleLocalIdx
+		_updateButtons()
+		_updateEditor()
+	else:
+		_selectMachine(machine)
+		selectedModuleLocalIdx = null
+		_updateButtons()
+		_updateEditor()
+		
+	
+func _updateEditor():
+	editor.updateEditor()
 
 func _updateButtons():
 	
@@ -77,6 +92,7 @@ func getSelectedModule():
 	if selectedMachine != null and selectedModuleLocalIdx != null:
 		var module = selectedMachine.getModuleFromLocalIdx(selectedModuleLocalIdx)
 		return module
+	return null
 
 func _ready():
 	editor._setup(self)

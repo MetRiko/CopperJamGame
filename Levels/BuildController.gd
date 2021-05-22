@@ -14,9 +14,11 @@ var currentHoveredMachine = null
 var spriteRotation := 0
 var isTargeted := 0
 var targetBackup = null
-var target = null
+var targetModule = null
 const defaultColor = Color.white
 const selectedColor = Color('#65e67a')
+var currentHoveredModule = null
+var currentSelectedModule = null
 
 
 func _ready():
@@ -33,12 +35,28 @@ func _process(delta):
 	if entityData != null:
 		if state == 2:
 			$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+	
 	if currentMouseIdx != mouseIdx:
 		currentMouseIdx = mouseIdx
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
+		
+		if state == 2:
+			if hoveredMachine != null:
+				var hoveredModule = hoveredMachine.getModuleFromLocalIdx(hoveredMachine.getLocalMouseIdx())
+				if currentHoveredModule != hoveredModule:
+					if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
+						currentHoveredModule.modulate = Color.white
+					if hoveredModule != currentSelectedModule:
+						hoveredModule.modulate = Color.yellow
+					currentHoveredModule = hoveredModule
+			else:
+				if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
+					currentHoveredModule.modulate = Color.white
+				currentHoveredModule = null
+		
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
-				if state == 0 || state == 2:
+				if state == 0 or state == 2:
 					hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
 				else: 
 					hoveredMachine.setOutline(0)
@@ -78,25 +96,32 @@ func _unhandled_input(event):
 
 	elif state == 2:
 
-		var mouseIdx = currentEditingMachine.getLocalMouseIdx()
-		target = nodeEditor.selectModule(currentEditingMachine,mouseIdx)
-
+		
 		if event.is_action_pressed("LMB"):
-			if target == null:
-				nodeEditor.selectModule(currentEditingMachine,mouseIdx)
-				target == nodeEditor.selectModule(currentEditingMachine,mouseIdx)
-				changeTargetModule()
-			if target != null:
-				nodeEditor.selectModule(currentEditingMachine,mouseIdx)
-				changeTargetModule()
-			if currentHoveredMachine != null:
+
+			if currentHoveredModule != null and currentSelectedModule != currentHoveredModule:
+				if currentSelectedModule != null:
+					currentSelectedModule.modulate = Color.white
+				print(currentHoveredMachine)
+				var mouseIdx = currentHoveredMachine.getLocalMouseIdx()
+				nodeEditor.selectModule(currentHoveredMachine, mouseIdx)
+				currentSelectedModule = currentHoveredModule
+				currentSelectedModule.modulate = Color.green
 				currentEditingMachine = currentHoveredMachine
+			elif currentHoveredModule == null:
+				if currentSelectedModule != null:
+					currentSelectedModule.modulate = Color.white
+					nodeEditor.selectModule(null, Vector2(0, 0))
+					currentSelectedModule = null
+ 
 			if entityData != null:
+				var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 				currentEditingMachine.attachModule(entityData, mouseIdx, spriteRotation)
 			else:
 				 push_error("cannot attach module")
 
 		if event.is_action_pressed("RMB"):
+			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			currentEditingMachine.detachModule(mouseIdx)
 			#clear_target()
 
@@ -137,10 +162,10 @@ func changeTargetModule():
 		if nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate == selectedColor:
 			nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate = defaultColor
 		elif nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate == defaultColor:
-			if target.modulate != nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate:
-				target.modulate = defaultColor
+			if targetModule.modulate != nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate:
+				targetModule.modulate = defaultColor
 			nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate = selectedColor
-	target = null
+	targetModule = null
 
 func changeState(stateNum: int):
 	state = stateNum
@@ -159,8 +184,8 @@ func machine_mode():
 		currentEditingMachine = level.createNewMachine(level.getCellIdxFromMousePos())
 
 func clear_target():
-	target.set_modulate(defaultColor)
-	target = null
+	targetModule.set_modulate(defaultColor)
+	targetModule = null
 	targetBackup = null
 
 func drawCursorSquare(col: Color):

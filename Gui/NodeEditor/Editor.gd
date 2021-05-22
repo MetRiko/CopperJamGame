@@ -2,6 +2,7 @@ extends ColorRect
 
 const nodeInstructionTscn = preload("res://Gui/NodeEditor/InstructionNode.tscn")
 const nodesConnectionTscn = preload("res://Gui/NodeEditor/NodesConnection.tscn")
+const processingNodeGizmoTscn = preload("res://Gui/NodeEditor/ProcessingNodeGizmo.tscn")
 
 onready var level = Game.level
 #onready var editor = $Panel/Margin/VBox/Editor
@@ -25,6 +26,19 @@ func _ready():
 
 func _setup(nodeEditor):
 	self.nodeEditor = nodeEditor
+	
+	
+	var toolbar = nodeEditor.getToolbar()
+	
+	toolbar.get_node("PlayButton").connect("pressed", self, "onPlayButtonPressed")
+	toolbar.get_node("StopButton").connect("pressed", self, "onStopButtonPressed")
+	toolbar.get_node("RestartButton").connect("pressed", self, "onRestartButtonPressed")
+	
+
+func updateEditor():
+	_redrawNodes()
+	_redrawConnections()
+	_redrawProcessingNodes()
 
 func selectInstructionFromToolbar(instructionData):
 	selectedInstructionFromToolbar = instructionData
@@ -39,6 +53,7 @@ func moveCamera(offset : Vector2):
 	currentCameraPos += offset
 	$Nodes.rect_position = currentCameraPos
 	$Connections.rect_position = currentCameraPos
+	$ProcessingGizmos.rect_position = currentCameraPos
 
 func _input(event):
 	if event.is_action_pressed("LMB"):
@@ -66,16 +81,42 @@ func _input(event):
 			dragState = 0
 			selectedNode = null
 
-func getPosFromEditorIdx(editorIdx):
-	var pos = rect_global_position + currentCameraPos + editorIdx * NODE_SIZE
+func getLocalPosFromEditorIdx(editorIdx):
+	var pos = editorIdx * NODE_SIZE
 	return pos
 
-func createConnection(beginNodeEditorIdx, endNodeEditorIdx):
+func getPosFromEditorIdx(editorIdx):
+	var pos = rect_global_position + currentCameraPos + editorIdx * NODE_SIZE * 2.0
+	return pos
+
+func _redrawProcessingNodes():
+	
+	
+	for gizmo in $ProcessingGizmos.get_children():
+		gizmo.queue_free()
+	
+	if nodeEditor.selectedMachine == null:
+		return
+	
 	var processor = nodeEditor.selectedMachine.getProcessor()
-	processor.connectNodes(beginNodeEditorIdx, endNodeEditorIdx)
+	var processingNodes = processor.getProcessingNodesIdxes()
+	
+	for processingNodeIdx in processingNodes:
+		var newGizmo = processingNodeGizmoTscn.instance()
+		$ProcessingGizmos.add_child(newGizmo)
+		newGizmo.rect_position = getLocalPosFromEditorIdx(processingNodeIdx) + NODE_SIZE * 0.25
+#		print(processingNodeIdx) ???????????? WHY it's moving 32 pixels when I'm adding 16 ^^^^
+#		print(getLocalPosFromEditorIdx(processingNodeIdx))
+#		print(getLocalPosFromEditorIdx(processingNodeIdx) + NODE_SIZE * 0.5)
+
+func _redrawConnections():
 	for connection in $Connections.get_children():
 		connection.queue_free()
+	
+	if nodeEditor.selectedMachine == null:
+		return
 		
+	var processor = nodeEditor.selectedMachine.getProcessor()
 	var connections = processor.getAllConnectionsIdxes()
 	for pairIdxes in connections:
 		var newConnection = nodesConnectionTscn.instance()
@@ -84,26 +125,53 @@ func createConnection(beginNodeEditorIdx, endNodeEditorIdx):
 		var endPos = getPosFromEditorIdx(pairIdxes[1]) + NODE_SIZE * 0.5
 		var vec = (endPos - beginPos).normalized()
 		var angle = vec.angle()
-		var fix = fmod(abs(angle), PI * 0.5) / (PI * 0.25) * (NODE_SIZE.x * sqrt(2) - NODE_SIZE.x) * 0.5
-		print(fix)
-		var adjustedBeginPos = beginPos + vec * (NODE_SIZE.x * 0.6 + fix)
-		var adjustedEndPos = endPos - vec * (NODE_SIZE.x * 0.6 + fix)
+		var fix = (1.0 - abs(fmod(abs(vec.angle()), PI * 0.5)-PI*0.25) / (PI * 0.25)) * (NODE_SIZE.x * sqrt(2.0) - NODE_SIZE.x) * 0.5
+		var adjustedBeginPos = beginPos + vec * (NODE_SIZE.x * 0.45 + fix)
+		var adjustedEndPos = endPos - vec * (NODE_SIZE.x * 0.5 + fix)
 		newConnection.setPoints(adjustedBeginPos, adjustedEndPos, Color('#2aceab'))
-	
 
-func createNode(instructionId, editorIdx, moduleLocalIdx, additionalData):
+func createConnection(beginNodeEditorIdx, endNodeEditorIdx):
 	var processor = nodeEditor.selectedMachine.getProcessor()
-	processor.addNode(instructionId, currentGizmoIdx, moduleLocalIdx, {})
-	
+	processor.connectNodes(beginNodeEditorIdx, endNodeEditorIdx)
+		
+	_redrawConnections()
+
+func _redrawNodes():
 	for node in $Nodes.get_children():
 		node.queue_free()
 		
+	if nodeEditor.selectedMachine == null:
+		return
+		
+	var processor = nodeEditor.selectedMachine.getProcessor()
 	var nodes = processor.getNodes()
 	for nodeData in nodes.values():
 		var newNode = nodeInstructionTscn.instance()
 		$Nodes.add_child(newNode)
 		newNode.setNodeData(nodeData, nodeEditor.ALL_INSTRUCTIONS[nodeData.instructionId].frameId)
 		newNode.rect_global_position = getPosFromEditorIdx(nodeData.editorIdx)
+
+func createNode(instructionId, editorIdx, moduleLocalIdx, additionalData):
+	var processor = nodeEditor.selectedMachine.getProcessor()
+	processor.addNode(instructionId, editorIdx, moduleLocalIdx, {})
+	_redrawNodes()
+
+func onPlayButtonPressed():
+	var selectedMachine = nodeEditor.selectedMachine
+	if selectedMachine != null:
+		var processor = selectedMachine.getProcessor()
+		processor.makeStep()
+		_redrawProcessingNodes()
+	
+func onStopButtonPressed():
+	pass
+	
+func onRestartButtonPressed():
+	var selectedMachine = nodeEditor.selectedMachine
+	if selectedMachine != null:
+		var processor = selectedMachine.getProcessor()
+		processor.restartProcess()
+		_redrawProcessingNodes()
 	
 func _process(delta):
 	
@@ -113,7 +181,7 @@ func _process(delta):
 	mouseIdx.y = floor(mouseIdx.y)
 	
 	if int(mouseIdx.x) % 2 == 0 and int(mouseIdx.y) % 2 == 0:
-		currentGizmoIdx = mouseIdx
+		currentGizmoIdx = mouseIdx / 2
 		var pos = level.tilemap.cell_size * mouseIdx + rect_global_position + currentCameraPos
 		gizmoSprite.global_position = pos
 		if selectedInstructionFromToolbar != null:
@@ -167,6 +235,8 @@ func _draw():
 #		var processor = nodeEditor.selectedMachine.getProcessor()
 		var endPos = get_global_mouse_position() - rect_global_position# + NODE_SIZE * 0.5
 		var beginPos = getPosFromEditorIdx(selectedNode.editorIdx) - rect_global_position + NODE_SIZE * 0.5
-		var adjustedBeginPos = (endPos - beginPos).normalized() * NODE_SIZE.x * 0.5 + beginPos
+		var vec = (endPos - beginPos).normalized()
+		var fix = (1.0 - abs(fmod(abs(vec.angle()), PI * 0.5)-PI*0.25) / (PI * 0.25)) * (NODE_SIZE.x * sqrt(2.0) - NODE_SIZE.x) * 0.5
+		var adjustedBeginPos = beginPos + vec * (NODE_SIZE.x * 0.45 + fix)
 		draw_line(adjustedBeginPos, endPos, Color('#ceab2a'), 2, true)
-		
+#		print(1.0 - abs(fmod(abs(vec.angle()), PI * 0.5)-PI*0.25) / (PI * 0.25))

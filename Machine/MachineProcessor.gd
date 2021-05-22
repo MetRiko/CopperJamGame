@@ -28,10 +28,58 @@ const ALL_INSTRUCTIONS = {
 #	}
 #}
 
+var processingNodes = {}
+
 var nodes = {}
 
 func getNodes():
 	return nodes
+
+func restartProcess():
+	processingNodes = {}
+	
+	var startNodes = getStartNodes()
+	for node in startNodes:
+		var hashedNodeEditorIdx = machine.hashIdx(node.editorIdx) 
+		processingNodes[hashedNodeEditorIdx] = node
+	
+	makeStep()
+
+func makeStep():
+	
+	var newProcessingNodes = {}
+	
+	for processingNode in processingNodes.values():
+		if processingNode.instructionId == 'node_start':
+			for targetNodeId in processingNode.targetNodes:
+				var targetNode = nodes[targetNodeId]
+				newProcessingNodes[targetNodeId] = targetNode
+		else:
+			for targetNodeId in processingNode.targetNodes:
+				var targetNode = nodes[targetNodeId]
+				if targetNode.instructionId == 'node_end':
+					var starts = getStartNodes()
+					for startNode in starts:
+						for targetNodeId2 in startNode.targetNodes:
+#						var hashedStartNodeIdx = machine.hashIdx(startNode.editorIdx)
+							newProcessingNodes[targetNodeId2] = nodes[targetNodeId2]
+				else:
+					newProcessingNodes[targetNodeId] = nodes[targetNodeId]
+	
+	processingNodes = newProcessingNodes
+
+func getProcessingNodesIdxes():
+	var idxes = []
+	for node in processingNodes.values():
+		idxes.append(node.editorIdx)
+	return idxes
+
+func getStartNodes():
+	var startNodes = []
+	for node in nodes.values():
+		if node.instructionId == 'node_start':
+			startNodes.append(node)
+	return startNodes
 
 func getNodeFromEditorIdx(editorIdx):
 	var hashedEditorIdx = machine.hashIdx(editorIdx)

@@ -231,3 +231,8 @@ texture = ExtResource( 3 )
 centered = false
 hframes = 8
 vframes = 6
+
+[node name="ProcessingGizmos" type="Control" parent="Panel/Margin/VBox/Editor"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
