@@ -79,16 +79,16 @@ func _unhandled_input(event):
 	elif state == 2:
 
 		var mouseIdx = currentEditingMachine.getLocalMouseIdx()
-		#if targetBackup == null:
-		targetBackup = currentEditingMachine.getModuleFromLocalIdx(mouseIdx)
-		target = targetBackup
+		target = nodeEditor.selectModule(currentEditingMachine,mouseIdx)
 
 		if event.is_action_pressed("LMB"):
+			if target == null:
+				nodeEditor.selectModule(currentEditingMachine,mouseIdx)
+				target == nodeEditor.selectModule(currentEditingMachine,mouseIdx)
+				changeTargetModule()
 			if target != null:
 				nodeEditor.selectModule(currentEditingMachine,mouseIdx)
-				#target.set_modulate(selectedColor)
-			#if target != targetBackup:
-			#	clear_target()
+				changeTargetModule()
 			if currentHoveredMachine != null:
 				currentEditingMachine = currentHoveredMachine
 			if entityData != null:
@@ -130,6 +130,17 @@ func _draw():
 			var vec = level.getPosFromCellIdx(slot)
 			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.4))
 		drawAllowedSides()
+
+func changeTargetModule():
+	var mouseIdx = level.getCellIdxFromMousePos()
+	if nodeEditor.selectModule(currentEditingMachine,mouseIdx) != null:
+		if nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate == selectedColor:
+			nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate = defaultColor
+		elif nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate == defaultColor:
+			if target.modulate != nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate:
+				target.modulate = defaultColor
+			nodeEditor.selectModule(currentEditingMachine,mouseIdx).modulate = selectedColor
+	target = null
 
 func changeState(stateNum: int):
 	state = stateNum
