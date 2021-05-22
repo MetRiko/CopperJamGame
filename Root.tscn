@@ -34,7 +34,6 @@ autostart = true
 [node name="MainMenu" type="CanvasLayer" parent="."]
 
 [node name="Menu" parent="MainMenu" instance=ExtResource( 1 )]
-visible = false
 
 [node name="PauseMenu" type="CanvasLayer" parent="."]
 

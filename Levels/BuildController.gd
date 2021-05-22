@@ -110,7 +110,7 @@ func _unhandled_input(event):
 				selectModule(currentHoveredModule)
 
 	if state == 1:
-		if event.is_action_pressed("LMB"):
+		if event.is_action_pressed("LMB") && pRangeToIdx() == true:
 			show_gui()
 			machine_mode()
 			gui.get_node("ExitBuildMode").set_visible(true)
@@ -131,6 +131,7 @@ func _unhandled_input(event):
 				$Sprite.visible = false
 			else:
 				selectModule(currentHoveredModule)
+				hide_gui()
 
 		if event.is_action_pressed("RMB"):
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
@@ -143,11 +144,14 @@ func _draw():
 	var mouseIdx = level.getCellIdxFromMousePos()
 	var posOfSprite = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 	var hoveredMachine = level.getMachineFromIdx(mouseIdx)
-	if state == 0 and currentHoveredMachine == null:
+	if state == 0:
 		for idx in calcRange():
 			if level.isObstacle(idx) == false && level.getMachineFromIdx(idx) == null: 
 				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(tilemap.cell_size*0.25),tilemap.cell_size*0.5),Color(0,1,1,0.2),false,1,false)
-		drawCursorSquare(Color(0,1,0,0.8))
+			elif level.isObstacle(idx) == false && level.getMachineFromIdx(idx) != null: 
+				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(0,0),tilemap.cell_size*1),Color(0,1,1,0.8),false,1,false)
+		if currentHoveredMachine == null:
+			drawCursorSquare(Color(0,1,0,0.8))
 	if state == 1:
 		drawCursorSquare(Color(0,0,1,0.8))
 	if state == 2:
@@ -157,7 +161,7 @@ func _draw():
 			drawCursorSquare(Color(1,0,0,0.8))
 		for slot in posit:
 			var vec = level.getPosFromCellIdx(slot)
-			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.4))
+			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.3))
 		drawAllowedSides()
 
 func onModuleRemoved(machine, moduleLocalIdx, module):
@@ -201,7 +205,7 @@ func clear_target():
 
 func drawCursorSquare(col: Color):
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
-		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.0,false)
+		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.5,false)
 
 func drawAllowedSides():
 	var colorOfLine = Color(0.5, 0.5, 1, 0.9)
@@ -229,3 +233,9 @@ func calcRange():
 				positArray.append(posit)
 	return positArray
 	positArray.clear()
+
+func pRangeToIdx():
+	for idx in calcRange():
+		if level.getCellIdxFromMousePos() == idx:
+			if idx == level.getCellIdxFromPos(get_global_mouse_position()):
+				return true

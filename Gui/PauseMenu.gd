@@ -3,17 +3,17 @@ extends Control
 onready var beatController = Game.beatController
 onready var gui = Game.gui
 onready var menu = Game.menu
-var isPaused = false
+var isPaused = true
 
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("pause") && beatController.isPaused() && menu.visible == false:
+	if event.is_action_pressed("pause") && beatController.isPaused() == false && menu.visible == false:
 		$".".visible = true
-		beatController.setPause()
-	elif event.is_action_pressed("pause") && beatController.isPaused():
+		beatController.setPause(true)
+	elif event.is_action_pressed("pause") && beatController.isPaused() == true:
 		$".".visible = false
-		beatController.setPause()
+		beatController.setPause(false)
 
 #get_tree().quit()
 
@@ -48,11 +48,11 @@ func pause_menu_button_pressed(numOfButton):
 		
 func resume():
 	get_node(".").visible = false
-	isPaused = false
+	beatController.setPause(false)
 
 func exit_to_menu():
 	menu.visible = true
 	gui.visible = false
-	resume()
+	get_node(".").visible = false
 
 

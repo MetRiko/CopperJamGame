@@ -1,5 +1,6 @@
 extends Control
 
+onready var beatController = Game.beatController
 onready var gui = Game.gui
 var gameStarted := false
 
@@ -47,6 +48,7 @@ func start_game():
 	gameStarted = true
 	get_node(".").visible = false
 	gui.visible = true
+	beatController.setPause(false)
 
 func restart():
 	#get_node("TextureRect").visible = false

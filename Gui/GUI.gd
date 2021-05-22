@@ -3,6 +3,7 @@ extends Control
 signal module_button_pressed
 #signal tooltip_hovered
 
+onready var beatController = Game.beatController
 onready var menu = Game.menu
 onready var tilemap = Game.tilemap
 onready var level = Game.level
@@ -57,9 +58,9 @@ func button_pressed(groupId, buttonId):
 		$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
 
 func button_pause():
-	if pauseMenu.isPaused == false:
+	if beatController.isPaused() == false:
 		pauseMenu.visible = true
-		pauseMenu.isPaused = true
+		beatController.setPause(true)
 
 func build_mode():
 	level.get_node("Controllers/BuildController").hide_gui()

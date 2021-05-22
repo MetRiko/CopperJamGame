@@ -40,9 +40,9 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/VBoxContainer"]
-margin_top = 318.0
+margin_top = 183.0
 margin_right = 462.0
-margin_bottom = 442.0
+margin_bottom = 307.0
 
 [node name="Label" type="Label" parent="TextureRect/VBoxContainer/VBoxContainer"]
 margin_right = 462.0
@@ -55,9 +55,9 @@ __meta__ = {
 }
 
 [node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 472.0
+margin_top = 337.0
 margin_right = 462.0
-margin_bottom = 542.0
+margin_bottom = 407.0
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
@@ -66,9 +66,9 @@ margin_right = 462.0
 margin_bottom = 592.0
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 572.0
+margin_top = 437.0
 margin_right = 462.0
-margin_bottom = 642.0
+margin_bottom = 507.0
 
 [node name="KGHM" type="Control" parent="."]
 anchor_right = 1.0
