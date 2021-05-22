@@ -41,23 +41,28 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_right = 1.0
+anchor_left = 0.5
+anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 400.0
-margin_top = 250.0
-margin_right = -400.0
+margin_left = -394.638
+margin_top = 400.0
+margin_right = 405.362
+rect_min_size = Vector2( 800, 0 )
 custom_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PasueMenuButton" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_bottom = 40.0
+margin_right = 800.0
+margin_bottom = 100.0
 
 [node name="PasueMenuButton2" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 50.0
-margin_bottom = 90.0
+margin_top = 110.0
+margin_right = 800.0
+margin_bottom = 210.0
 
 [node name="PasueMenuButton3" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 100.0
-margin_bottom = 140.0
+margin_top = 220.0
+margin_right = 800.0
+margin_bottom = 320.0

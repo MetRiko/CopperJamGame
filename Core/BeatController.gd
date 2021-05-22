@@ -21,3 +21,4 @@ func _onTimeout2():
 
 func _onTimeout3():
 	emit_signal("quarter_beat")
+

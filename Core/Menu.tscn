@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
+[ext_resource path="res://res/plansza_gra.png" type="Texture" id=1]
 [ext_resource path="res://Core/Menu.gd" type="Script" id=2]
 [ext_resource path="res://Gui/MenuButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://font/OpenSans-ExtraBold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Core/KGHM.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 90
@@ -10,7 +12,6 @@ use_mipmaps = true
 font_data = ExtResource( 4 )
 
 [node name="Menu" type="Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
@@ -21,18 +22,6 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="TextureRect"]
-margin_left = 280.93
-margin_top = 87.9722
-margin_right = 742.93
-margin_bottom = 211.972
-rect_min_size = Vector2( 0, 100 )
-custom_fonts/font = SubResource( 1 )
-text = "THE GAME"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,17 +39,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 105.0
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/VBoxContainer"]
+margin_top = 318.0
 margin_right = 462.0
-margin_bottom = 175.0
+margin_bottom = 442.0
+
+[node name="Label" type="Label" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_right = 462.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 0, 100 )
+custom_fonts/font = SubResource( 1 )
+text = "THE GAME"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 472.0
+margin_right = 462.0
+margin_bottom = 542.0
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 205.0
+visible = false
+margin_top = 522.0
 margin_right = 462.0
-margin_bottom = 275.0
+margin_bottom = 592.0
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_top = 305.0
+margin_top = 572.0
 margin_right = 462.0
-margin_bottom = 375.0
+margin_bottom = 642.0
+
+[node name="KGHM" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+
+[node name="TextureRect" type="TextureRect" parent="KGHM"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="KGHM"]
+wait_time = 5.0
+one_shot = true
+autostart = true

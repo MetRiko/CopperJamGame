@@ -1,5 +1,8 @@
 extends KinematicBody2D
 
+onready var pauseMenu = Game.pauseMenu
+onready var menu = Game.menu
+
 export var min_speed := 400
 
 export var max_speed := 2400
@@ -12,21 +15,25 @@ func _ready():
 	speed = 500.0 * sqrt($CameraNode._zoom_level)
 
 func get_input(delta):
-	
-	var dir = Vector2()
-	
-	velocity *= 0.88
-	if Input.is_action_pressed("right"):
-		dir.x += 1
-	if Input.is_action_pressed("left"):
-		dir.x -= 1
-	if Input.is_action_pressed("down"):
-		dir.y += 1
-	if Input.is_action_pressed("up"):
-		dir.y -= 1
-		
-	velocity += dir.normalized() * speed * delta * (pow(velocity.length(), 0.5) + 20.0) * 0.5
+	if menu.gameStarted == true:
+		if pauseMenu.isPaused == false:
+			
+			var dir = Vector2()
+			
+			velocity *= 0.88
+			if Input.is_action_pressed("right"):
+				dir.x += 1
+			if Input.is_action_pressed("left"):
+				dir.x -= 1
+			if Input.is_action_pressed("down"):
+				dir.y += 1
+			if Input.is_action_pressed("up"):
+				dir.y -= 1
+				
+			velocity += dir.normalized() * speed * delta * (pow(velocity.length(), 0.5) + 20.0) * 0.5
+
 
 func _physics_process(delta):
 	get_input(delta)
-	move_and_slide(velocity)
+	if pauseMenu.isPaused == false:
+		move_and_slide(velocity)

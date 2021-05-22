@@ -1,9 +1,13 @@
 extends Control
+
+onready var gui = Game.gui
+onready var menu = Game.menu
 var isPaused = false
 
 
+
 func _unhandled_input(event):
-	if event.is_action_pressed("pause") && isPaused == false:
+	if event.is_action_pressed("pause") && isPaused == false && menu.visible == false:
 		$".".visible = true
 		isPaused = true
 	elif event.is_action_pressed("pause") && isPaused == true:
@@ -16,8 +20,18 @@ func _unhandled_input(event):
 func _ready():
 	var numOfPauseButton = 0
 	for button in get_node("VBoxContainer").get_children():
+		if numOfPauseButton == 0:
+			button.get_child(0).text = "Resume"
+		elif numOfPauseButton == 1:
+			button.get_child(0).text = "Restart"
+		elif numOfPauseButton == 2:
+			button.get_child(0).text = "Title screen"
+		
 		button.connect("pressed", self, "pause_menu_button_pressed", [numOfPauseButton])
+		
+		
 		numOfPauseButton += 1
+		
 		
 
 func pause_menu_button_pressed(numOfButton):
@@ -25,14 +39,19 @@ func pause_menu_button_pressed(numOfButton):
 		print("resuming")
 		resume()
 	elif numOfButton == 1:
-		print("displaying the settings")
-		Game.menu.display_settings()
+		print("restarting")
+		Game.menu.restart()
 	elif numOfButton == 2:
 		print("exiting to menu")
 		exit_to_menu()
 		
 func resume():
-	pass
+	get_node(".").visible = false
+	isPaused = false
 
 func exit_to_menu():
-	pass
+	menu.visible = true
+	gui.visible = false
+	resume()
+
+
