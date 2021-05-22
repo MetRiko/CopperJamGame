@@ -19,6 +19,14 @@ const MODULES = {
 	'diode_module': {
 		'tscn': preload("res://Machine/Modules/DiodeModule.tscn"),
 		'connections': ['left', 'right', 'up', 'down']
+	},
+	'turret_module': {
+		'tscn': preload("res://Machine/Modules/TurretModule.tscn"),
+		'connections': ['down']
+	},
+	'pylon_module': {
+		'tscn': preload("res://Machine/Modules/PylonModule.tscn"),
+		'connections': []
 	}
 }
 

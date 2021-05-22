@@ -38,16 +38,20 @@ const ALL_MODULES_GROUPS = [
 				'state':true
 			},
 			{
-				'name': "Tank", 
-				'moduleId' : "tank",
-				'frameId':null,
-				'state':false
+				'name': "Turret", 
+				'moduleId' : "turret_module",
+				'frameId':17,
+				'tooltip': "To jest wieżyczka",
+				'cost': 15,
+				'state':true
 			},
 			{
-				'name': "Turret", 
-				'moduleId' : "turret",
-				'frameId':null,
-				'state':false
+				'name': "Pylon", 
+				'moduleId' : "pylon_module",
+				'frameId':8,
+				'tooltip': "To jest pylon zwiększający zasięg pracy maszyny",
+				'cost': 30,
+				'state':true
 			},
 			{
 				'name': "Tank", 

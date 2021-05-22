@@ -131,7 +131,7 @@ func _unhandled_input(event):
 				$Sprite.visible = false
 			else:
 				selectModule(currentHoveredModule)
-				hide_gui()
+				#hide_gui()
 
 		if event.is_action_pressed("RMB"):
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
