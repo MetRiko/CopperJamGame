@@ -50,11 +50,13 @@ func _selectMachine(machine):
 
 func selectModule(machine, moduleLocalIdx):
 	if machine != null:
+		visible = true
 		_selectMachine(machine)
 		selectedModuleLocalIdx = moduleLocalIdx
 		_updateButtons()
 		_updateEditor()
 	else:
+		visible = false
 		_selectMachine(machine)
 		selectedModuleLocalIdx = null
 		_updateButtons()
@@ -99,7 +101,7 @@ func _ready():
 	for button in instructionsButtons.get_children():
 		button.connect("pressed", self, "onInstructionButtonPressed", [button.get_index()])
 	
-	_updateButtons()
+	selectModule(null, Vector2(0, 0))
 		
 func _input(event):
 	if event.is_action_pressed("num0"):
