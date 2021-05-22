@@ -40,7 +40,7 @@ func _process(delta):
 		currentMouseIdx = mouseIdx
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
 		
-		if state == 2:
+		if state == 2 or state == 0:
 			if hoveredMachine != null:
 				var hoveredModule = hoveredMachine.getModuleFromLocalIdx(hoveredMachine.getLocalMouseIdx())
 				if currentHoveredModule != hoveredModule:
@@ -65,6 +65,30 @@ func _process(delta):
 			currentHoveredMachine = hoveredMachine 
 	update()
 
+func setCurrentEditingMachine(nextMachine):
+	if currentEditingMachine != nextMachine:
+		if currentEditingMachine != null:
+			currentEditingMachine.disconnect("module_removed", self, "onModuleRemoved")
+		if nextMachine != null:
+			nextMachine.connect("module_removed", self, "onModuleRemoved")
+	currentEditingMachine = nextMachine
+
+func selectModule(module):
+	if module != null and currentSelectedModule != module:
+		if currentSelectedModule != null:
+			currentSelectedModule.modulate = Color.white
+		var mouseIdx = currentHoveredMachine.getLocalMouseIdx()
+		nodeEditor.selectModule(currentHoveredMachine, mouseIdx)
+		currentSelectedModule = module
+		currentSelectedModule.modulate = Color.green
+		setCurrentEditingMachine(currentHoveredMachine)
+	elif module == null:
+		if currentSelectedModule != null:
+			currentSelectedModule.modulate = Color.white
+			nodeEditor.selectModule(null, Vector2(0, 0))
+			currentSelectedModule = null
+		state = 0
+
 func _unhandled_input(event):
 	if entityData != null:
 		if event.is_action_pressed("rotate_right"):
@@ -78,10 +102,12 @@ func _unhandled_input(event):
 		if currentHoveredMachine != null:
 			if event.is_action_pressed("LMB"):
 				for idx in calcRange():
-					currentEditingMachine = currentHoveredMachine
+					setCurrentEditingMachine(currentHoveredMachine)
 					changeState(2)
 					show_gui()
 					gui.get_node("ExitBuildMode").set_visible(true)
+				
+				selectModule(currentHoveredModule)
 
 	if state == 1:
 		if event.is_action_pressed("LMB"):
@@ -99,26 +125,13 @@ func _unhandled_input(event):
 		
 		if event.is_action_pressed("LMB"):
 
-			if currentHoveredModule != null and currentSelectedModule != currentHoveredModule:
-				if currentSelectedModule != null:
-					currentSelectedModule.modulate = Color.white
-				print(currentHoveredMachine)
-				var mouseIdx = currentHoveredMachine.getLocalMouseIdx()
-				nodeEditor.selectModule(currentHoveredMachine, mouseIdx)
-				currentSelectedModule = currentHoveredModule
-				currentSelectedModule.modulate = Color.green
-				currentEditingMachine = currentHoveredMachine
-			elif currentHoveredModule == null:
-				if currentSelectedModule != null:
-					currentSelectedModule.modulate = Color.white
-					nodeEditor.selectModule(null, Vector2(0, 0))
-					currentSelectedModule = null
  
 			if entityData != null:
 				var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 				currentEditingMachine.attachModule(entityData, mouseIdx, spriteRotation)
 			else:
-				 push_error("cannot attach module")
+				selectModule(currentHoveredModule)
+#				 push_error("cannot attach module")
 
 		if event.is_action_pressed("RMB"):
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
@@ -156,6 +169,13 @@ func _draw():
 			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.4))
 		drawAllowedSides()
 
+func onModuleRemoved(machine, moduleLocalIdx, module):
+	if currentHoveredModule != null and currentHoveredModule == module:
+		currentHoveredModule = null
+	if currentSelectedModule == module:
+		currentHoveredModule = null
+		selectModule(null)
+
 func changeTargetModule():
 	var mouseIdx = level.getCellIdxFromMousePos()
 	if nodeEditor.selectModule(currentEditingMachine,mouseIdx) != null:
@@ -171,7 +191,7 @@ func changeState(stateNum: int):
 	state = stateNum
 	if state != 2 && currentEditingMachine != null && currentEditingMachine.hasModules() == false:
 		currentEditingMachine.queue_free()
-		currentEditingMachine = null
+		setCurrentEditingMachine(null)
 
 func hide_gui():
 	gui.get_node("Control").set_visible(false)
@@ -181,7 +201,7 @@ func show_gui():
 
 func machine_mode():
 	if state == 1:
-		currentEditingMachine = level.createNewMachine(level.getCellIdxFromMousePos())
+		setCurrentEditingMachine(level.createNewMachine(level.getCellIdxFromMousePos()))
 
 func clear_target():
 	targetModule.set_modulate(defaultColor)

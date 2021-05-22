@@ -144,8 +144,8 @@ margin_bottom = 144.0
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 144.0
-margin_right = 176.0
+margin_left = 126.0
+margin_right = 158.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 focus_mode = 0
@@ -158,14 +158,14 @@ hframes = 8
 vframes = 6
 frame = 3
 
-[node name="StopButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 180.0
-margin_right = 212.0
+[node name="PauseButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
+margin_left = 162.0
+margin_right = 194.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 focus_mode = 0
 
-[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/StopButton"]
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/PauseButton"]
 modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
 texture = ExtResource( 3 )
 centered = false
@@ -174,8 +174,8 @@ vframes = 6
 frame = 4
 
 [node name="RestartButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 216.0
-margin_right = 248.0
+margin_left = 198.0
+margin_right = 230.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 focus_mode = 0
@@ -187,6 +187,20 @@ centered = false
 hframes = 8
 vframes = 6
 frame = 5
+
+[node name="StopButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
+margin_left = 234.0
+margin_right = 266.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/StopButton"]
+modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 8
+vframes = 6
+frame = 6
 
 [node name="Editor" type="ColorRect" parent="Panel/Margin/VBox"]
 margin_top = 156.0

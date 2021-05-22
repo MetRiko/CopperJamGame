@@ -31,8 +31,9 @@ func _setup(nodeEditor):
 	var toolbar = nodeEditor.getToolbar()
 	
 	toolbar.get_node("PlayButton").connect("pressed", self, "onPlayButtonPressed")
-	toolbar.get_node("StopButton").connect("pressed", self, "onStopButtonPressed")
+	toolbar.get_node("PauseButton").connect("pressed", self, "onPauseButtonPressed")
 	toolbar.get_node("RestartButton").connect("pressed", self, "onRestartButtonPressed")
+	toolbar.get_node("StopButton").connect("pressed", self, "onStopButtonPressed")
 	
 
 func updateEditor():
@@ -80,7 +81,14 @@ func _input(event):
 					createConnection(selectedNode.editorIdx, node.editorIdx)
 			dragState = 0
 			selectedNode = null
-
+			
+			
+	if event.is_action_pressed("RMB"):
+		if nodeEditor.selectedMachine != null and currentGizmoIdx != null:
+			var processor = nodeEditor.selectedMachine.getProcessor()
+			if processor.hasNode(currentGizmoIdx):
+				removeNode(currentGizmoIdx)
+			
 func getLocalPosFromEditorIdx(editorIdx):
 	var pos = editorIdx * NODE_SIZE
 	return pos
@@ -156,6 +164,13 @@ func createNode(instructionId, editorIdx, moduleLocalIdx, additionalData):
 	processor.addNode(instructionId, editorIdx, moduleLocalIdx, {})
 	_redrawNodes()
 
+func removeNode(editorIdx):
+	var processor = nodeEditor.selectedMachine.getProcessor()
+	processor.removeNode(editorIdx)
+	_redrawNodes()
+	_redrawConnections()
+	_redrawProcessingNodes()
+	
 func onPlayButtonPressed():
 	var selectedMachine = nodeEditor.selectedMachine
 	if selectedMachine != null:
@@ -163,6 +178,9 @@ func onPlayButtonPressed():
 		processor.makeStep()
 		_redrawProcessingNodes()
 	
+func onPauseButtonPressed():
+	pass
+		
 func onStopButtonPressed():
 	pass
 	
