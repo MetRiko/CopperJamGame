@@ -3,6 +3,7 @@ extends Control
 signal module_button_pressed
 #signal tooltip_hovered
 
+onready var menu = Game.menu
 onready var tilemap = Game.tilemap
 onready var level = Game.level
 onready var pauseMenu = Game.pauseMenu
