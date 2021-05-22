@@ -124,29 +124,20 @@ func _unhandled_input(event):
 
 		
 		if event.is_action_pressed("LMB"):
-
- 
 			if entityData != null:
 				var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 				currentEditingMachine.attachModule(entityData, mouseIdx, spriteRotation)
+				entityData = null
+				$Sprite.visible = false
 			else:
 				selectModule(currentHoveredModule)
-#				 push_error("cannot attach module")
 
 		if event.is_action_pressed("RMB"):
 			var mouseIdx = currentEditingMachine.getLocalMouseIdx()
 			currentEditingMachine.detachModule(mouseIdx)
-			#clear_target()
-
-		if event.is_action_pressed("LMB") && entityData != null:
-			level.createEntity(entityData,level.getCellIdxFromPos(get_global_mouse_position()),false)
-			entityData = null
-		elif event.is_action_pressed("RMB") && entityData != null:
-			entityData = null
-		if event.is_action_pressed("LMB") && entityData == null:
-			$Sprite.visible = false
-		elif event.is_action_pressed("RMB") && entityData == null:
-			$Sprite.visible = false
+			if entityData != null:
+				entityData = null
+				$Sprite.visible = false
 
 func _draw():
 	var mouseIdx = level.getCellIdxFromMousePos()

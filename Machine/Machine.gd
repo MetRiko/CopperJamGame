@@ -203,8 +203,11 @@ func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot :
 	return false
 
 func canDetachModule(localIdx : Vector2):
+	if installedModules.size() == 0:
+		return false
 	if installedModules.size() == 1 and installedModules.values()[0].localIdx == localIdx:
 		return true
+		
 	var modulesChecked = {}
 	var firstModuleIdx = installedModules.values()[0].localIdx
 	if firstModuleIdx == localIdx:
