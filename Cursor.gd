@@ -19,4 +19,3 @@ func _process(delta):
 		get_child(2).visible = true
 		get_child(0).visible = false
 		get_child(1).visible = false
-

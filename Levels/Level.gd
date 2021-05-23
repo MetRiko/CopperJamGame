@@ -56,9 +56,9 @@ func getMachineFromIdx(idx : Vector2):
 	return null
 
 func _ready():
-	for x in range(5):
-		for y in range(5):
-			mapGenerator.generateChunk(x - 2, y - 2)
+#	for x in range(5):
+#		for y in range(5):
+#			mapGenerator.generateChunk(x - 2, y - 2)
 
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
