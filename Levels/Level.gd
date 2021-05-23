@@ -26,6 +26,12 @@ const FLOOR = [15, 16]
 
 #func 
 
+func convertDarkFloorCellIdToFloor(cellId):
+	var id = DARK_FLOOR.find(cellId)
+	if id != -1:
+		return FLOOR[id]
+	else:
+		return FLOOR[randi()%FLOOR.size()]
 
 #func getAnyCopper():
 #	return getRandomInt([11,12,13,14])
@@ -37,8 +43,12 @@ const FLOOR = [15, 16]
 #	return [15, 16]
 
 func putFloor(cellIdx):
-	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
-	tilemap.set_cell(cellIdx.x, cellIdx.y, FLOOR[x])
+#	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
+#	tilemap.set_cell(cellIdx.x, cellIdx.y, FLOOR[x])
+
+	var cellId = getCellType(cellIdx)
+	var convertedCellId = convertDarkFloorCellIdToFloor(cellId)
+	tilemap.set_cell(cellIdx.x, cellIdx.y, convertedCellId)
 	
 func putDarkFloor(cellIdx):
 	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
@@ -97,10 +107,17 @@ func getMachineFromIdx(idx : Vector2):
 			return machine
 	return null
 
+var chunksToGenerate = []
+
+func generateChunks():
+	for x in range(12):
+		for y in range(12):
+			mapGenerator.generateChunk(x - 6, y - 6)
+#			yield(get_tree().create_timer(0.5), "timeout")
+
 func _ready():
-	for x in range(5):
-		for y in range(5):
-			mapGenerator.generateChunk(x - 2, y - 2)
+
+	generateChunks()
 
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()

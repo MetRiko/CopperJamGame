@@ -6,6 +6,8 @@ const CHUNK_SIZE : int = 16
 
 onready var tilemap : TileMap = get_parent()
 
+onready var level = get_parent().get_parent()
+
 var generatedChunks = []
 
 func getRandomInt(ids):
@@ -13,23 +15,25 @@ func getRandomInt(ids):
 #	return (randi()%(to - from + 1)) + from
 
 func getAnyCopper():
-	return getRandomInt([11,12,13,14])
+	return getRandomInt(level.COPPER)
 
 func getAnyWall():
-	return getRandomInt([4,5,6,7,8,9,10])
+	return getRandomInt(level.WALL)
 
 func getAnyDarkFloor(cellIdx):
-	var id = int(cellIdx.x + cellIdx.y + 10000000) % 2
-	return getDarkFloors()[id]
-
-func getDarkFloors():
-	return [21, 22]
-
-func getFloors():
-	return [15, 16]
+#	var id = int(cellIdx.x + cellIdx.y + 10000000) % 2
+#	return getDarkFloors()[id]
+	return getRandomInt(level.DARK_FLOOR)
 
 func getAnyFloor():
-	return getRandomInt([15, 16])
+	return getRandomInt(level.FLOOR)
+	
+#func getDarkFloors():
+#	return [21, 22]
+#
+#func getFloors():
+#	return [15, 16]
+
 	
 func noiseFunction(x, y):
 		
