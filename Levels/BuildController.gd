@@ -60,7 +60,7 @@ func _process(delta):
 #			currentHoveredMachine = null
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
-				if state == 0 or state == 2:
+				if state == 0 && pRangeToIdx() == true or state == 2 && pRangeToIdx() == true:
 					hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
 				else: 
 					hoveredMachine.setOutline(0)
@@ -114,12 +114,12 @@ func _unhandled_input(event):
 
 	if state == 0:
 		if currentHoveredMachine != null:
-			if event.is_action_pressed("LMB"):
+			if event.is_action_pressed("LMB")&& pRangeToIdx() == true:
 				for idx in calcRange():
 					setCurrentEditingMachine(currentHoveredMachine)
-					changeState(2)
-					show_gui()
-					gui.get_node("ExitBuildMode").set_visible(true)
+				changeState(2)
+				show_gui()
+				gui.get_node("ExitBuildMode").set_visible(true)
 				
 				selectModule(currentHoveredModule)
 
