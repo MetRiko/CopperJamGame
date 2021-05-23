@@ -160,9 +160,10 @@ func _draw():
 	if state == 0:
 		for idx in calcRange():
 			if level.isObstacle(idx) == false && level.getMachineFromIdx(idx) == null: 
-				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(tilemap.cell_size*0.25),tilemap.cell_size*0.5),Color(0,1,1,0.2),false,1,false)
-			elif level.isObstacle(idx) == false && level.getMachineFromIdx(idx) != null: 
-				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(0,0),tilemap.cell_size*1),Color(0,1,1,0.8),false,1,false)
+#				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(tilemap.cell_size*0.25),tilemap.cell_size*0.5),Color(0,1,1,0.2),false,1,false)
+				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(2.0, 2.0),tilemap.cell_size - Vector2(4.0, 4.0)),Color(0,1,1,0.05),true,1,false)
+#			elif level.isObstacle(idx) == false && level.getMachineFromIdx(idx) != null: 
+#				draw_rect(Rect2(level.getPosFromCellIdx(idx)-Vector2(1.5,1.5),tilemap.cell_size + Vector2(4.0,4.0)),Color(0,1,1,0.8),false,1,false)
 		if currentHoveredMachine == null:
 			drawCursorSquare(Color(0,1,0,0.8))
 	if state == 1:
