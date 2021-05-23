@@ -69,13 +69,13 @@ func _ready():
 	machine.attachModule('empty_module', Vector2(1, 1))
 
 func getCellIdxFromMousePos() -> Vector2:
-	return tilemap.world_to_map(get_global_mouse_position())
+	return tilemap.world_to_map(get_global_mouse_position() / tilemap.global_scale)# * tilemap.global_scale)
 
 func getCellType(cellIdx) -> int:
 	return tilemap.get_cell(cellIdx.x, cellIdx.y)
 
 func getCellIdxFromPos(pos) -> Vector2:
-	return tilemap.world_to_map(pos)
+	return tilemap.world_to_map(pos / tilemap.global_scale)
 	
 func getPosFromCellIdx(cellIdx) -> Vector2:
 	var fixedCellIdx = cellIdx
@@ -85,7 +85,7 @@ func getPosFromCellIdx(cellIdx) -> Vector2:
 	
 	var finalPos = fixedCellIdx * cellSize
 	
-	var pos = tilemap.map_to_world(fixedCellIdx)
+	var pos = tilemap.map_to_world(fixedCellIdx) * tilemap.global_scale
 	pos.x = round(pos.x - 1)
 	pos.y = round(pos.y)
 	return pos
