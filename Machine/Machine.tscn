@@ -4,7 +4,7 @@
 [ext_resource path="res://Machine/Machine.gd" type="Script" id=2]
 [ext_resource path="res://Machine/MachineMovement.gd" type="Script" id=3]
 [ext_resource path="res://Machine/Modules/DPadModule.tscn" type="PackedScene" id=4]
-[ext_resource path="res://res/machine_parts.png" type="Texture" id=5]
+[ext_resource path="res://res/action_blocks.png" type="Texture" id=5]
 
 [sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
@@ -94,12 +94,11 @@ position = Vector2( 32, 0 )
 position = Vector2( 32, 32 )
 
 [node name="CoreBorder" type="Sprite" parent="."]
-modulate = Color( 0.101961, 0.364706, 0.913725, 0.635294 )
-scale = Vector2( 0.68, 0.68 )
+modulate = Color( 0.847059, 0.145098, 0.145098, 0.729412 )
+scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 5 )
 centered = false
 hframes = 7
-vframes = 8
-frame = 39
+vframes = 7
 
 [node name="HealthControllers" type="Node2D" parent="."]

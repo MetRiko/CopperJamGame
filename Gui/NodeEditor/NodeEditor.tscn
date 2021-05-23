@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Gui/NodeEditor/NodeEditor.gd" type="Script" id=1]
 [ext_resource path="res://Gui/NodeEditor/InstructionsButtons.tscn" type="PackedScene" id=2]
-[ext_resource path="res://res/instructionIcons.png" type="Texture" id=3]
 [ext_resource path="res://Gui/NodeEditor/Editor.gd" type="Script" id=4]
 [ext_resource path="res://res/action_blocks.png" type="Texture" id=5]
 [ext_resource path="res://font/buttonDisappear.tres" type="Theme" id=6]
@@ -86,9 +85,7 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 
 [node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/PlayButton"]
-modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
-position = Vector2( -7, -7 )
-scale = Vector2( 0.861022, 0.861022 )
+scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 5 )
 centered = false
 hframes = 7
@@ -108,9 +105,7 @@ custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 10 )
 
 [node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/PauseButton"]
-modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
-position = Vector2( -7, -7 )
-scale = Vector2( 0.873313, 0.873313 )
+scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 5 )
 centered = false
 hframes = 7
@@ -130,9 +125,7 @@ custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 10 )
 
 [node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/RestartButton"]
-modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
-position = Vector2( -7, -7 )
-scale = Vector2( 0.873, 0.873 )
+scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 5 )
 centered = false
 hframes = 7
@@ -151,9 +144,7 @@ custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 10 )
 
 [node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/StopButton"]
-modulate = Color( 0.529412, 0.545098, 0.933333, 1 )
-position = Vector2( -7, -7 )
-scale = Vector2( 0.873, 0.873 )
+scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 5 )
 centered = false
 hframes = 7
@@ -191,18 +182,21 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo"]
-modulate = Color( 0.164706, 0.807843, 0.670588, 1 )
+self_modulate = Color( 0.164706, 0.807843, 0.670588, 1 )
 position = Vector2( 22, 6 )
-texture = ExtResource( 3 )
+scale = Vector2( 0.125, 0.125 )
+texture = ExtResource( 5 )
 centered = false
-hframes = 8
-vframes = 6
+hframes = 7
+vframes = 7
 
 [node name="Background" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo/Sprite"]
-texture = ExtResource( 3 )
+scale = Vector2( 0.125, 0.125 )
+texture = ExtResource( 5 )
 centered = false
-hframes = 8
-vframes = 6
+hframes = 7
+vframes = 7
+frame = 4
 
 [node name="ProcessingGizmos" type="Control" parent="Panel/Margin/VBox/Editor"]
 __meta__ = {
