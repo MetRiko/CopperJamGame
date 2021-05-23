@@ -15,8 +15,10 @@ const ENTITIES = {
 	'generator': preload("res://Entities/Generator.tscn")
 }
 
-onready var halfCellSize = tilemap.cell_size * 0.5
-onready var cellSize = tilemap.cell_size
+onready var cellSize = tilemap.cell_size * tilemap.global_scale
+onready var halfCellSize = cellSize * 0.5
+
+#func 
 
 func getFirstMachine():
 	return $Machines.get_child(0)

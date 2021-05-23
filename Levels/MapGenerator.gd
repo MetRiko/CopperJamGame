@@ -8,6 +8,18 @@ onready var tilemap : TileMap = get_parent()
 
 var generatedChunks = []
 
+func getAnyCopperCellId():
+	return 3
+
+func getAnyWall():
+	return 0
+
+func getAnyDarkFloor():
+	return 1
+
+func getAnyFloor():
+	return 2
+	
 func noiseFunction(x, y):
 		
 	var noiseZoom := 6.0
@@ -15,6 +27,13 @@ func noiseFunction(x, y):
 	var value := noise(Vector2(x * noiseZoom, y * noiseZoom), cos(x * 0.4) * sin(y * 0.4) * 0.2)
 	return 1.0 if value < 0.00000001 else 0.0
 
+func noiseFunctionCopper(x, y):
+		
+	var noiseZoom := 6.0
+	
+	var value := noise(Vector2(x * noiseZoom, y * noiseZoom), cos(x * 0.4) * sin(y * 0.4) * 0.2)
+	return 1.0 if value < 0.00000001 else 0.0
+	
 func checkIfChunkExists(x, y):
 	for chunk in generatedChunks:
 		if chunk[0] == x and chunk[1] == y:
@@ -49,9 +68,11 @@ func _input(event):
 		]
 		generateChunk(chunkId[0], chunkId[1])
 
+var randSeed = 0
 
 func _ready():
 	randomize()
+#	randSeed = randf()
 
 func fract(x : float) -> float:
 	return x - floor(x)
@@ -59,16 +80,15 @@ func fract(x : float) -> float:
 func random3vec3(c : Vector3) -> Vector3:
 	var j := 4096.0*sin(c.dot(Vector3(17.0, 59.4, 15.0)))
 	var r := Vector3()
-	r.z = fract(512.0*j)
+	r.z = fract(512.0*j + randSeed)
 	j *= .125
-	r.x = fract(512.0*j)
+	r.x = fract(512.0*j + randSeed)
 	j *= .125
-	r.y = fract(512.0*j)
+	r.y = fract(512.0*j + randSeed)
 	return r-Vec3(0.5)
 
 func random3():
 	return Vector3(randf(), randf(), randf())
-
 
 const F3 = 0.3333333;
 const G3 = 0.1666667;

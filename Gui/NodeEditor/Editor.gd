@@ -200,7 +200,7 @@ func _process(delta):
 	
 	if int(mouseIdx.x) % 2 == 0 and int(mouseIdx.y) % 2 == 0:
 		currentGizmoIdx = mouseIdx / 2
-		var pos = level.tilemap.cell_size * mouseIdx + rect_global_position + currentCameraPos
+		var pos = level.getCellSize() * mouseIdx + rect_global_position + currentCameraPos
 		gizmoSprite.global_position = pos
 		if selectedInstructionFromToolbar != null:
 			gizmoSprite.modulate = Color('#2aceab')

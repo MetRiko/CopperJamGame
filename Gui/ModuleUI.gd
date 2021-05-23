@@ -13,6 +13,7 @@ var sizeChanged = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	nodeEditor.connect("buttons_instructions_changed", self, "onButtonsInstructionsChange")
+	visible = false
 	
 #func _process(delta):
 #	if sizeChanged == true:

@@ -191,7 +191,7 @@ func setupPos(globalIdx : Vector2):
 func _recalculateViewportSize():
 	
 	if installedModules.empty():
-		$VC/Viewport.size = level.tilemap.cell_size + Vector2(20, 20)
+		$VC/Viewport.size = level.getCellSize() + Vector2(20, 20)
 	
 	var minPoint = Vector2(10000000, 10000000)
 	var maxPoint = Vector2(-10000000, -10000000)
@@ -209,14 +209,14 @@ func _recalculateViewportSize():
 		
 	var margin = Vector2(20.0, 20.0)
 		
-	var viewPosition = minPoint * level.tilemap.cell_size
+	var viewPosition = minPoint * level.getCellSize()
 	$VC.rect_position = viewPosition - margin
 	
-	var viewSize = (maxPoint - minPoint + Vector2(1, 1)) * level.tilemap.cell_size
+	var viewSize = (maxPoint - minPoint + Vector2(1, 1)) * level.getCellSize()
 	$VC.rect_size = viewSize + margin * 2
 	
 	var dif = baseGlobalIdx - convertToGlobalIdx(minPoint)
-	modules.position = dif * level.tilemap.cell_size + margin
+	modules.position = dif * level.getCellSize() + margin
 
 
 ############### Building
@@ -450,11 +450,11 @@ func getLocalMouseIdx():
 #	var hashedMouseIdx = hashIdx(mouseIdx)
 #	if hashedMouseIdx in availableIdxes:
 #		var rectPos = level.getPosFromCellIdx(mouseIdx)
-#		draw_rect(Rect2(rectPos, level.tilemap.cell_size), Color.wheat, false, 1.0)
+#		draw_rect(Rect2(rectPos, level.getCellSize()), Color.wheat, false, 1.0)
 #		print(rectPos)
 #
 #	for idx in getAvailableGlobalFreeSlots():
-#		var pos = level.getPosFromCellIdx(convertToLocalIdx(idx)) + level.tilemap.cell_size * 0.5
+#		var pos = level.getPosFromCellIdx(convertToLocalIdx(idx)) + level.getCellSize() * 0.5
 #		draw_circle(pos, 6.0, Color.wheat)
 
 func hashIdx(idx : Vector2) -> int:

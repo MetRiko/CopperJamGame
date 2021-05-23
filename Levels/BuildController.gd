@@ -34,7 +34,7 @@ func _process(delta):
 	var mouseIdx = level.getCellIdxFromMousePos()
 	if entityData != null:
 		if state == 2:
-			$Sprite.global_position = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+			$Sprite.global_position = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(level.getCellSize()/2)
 	
 	if currentMouseIdx != mouseIdx:
 		currentMouseIdx = mouseIdx
@@ -155,28 +155,28 @@ func _unhandled_input(event):
 
 func _draw():
 	var mouseIdx = level.getCellIdxFromMousePos()
-	var posOfSprite = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+	var posOfSprite = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(level.getCellSize()/2)
 	var hoveredMachine = level.getMachineFromIdx(mouseIdx)
 	if state == 0:
 		for idx in calcRange():
 			if level.isObstacle(idx) == false && level.getMachineFromIdx(idx) == null: 
-#				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(tilemap.cell_size*0.25),tilemap.cell_size*0.5),Color(0,1,1,0.2),false,1,false)
-				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(2.0, 2.0),tilemap.cell_size - Vector2(4.0, 4.0)),Color(0,1,1,0.05),true,1,false)
+#				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(level.getCellSize()*0.25),level.getCellSize()*0.5),Color(0,1,1,0.2),false,1,false)
+				draw_rect(Rect2(level.getPosFromCellIdx(idx)+Vector2(2.0, 2.0),level.getCellSize() - Vector2(4.0, 4.0)),Color(0,1,1,0.05),true,1,false)
 #			elif level.isObstacle(idx) == false && level.getMachineFromIdx(idx) != null: 
-#				draw_rect(Rect2(level.getPosFromCellIdx(idx)-Vector2(1.5,1.5),tilemap.cell_size + Vector2(4.0,4.0)),Color(0,1,1,0.8),false,1,false)
+#				draw_rect(Rect2(level.getPosFromCellIdx(idx)-Vector2(1.5,1.5),level.getCellSize() + Vector2(4.0,4.0)),Color(0,1,1,0.8),false,1,false)
 		if currentHoveredMachine == null:
 			drawCursorSquare(Color(0,1,0,0.8))
 	if state == 1:
 		drawCursorSquare(Color(0,0,1,0.8))
 	if state == 2:
-		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
+		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(level.getCellSize())
 		if currentEditingMachine != null:
 			var posit = currentEditingMachine.getAvailableGlobalFreeSlots()
 			if posit.has(level.getCellIdxFromMousePos()):
 				drawCursorSquare(Color(1,0,0,0.8))
 			for slot in posit:
 				var vec = level.getPosFromCellIdx(slot)
-				draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.3))
+				draw_circle((vec+(level.getCellSize()/2)),5,Color(1,0,0,0.3))
 			drawAllowedSides()
 
 func onModuleRemoved(machine, moduleLocalIdx, module):
@@ -219,31 +219,31 @@ func clear_target():
 	targetBackup = null
 
 func drawCursorSquare(col: Color):
-		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
+		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(level.getCellSize())
 		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.5,false)
 
 func drawAllowedSides():
 	var colorOfLine = Color(0.5, 0.5, 1, 0.9)
 	if entityData != null:
-		var posOfSprite = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+		var posOfSprite = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(level.getCellSize()/2)
 		var lineVectors = currentEditingMachine.getOffsetsIdForAvailableConnections(entityData,posOfSprite,spriteRotation)
 		for offsetsId in lineVectors:
 			if offsetsId == 0:
-				draw_line(posOfSprite-Vector2(tilemap.cell_size.x*0.25,tilemap.cell_size.y*0.5),posOfSprite+Vector2(tilemap.cell_size.x*0.25,-tilemap.cell_size.y*0.5),colorOfLine,3,false)
+				draw_line(posOfSprite-Vector2(level.getCellSize().x*0.25,level.getCellSize().y*0.5),posOfSprite+Vector2(level.getCellSize().x*0.25,-level.getCellSize().y*0.5),colorOfLine,3,false)
 			if offsetsId == 1:
-				draw_line(posOfSprite+Vector2(tilemap.cell_size.x*0.5,tilemap.cell_size.y*0.25),posOfSprite+Vector2(tilemap.cell_size.x*0.5,-tilemap.cell_size.y*0.25),colorOfLine,3,false)
+				draw_line(posOfSprite+Vector2(level.getCellSize().x*0.5,level.getCellSize().y*0.25),posOfSprite+Vector2(level.getCellSize().x*0.5,-level.getCellSize().y*0.25),colorOfLine,3,false)
 			if offsetsId == 2:
-				draw_line(posOfSprite+Vector2(tilemap.cell_size.x*0.25,tilemap.cell_size.y*0.5),posOfSprite-Vector2(tilemap.cell_size.x*0.25,-tilemap.cell_size.y*0.5),colorOfLine,3,false)
+				draw_line(posOfSprite+Vector2(level.getCellSize().x*0.25,level.getCellSize().y*0.5),posOfSprite-Vector2(level.getCellSize().x*0.25,-level.getCellSize().y*0.5),colorOfLine,3,false)
 			if offsetsId == 3:
-				draw_line(posOfSprite-Vector2(tilemap.cell_size.x*0.5,tilemap.cell_size.y*0.25),posOfSprite-Vector2(tilemap.cell_size.x*0.5,-tilemap.cell_size.y*0.25),colorOfLine,3,false)
+				draw_line(posOfSprite-Vector2(level.getCellSize().x*0.5,level.getCellSize().y*0.25),posOfSprite-Vector2(level.getCellSize().x*0.5,-level.getCellSize().y*0.25),colorOfLine,3,false)
 
 func calcRange():
 	var positArray = []
 	var playerIdx = level.get_node("Player").currentCellIdx
 	var playerPos = level.getPosFromCellIdx(playerIdx)
-	for  x in range(playerBuildRange*2/tilemap.cell_size.x):
-		for  y in range(playerBuildRange*2/tilemap.cell_size.y):
-			var posit = Vector2(x,y)+playerIdx - (floor(playerBuildRange/tilemap.cell_size.x)*Vector2(1,1))
+	for  x in range(playerBuildRange*2/level.getCellSize().x):
+		for  y in range(playerBuildRange*2/level.getCellSize().y):
+			var posit = Vector2(x,y)+playerIdx - (floor(playerBuildRange/level.getCellSize().x)*Vector2(1,1))
 			if playerBuildRange > (level.getPosFromCellIdx(posit) - playerPos).length():
 				positArray.append(posit)
 	return positArray
