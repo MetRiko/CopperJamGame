@@ -8,7 +8,7 @@ onready var tilemap : TileMap = get_parent()
 
 var generatedChunks = []
 
-func getAnyCopperCellId():
+func getAnyCopper():
 	return 3
 
 func getAnyWall():
@@ -27,11 +27,11 @@ func noiseFunction(x, y):
 	var value := noise(Vector2(x * noiseZoom, y * noiseZoom), cos(x * 0.4) * sin(y * 0.4) * 0.2)
 	return 1.0 if value < 0.00000001 else 0.0
 
-func noiseFunctionCopper(x, y):
+func noiseFunctionCopper(x, y, noiseZoom):
 		
-	var noiseZoom := 6.0
+#	var noiseZoom := 30.0
 	
-	var value := noise(Vector2(x * noiseZoom, y * noiseZoom), cos(x * 0.4) * sin(y * 0.4) * 0.2)
+	var value := noise(Vector2(x * noiseZoom, y * noiseZoom), -cos(x * 0.4) * sin(y * 0.4) * 0.2)
 	return 1.0 if value < 0.00000001 else 0.0
 	
 func checkIfChunkExists(x, y):
@@ -39,6 +39,9 @@ func checkIfChunkExists(x, y):
 		if chunk[0] == x and chunk[1] == y:
 			return true
 	return false
+
+func setCell(cellIdx, cellId):
+	tilemap.set_cell(cellIdx.x, cellIdx.y, cellId)
 
 func generateChunk(x : int, y : int):
 	
@@ -54,7 +57,21 @@ func generateChunk(x : int, y : int):
 			var cellIdx = Vector2(x * CHUNK_SIZE + ix, y * CHUNK_SIZE + iy)
 			newCells.append(cellIdx)
 			var cell = noiseFunction(cellIdx.x, cellIdx.y)
-			tilemap.set_cell(cellIdx.x, cellIdx.y, cell)
+			var cell2 = 0
+			var values = [10.0, 20.0, 30.0]
+			for value in values:
+				cell2 += noiseFunctionCopper(cellIdx.x, cellIdx.y, value)
+#			var cell2 = noiseFunctionCopper(cellIdx.x, cellIdx.y, 30.0) + noiseFunctionCopper(cellIdx.x, cellIdx.y, 20.0)
+			if cell2 > 1:
+				if cell == 1:
+					setCell(cellIdx, getAnyDarkFloor())
+				else:
+					setCell(cellIdx, getAnyCopper())
+			else:
+				if cell == 0:
+					setCell(cellIdx, getAnyWall())
+				else:
+					setCell(cellIdx, getAnyDarkFloor())
 	
 	emit_signal("new_chunk_generated", newCells)
 	
