@@ -18,7 +18,7 @@ texture = ExtResource( 3 )
 centered = false
 hframes = 7
 vframes = 7
-frame = 4
+frame = 11
 
 [node name="Background" type="Sprite" parent="Sprite"]
 texture = ExtResource( 3 )
