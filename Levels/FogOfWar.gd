@@ -17,7 +17,7 @@ func hashCellIdx(cellIdx):
 
 func revealTerrain(cellIdx, forceLight := false):
 	var cell = getCell(cellIdx)
-	if cell != 1:
+	if not level.isCellIdDarkFloor(cell):
 		return
 	
 	var spreadedCells := {shouldSpread = forceLight}
@@ -27,7 +27,7 @@ func revealTerrain(cellIdx, forceLight := false):
 	if spreadedCells.shouldSpread == true:
 		spreadedCells.erase('shouldSpread')
 		for cellIdx in spreadedCells.values():
-			tilemap.set_cell(cellIdx.x, cellIdx.y, 2)
+			level.putFloor(cellIdx)
 		
 		emit_signal("cells_revealed", spreadedCells.values())
 

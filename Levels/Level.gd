@@ -36,11 +36,11 @@ const FLOOR = [15, 16]
 #func getFloors():
 #	return [15, 16]
 
-func _putFloor(cellIdx):
+func putFloor(cellIdx):
 	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
 	tilemap.set_cell(cellIdx.x, cellIdx.y, FLOOR[x])
 	
-func _putDarkFloor(cellIdx):
+func putDarkFloor(cellIdx):
 	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
 	tilemap.set_cell(cellIdx.x, cellIdx.y, DARK_FLOOR[x])
 
@@ -72,19 +72,19 @@ func getHalfCellSize():
 	return halfCellSize
 
 func justPutObstacle(pos):
-	tilemap.set_cell(pos.x, pos.y, 0)
+	tilemap.set_cell(pos.x, pos.y, WALL[randi()%WALL.size()])
 
 func justRemoveObstacle(pos):
 #	updateCell(pos, 1)
-	tilemap.set_cell(pos.x, pos.y, 1)
+	putDarkFloor(pos)
 
 func putObstacle(pos):
-	tilemap.set_cell(pos.x, pos.y, 0)
+	tilemap.set_cell(pos.x, pos.y, WALL[randi()%WALL.size()])
 	pathfinding.astar_remove_point(pos)
 
 func removeObstacle(pos):
 	
-	_putDarkFloor(pos)
+	putDarkFloor(pos)
 	fogOfWar.revealTerrain(pos)
 	pathfinding.astar_add_point(pos)
 
@@ -158,7 +158,7 @@ func _input(event):
 func createNewMachine(cellIdx : Vector2):
 	var newMachine = machineTscn.instance()
 	machines.add_child(newMachine)
-	newMachine.setupPos(cellIdx)	
+	newMachine.setupPos(cellIdx)
 	return newMachine
 
 func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
