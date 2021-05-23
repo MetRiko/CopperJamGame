@@ -227,7 +227,7 @@ func getOffsetsIdForAvailableConnections(moduleId : String, moduleLocalIdx : Vec
 	var offsetsId = []
 	for connection in moduleConnections:
 		var offsetIdWithoutRotation = CONNECTIONS_TRANSLATION[connection]
-		var offsetIdAfterRotation = (offsetIdWithoutRotation + rot) % 4
+		var offsetIdAfterRotation = (offsetIdWithoutRotation + rot + 4) % 4
 		offsetsId.append(offsetIdAfterRotation)
 	return offsetsId
 	
