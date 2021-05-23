@@ -19,13 +19,14 @@ const defaultColor = Color.white
 const selectedColor = Color('#65e67a')
 var currentHoveredModule = null
 var currentSelectedModule = null
-
+var moduleDataLocal
 
 func _ready():
 	gui.connect("module_button_pressed", self, "build_object")
 
 func build_object(moduleData):
 	entityData = moduleData.moduleId
+	moduleDataLocal = moduleData
 	if entityData != null:
 		$Sprite.frame = moduleData.frameId if moduleData.frameId != null else 0
 		$Sprite.visible = true
@@ -138,6 +139,7 @@ func _unhandled_input(event):
 		if event.is_action_pressed("LMB"):
 			if entityData != null:
 				var mouseIdx = currentEditingMachine.getLocalMouseIdx()
+				gui.addCopper(-int(moduleDataLocal.cost))
 				currentEditingMachine.attachModule(entityData, mouseIdx, spriteRotation)
 				entityData = null
 				$Sprite.visible = false

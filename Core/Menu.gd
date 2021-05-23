@@ -47,7 +47,7 @@ func start_game():
 	gameStarted = true
 	visible = false
 	gui.visible = true
-	$KGHM.visible = false
+	#$KGHM.visible = false
 	beatController.setPause(false)
 
 func restart():
