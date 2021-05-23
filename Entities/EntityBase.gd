@@ -20,6 +20,9 @@ const MOVES = [
 
 func getCurrentCellIdx():
 	return currentCellIdx
+	
+func getGlobalIdx():
+	return currentCellIdx
 
 func getCellIdx(pos : Vector2):
 	return level.getCellIdxFromPos(pos)

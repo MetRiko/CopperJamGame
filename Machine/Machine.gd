@@ -145,6 +145,9 @@ func getProcessor():
 func hasModules():
 	return not installedModules.empty()
 
+func getModules():
+	return installedModules
+
 func getModulesCount():
 	return installedModules.size()
 
@@ -273,7 +276,7 @@ func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot :
 func canDetachModule(localIdx : Vector2):
 	if installedModules.size() == 0:
 		return false
-	if localIdx == Vector2(0, 0):
+	if localIdx == Vector2(0, 0) and installedModules.size() > 1:
 		return false
 	if installedModules.size() == 1 and installedModules.values()[0].localIdx == localIdx:
 		return true
@@ -326,7 +329,6 @@ func detachModule(localIdx : Vector2, forceDetach = false):
 		else:
 			push_error("Cannot detach module!")
 			return 
-	
 	
 	var hashedLocalIdx = hashIdx(localIdx)
 	var moduleData = installedModules[hashedLocalIdx]

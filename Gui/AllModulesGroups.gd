@@ -4,12 +4,28 @@ extends Resource
 const ALL_MODULES_GROUPS = [
 	{
 		'elements': [
+#			{
+#				'name': "Generator", 
+#				'moduleId' : "generator_module",
+#				'frameId':33,
+#				'tooltip': "To jest generator, po jego zniszczeniu przegrasz grę",
+#				'cost': 0,
+#				'state':true
+#			},
 			{
-				'name': "Generator", 
-				'moduleId' : "generator_module",
-				'frameId':33,
-				'tooltip': "To jest generator, po jego zniszczeniu przegrasz grę",
-				'cost': 0,
+				'name': "Vertical", 
+				'moduleId' : "vertical_module",
+				'frameId':2,
+				'tooltip': "To jest moduł ruchu pionowego",
+				'cost': 25,
+				'state':true
+			},
+			{
+				'name': "Horizontal", 
+				'moduleId' : "horizontal_module",
+				'frameId':3,
+				'tooltip': "To jest moduł ruchu poziomego",
+				'cost': 25,
 				'state':true
 			},
 			{
@@ -50,22 +66,6 @@ const ALL_MODULES_GROUPS = [
 				'frameId':18,
 				'tooltip': "To jest wieżyczka",
 				'cost': 20,
-				'state':true
-			},
-			{
-				'name': "Vertical", 
-				'moduleId' : "vertical_module",
-				'frameId':2,
-				'tooltip': "To jest moduł ruchu pionowego",
-				'cost': 25,
-				'state':true
-			},
-			{
-				'name': "Horizontal", 
-				'moduleId' : "horizontal_module",
-				'frameId':3,
-				'tooltip': "To jest moduł ruchu poziomego",
-				'cost': 25,
 				'state':true
 			},
 			{

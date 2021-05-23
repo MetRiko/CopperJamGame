@@ -5,53 +5,67 @@ onready var tilemap = Game.tilemap
 ############## Module base - BEGIN
 
 const INSTRUCTIONS = {
-	'shoot': {
-		'functionName': "shoot"
+	'turn_on_turret': {
+		'functionName': "enableTurret"
+	},
+	'turn_off_turret': {
+		'functionName': "disableTurret"
 	}
 }
 
-const INSTRUCTIONS_ORDER = ['shoot']
+var beatController = null
+
+var enabled = false
+
+const INSTRUCTIONS_ORDER = ['turn_on_turret', 'turn_off_turret']
 
 func _ready():
 	_setupNode("turret_module", self, INSTRUCTIONS, INSTRUCTIONS_ORDER)
 
-func shoot(enemyIdx):
+func setupModule(machine, localIdx, rot):
+	.setupModule(machine, localIdx, rot)
+	beatController = Game.beatController
+	beatController.connect("beat", self, "onBeat")
+	$Sprite.frame = 15 + (rot % 4)
+	$Node2D.rotation_degrees = rot * 90.0
+#	$Sprite.global_rotation_degrees = rot * 90.0
+#	$Sprite.
+
+func enableTurret():
+	enabled = true
+	$Sprite.frame = 29 + (_rot % 4)
+
+func disableTurret():
+	enabled = false
+	$Sprite.frame = 15 + (_rot % 4)
+
+func onBeat(a, b):
+	if enabled == true:
+		shoot()
+		playAnimationPulse($Sprite)
+
+func shoot():
+	var offset = getForwardVector()
+	
 	var shootingRange = 6
-	var shootingRangeIdx = []
-	var forwardVector = getForwardVector()
-	var firstIdx = getGlobalIdx()
-	var entityDetected = level.getEntityFromIdx()
+	
+	var startIdx = getGlobalIdx()
+	var targetIdx = startIdx 
 	
 	for i in range(shootingRange):
-		shootingRangeIdx.append(level.getCellIdxFromPos(firstIdx))
-		firstIdx += forwardVector
+		targetIdx += offset
 		
-		if level.isObstacle() == true:
+		if level.isObstacle(targetIdx):
 			return
-		if  entityDetected != null:
-			level.dealDamage()
-
-
-##############  Module base - END
-	
-#func moveLeft():
-#	var dir = Vector2(-1, 0)
-#	if getMachine().canMove(dir):
-#		playAnimationPulse($Sprite)
-#		playAnimationRotateC($Sprite)
-#		getMachine().move(dir)
-#
-#func moveRight():
-#	var dir = Vector2(1, 0)
-#	if getMachine().canMove(dir):
-#		getMachine().move(dir)
-#
-#func moveUp():
-#	var dir = Vector2(0, -1)
-#	if getMachine().canMove(dir):
-#		getMachine().move(dir)
-#
-#func moveDown():
-#	var dir = Vector2(0, 1)
-#	if getMachine().canMove(dir):
-#		getMachine().move(dir)
+		
+		var player = level.getPlayer()
+		if player.getGlobalIdx() == targetIdx:
+			player.doDamage(1.0)
+			$Node2D/Particles2D.emitting = true
+			return
+		
+		var enemy = level.getEntityFromIdx(targetIdx)
+		if enemy != null:
+			enemy.doDamage(1.0)
+			$Node2D/Particles2D.emitting = true
+			return

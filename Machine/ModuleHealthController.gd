@@ -18,6 +18,9 @@ var shouldBeDead = 0
 func _ready():
 	modulate.a = 0
 	
+func isFullHp():
+	return hp >= maxHp
+	
 func addHp(value):
 	setHp(hp + value)
 	

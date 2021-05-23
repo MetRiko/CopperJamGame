@@ -39,12 +39,13 @@ func _ready():
 #	$Back.rect_min_size = firstButton.rect_size + Vector2($InstructionsButtons.get_constant("separation") * $InstructionsButtons.get_child_count(), 0.0)
 #	$Back.rect_size = firstButton.rect_size + Vector2($InstructionsButtons.get_constant("separation") * $InstructionsButtons.get_child_count(), 0.0)
 #	$Back.rect_position = pos - Vector2(51.2 * 0.125 + buttonsCount * 51.2 * 0.5, 51.2 + 0.125 * 51.2)
-	
+
 func _process(delta):
 	if is_instance_valid(currentModule):
 		rect_global_position = Game.level.getPosFromCellIdx(currentModule.getGlobalIdx()) + Vector2(32.0 * 0.5, -32.0) # - Vector2(859.0 * 0.125 * 0.5 - 32.0 * 0.5, -10.0)
-		
-	
+	else:
+		visible = false
+
 func onButtonsInstructionsChange(newButtonsInstructions, module):
 	
 	var noConditions = []

@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://res/Terrain.png" type="Texture" id=1]
 [ext_resource path="res://Entities/Player.gd" type="Script" id=2]
+[ext_resource path="res://res/lamp.png" type="Texture" id=3]
+[ext_resource path="res://Machine/ModuleHealthController.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Move"
@@ -41,3 +43,11 @@ texture = ExtResource( 1 )
 hframes = 7
 vframes = 7
 frame = 42
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 3 )
+color = Color( 10, 10, 10, 1 )
+shadow_enabled = true
+
+[node name="ModuleHealthController" parent="." instance=ExtResource( 4 )]
+position = Vector2( 16, 0 )

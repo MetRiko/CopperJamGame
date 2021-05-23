@@ -21,6 +21,9 @@ var currentHoveredModule = null
 var currentSelectedModule = null
 var moduleDataLocal
 
+var onEnemy = false
+
+
 func _ready():
 	gui.connect("module_button_pressed", self, "build_object")
 
@@ -40,6 +43,8 @@ func _process(delta):
 	if currentMouseIdx != mouseIdx:
 		currentMouseIdx = mouseIdx
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
+		
+		onEnemy = level.getEntityFromIdx(mouseIdx) != null
 		
 		if state == 2 or state == 0:
 #			if not is_instance_valid(currentHoveredModule):
@@ -224,7 +229,8 @@ func clear_target():
 
 func drawCursorSquare(col: Color):
 		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(level.getCellSize()) + Vector2(4,4)
-		draw_rect(Rect2(pos,Vector2(24,24)),col,true, 1.5,false)
+#		draw_rect(Rect2(pos,Vector2(24,24)),col,true, 1.5,false)
+		draw_rect(Rect2(pos,Vector2(24,24)),col,true, 1.0,false)
 
 func drawAllowedSides():
 	var colorOfLine = Color(0.5, 0.5, 1, 0.9)

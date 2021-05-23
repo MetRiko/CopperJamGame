@@ -132,7 +132,7 @@ func setupModule(machine, localIdx, rot):
 	self._machine = machine
 	self._rot = rot
 	_createHealthController()
-	
+
 func callInstruction(instructionId):
 	var instruction = _instructions.get(instructionId)
 	if instruction != null:

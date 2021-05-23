@@ -11,8 +11,9 @@ onready var machines = $Machines
 const machineTscn = preload("res://Machine/Machine.tscn")
 
 const ENTITIES = {
-	'drill': preload("res://Entities/Drill.tscn"),
-	'generator': preload("res://Entities/Generator.tscn")
+	'enemy': preload("res://Entities/Enemy.tscn"),
+#	'drill': preload("res://Entities/Drill.tscn"),
+#	'generator': preload("res://Entities/Generator.tscn")
 }
 
 const tilemapScale = Vector2(0.125, 0.125)
@@ -51,6 +52,7 @@ func putFloor(cellIdx):
 	var cellId = getCellType(cellIdx)
 	var convertedCellId = convertDarkFloorCellIdToFloor(cellId)
 	tilemap.set_cell(cellIdx.x, cellIdx.y, convertedCellId)
+	pathfinding.astar_add_point(cellIdx)
 	
 func putDarkFloor(cellIdx):
 	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
@@ -110,6 +112,21 @@ func getCopperValueOnIdx(idx : Vector2):
 func isObstacle(idx : Vector2):
 	return isCellIdObstacle(getCellType(idx))
 
+func getMachines():
+	return $Machines.get_children()
+
+func isPlayerIdx(idx : Vector2):
+	return idx == $Player.getGlobalIdx()
+
+func getPlayer():
+	return $Player
+
+func getEntityFromIdx(idx):
+	for entity in $Entities.get_children():
+		if entity.getGlobalIdx() == idx:
+			return entity
+	return null
+
 func getMachineFromIdx(idx : Vector2):
 	for machine in $Machines.get_children():
 		if machine.isIdxInMachine(idx):
@@ -118,15 +135,15 @@ func getMachineFromIdx(idx : Vector2):
 
 var chunksToGenerate = []
 
-func generateChunks():
-	for x in range(12):
-		for y in range(12):
-			mapGenerator.generateChunk(x - 6, y - 6)
+func generateChunks(size : int):
+	for x in range(size):
+		for y in range(size):
+			mapGenerator.generateChunk(x - size / 2, y - size / 2)
 #			yield(get_tree().create_timer(0.5), "timeout")
 
 func _ready():
 
-	generateChunks()
+	generateChunks(10)
 
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
@@ -140,7 +157,8 @@ func _ready():
 		entity.setupPosition(entity.global_position)
 	
 	$Player.setupPosition($Player.global_position)
-	
+	fogOfWar.revealTerrain($Player.getGlobalIdx(), true)
+	$TileMap/EntitySpawner.enableSpawner()
 
 func getCellIdxFromMousePos() -> Vector2:
 	return tilemap.world_to_map(get_global_mouse_position() / tilemapScale)# * tilemap.global_scale)
@@ -191,7 +209,8 @@ func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
 	if ENTITIES.has(entityId):
 		var entity = ENTITIES[entityId].instance()
 		entities.add_child(entity)
-		entity.global_position = getPosFromCellIdx(cellIdx)
+		var pos = getPosFromCellIdx(cellIdx)
+		entity.setupPosition(pos)
 		fogOfWar.revealTerrain(cellIdx, revealTerrain)
 		
 func _onChunkGenerated(newCells):

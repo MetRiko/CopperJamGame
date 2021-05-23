@@ -28,7 +28,7 @@ func revealTerrain(cellIdx, forceLight := false):
 		spreadedCells.erase('shouldSpread')
 		for cellIdx in spreadedCells.values():
 			level.putFloor(cellIdx)
-		
+	
 		emit_signal("cells_revealed", spreadedCells.values())
 
 const CELLS_OFFSETS = [

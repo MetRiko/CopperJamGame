@@ -33,15 +33,15 @@ func setupModule(machine, localIdx, rot):
 
 func _animateDrill():
 	playAnimationPulse($Sprite)
-	
+
 func turnOnDrill():
 	drillOn = true
 	$Particles2D.emitting = true
-	
+
 func turnOffDrill():
 	drillOn = false
 	$Particles2D.emitting = false
-	
+
 func onBeat(a, b):
 	if drillOn == true:
 		_animateDrill()
@@ -51,3 +51,9 @@ func onBeat(a, b):
 			if copperValue != null:
 				gui.addCopper(copperValue)
 			level.removeObstacle(obstacleGlobalIdx)
+		else:
+			var entity = level.getEntityFromIdx(obstacleGlobalIdx)
+			if entity != null:
+				entity.doDamage(1.0)
+			
+			
