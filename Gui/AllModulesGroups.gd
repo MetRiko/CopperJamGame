@@ -8,7 +8,7 @@ const ALL_MODULES_GROUPS = [
 			{
 				'name': "Pusty moduł",
 				'moduleId' : "empty_module",
-				'frameId':0,
+				'frameId':11,
 				'tooltip' : "To jest pusty moduł",
 				'cost': 10,
 				'state':true
@@ -16,7 +16,7 @@ const ALL_MODULES_GROUPS = [
 			{
 				'name': "Moduł Dpad",
 				'moduleId' : "dpad_module",
-				'frameId':3,
+				'frameId':4,
 				'tooltip' : "To jest moduł ruchu w czterech kierunkach",
 				'cost': 10,
 				'state':true
@@ -24,7 +24,7 @@ const ALL_MODULES_GROUPS = [
 			{
 				'name': "Dioda", 
 				'moduleId' : "diode_module",
-				'frameId':27,
+				'frameId':10,
 				'tooltip' : "To jest dioda",
 				'cost': 10,
 				'state':true
@@ -32,7 +32,7 @@ const ALL_MODULES_GROUPS = [
 			{
 				'name': "Drill",
 				'moduleId': "drill",
-				'frameId':16,
+				'frameId':14,
 				'tooltip': "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
 				'cost': 10,
 				'state':true
@@ -40,7 +40,7 @@ const ALL_MODULES_GROUPS = [
 			{
 				'name': "Turret", 
 				'moduleId' : "turret_module",
-				'frameId':17,
+				'frameId':18,
 				'tooltip': "To jest wieżyczka",
 				'cost': 15,
 				'state':true
@@ -48,7 +48,7 @@ const ALL_MODULES_GROUPS = [
 			{
 				'name': "Pylon", 
 				'moduleId' : "pylon_module",
-				'frameId':8,
+				'frameId':5,
 				'tooltip': "To jest pylon zwiększający zasięg pracy maszyny",
 				'cost': 30,
 				'state':true

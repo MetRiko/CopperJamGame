@@ -3,13 +3,13 @@
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
 [ext_resource path="res://Levels/FogOfWar.gd" type="Script" id=3]
+[ext_resource path="res://res/machine_parts.png" type="Texture" id=4]
 [ext_resource path="res://Levels/Level.gd" type="Script" id=5]
 [ext_resource path="res://Entities/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Pathfinding.gd" type="Script" id=7]
 [ext_resource path="res://Entities/Player.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Levels/BuildController.gd" type="Script" id=9]
 [ext_resource path="res://Gui/NodeEditor/NodeEditor.tscn" type="PackedScene" id=10]
-[ext_resource path="res://res/modules.png" type="Texture" id=12]
 [ext_resource path="res://Gui/GUI.tscn" type="PackedScene" id=13]
 
 [node name="Level" type="Node2D"]
@@ -48,10 +48,11 @@ script = ExtResource( 9 )
 visible = false
 self_modulate = Color( 1, 1, 1, 0.470588 )
 position = Vector2( 16.9271, 16.4816 )
-texture = ExtResource( 12 )
-hframes = 8
-vframes = 6
-frame = 16
+scale = Vector2( 0.69, 0.69 )
+texture = ExtResource( 4 )
+hframes = 7
+vframes = 8
+frame = 11
 
 [node name="Entities" type="Node2D" parent="."]
 

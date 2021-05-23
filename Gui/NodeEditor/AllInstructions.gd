@@ -2,7 +2,7 @@ extends Resource
 
 const ALL_INSTRUCTIONS = {
 	'nop': {
-		'frameId': 0,
+		'frameId': 2,
 		'name': 'Empty instruction'
 	},
 	'missing_instruction': {
@@ -10,43 +10,43 @@ const ALL_INSTRUCTIONS = {
 		'name': 'Missing instruction'
 	},
 	'node_start': {
-		'frameId': 2,
+		'frameId': 7,
 		'name': 'Node start'
 	},
 	'node_end': {
-		'frameId': 1,
+		'frameId': 8,
 		'name': 'Node end'
 	},
 	'move_right': {
-		'frameId': 8,
+		'frameId': 15,
 		'name': 'Move right'
 	},
 	'move_left': {
-		'frameId': 9,
+		'frameId': 17,
 		'name': 'Move left'
 	},
 	'move_up': {
-		'frameId': 10,
+		'frameId': 14,
 		'name': 'Move up'
 	},
 	'move_down': {
-		'frameId': 11,
+		'frameId': 16,
 		'name': 'Move down'
 	},	
 	'turn_on_diode': {
-		'frameId': 12,
+		'frameId': 43,
 		'name': 'turn_on_diode'
 	},
 	'turn_off_diode': {
-		'frameId': 13,
+		'frameId': 42,
 		'name': 'turn_off_diode'
 	},
 	'is_diode_on': {
-		'frameId': 14,
+		'frameId': 45,
 		'name': 'is_diode_on'
 	},
 	'is_diode_off': {
-		'frameId': 15,
+		'frameId': 44,
 		'name': 'is_diode_off'
 	}
 }

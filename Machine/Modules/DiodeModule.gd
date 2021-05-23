@@ -29,7 +29,7 @@ var isDiodeOn = false
 onready var defaultFrame = $Sprite.frame
 
 func turnOnDiode():
-	$Sprite.frame = defaultFrame + 1
+	$Sprite.frame = defaultFrame - 1
 	isDiodeOn = true
 
 func turnOffDiode():

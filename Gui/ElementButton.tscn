@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://res/modules.png" type="Texture" id=1]
+[ext_resource path="res://res/machine_parts.png" type="Texture" id=1]
 [ext_resource path="res://Gui/ElementButton.gd" type="Script" id=2]
 
 [node name="Button" type="Button"]
@@ -26,8 +26,8 @@ __meta__ = {
 
 [node name="TextureRect" type="Sprite" parent="."]
 position = Vector2( 40, 15 )
-scale = Vector2( 0.7, 0.7 )
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
-hframes = 8
-vframes = 6
-frame = 16
+hframes = 7
+vframes = 8
+frame = 11
