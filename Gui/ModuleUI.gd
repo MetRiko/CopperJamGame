@@ -49,7 +49,7 @@ func onButtonsInstructionsChange(newButtonsInstructions, module):
 	
 	instructionsButtons.connectButtons(self, "onButtonClick")
 	currentModule = module
-	if module == null:
+	if module == null or newButtonsInstructions.size() == 0:
 		visible = false
 	else:
 		visible = true
