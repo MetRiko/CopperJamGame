@@ -68,14 +68,14 @@ const ALL_MODULES_GROUPS = [
 				'cost': 25,
 				'state':true
 			},
-			{
-				'name': "Pylon", 
-				'moduleId' : "pylon_module",
-				'frameId':43,
-				'tooltip': "To jest pylon zwiększający zasięg pracy maszyny",
-				'cost': 30,
-				'state':true
-			},
+#			{
+#				'name': "Pylon", 
+#				'moduleId' : "pylon_module",
+#				'frameId':43,
+#				'tooltip': "To jest pylon zwiększający zasięg pracy maszyny",
+#				'cost': 30,
+#				'state':true
+#			},
 			{
 				'name': "Turret",
 				'moduleId' : "turret",
