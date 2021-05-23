@@ -24,6 +24,8 @@ const COPPER = [11,12,13,14]
 const DARK_FLOOR = [21, 22]
 const FLOOR = [15, 16]
 
+const COPPER_VALUES = [1, 2, 3, 4]
+
 #func 
 
 func convertDarkFloorCellIdToFloor(cellId):
@@ -97,6 +99,13 @@ func removeObstacle(pos):
 	putDarkFloor(pos)
 	fogOfWar.revealTerrain(pos)
 	pathfinding.astar_add_point(pos)
+
+func getCopperValueOnIdx(idx : Vector2):
+	var cell = getCellType(idx)
+	if isCellIdCopper(cell):
+		var index = COPPER.find(cell)
+		return COPPER_VALUES[index]
+	return null
 
 func isObstacle(idx : Vector2):
 	return isCellIdObstacle(getCellType(idx))
