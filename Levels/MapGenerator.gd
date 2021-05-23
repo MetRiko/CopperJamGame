@@ -8,17 +8,28 @@ onready var tilemap : TileMap = get_parent()
 
 var generatedChunks = []
 
+func getRandomInt(ids):
+	return ids[randi()%ids.size()]
+#	return (randi()%(to - from + 1)) + from
+
 func getAnyCopper():
-	return 3
+	return getRandomInt([11,12,13,14])
 
 func getAnyWall():
-	return 0
+	return getRandomInt([4,5,6,7,8,9,10])
 
-func getAnyDarkFloor():
-	return 1
+func getAnyDarkFloor(cellIdx):
+	var id = int(cellIdx.x + cellIdx.y + 10000000) % 2
+	return getDarkFloors()[id]
+
+func getDarkFloors():
+	return [21, 22]
+
+func getFloors():
+	return [15, 16]
 
 func getAnyFloor():
-	return 2
+	return getRandomInt([15, 16])
 	
 func noiseFunction(x, y):
 		
@@ -64,14 +75,14 @@ func generateChunk(x : int, y : int):
 #			var cell2 = noiseFunctionCopper(cellIdx.x, cellIdx.y, 30.0) + noiseFunctionCopper(cellIdx.x, cellIdx.y, 20.0)
 			if cell2 > 1:
 				if cell == 1:
-					setCell(cellIdx, getAnyDarkFloor())
+					setCell(cellIdx, getAnyDarkFloor(cellIdx))
 				else:
 					setCell(cellIdx, getAnyCopper())
 			else:
 				if cell == 0:
 					setCell(cellIdx, getAnyWall())
 				else:
-					setCell(cellIdx, getAnyDarkFloor())
+					setCell(cellIdx, getAnyDarkFloor(cellIdx))
 	
 	emit_signal("new_chunk_generated", newCells)
 	

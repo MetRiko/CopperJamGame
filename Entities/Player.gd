@@ -7,9 +7,9 @@ var step = 0
 func _unhandled_input(event):
 	if event.is_action_pressed('RMB'):
 		
-		var targetCellIdx = tilemap.world_to_map(get_global_mouse_position())
+		var targetCellIdx = level.getCellIdxFromMousePos()
 		var cell = tilemap.get_cell(targetCellIdx.x, targetCellIdx.y)
-		if cell == 1 || cell == 2:
+		if level.isCellIdAnyFloor(cell):
 			moveTargetIdx = targetCellIdx
 #			var pointPath = tilemap.get_node('Pathfinding').pathfind(currentCellIdx, tilemap.world_to_map(get_global_mouse_position()))
 		else:
@@ -33,7 +33,8 @@ func _playRotateAnimation():
 		$Tween.start()
 	
 func _onBeat(a, b):
-	$Anim.play("Move", -1, 5.0)
+#	$Anim.play("Move", -1, 5.0)
+	playAnimationPulse($Sprite)
 	
 func playAnimation():
 	pass

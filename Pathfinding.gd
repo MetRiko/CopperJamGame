@@ -76,7 +76,12 @@ func astar_add_point(point):
 			astar.connect_points(point_index, point_relative_index, true)
 
 func astar_calculate_full_graph():
-	var walkableCells = tilemap.get_used_cells_by_id(2) + tilemap.get_used_cells_by_id(1)
+	
+	var walkableCells = []
+	var walkableCellIds = level.FLOOR + level.DARK_FLOOR
+	
+	for walkableCellId in walkableCellIds:
+		walkableCells += tilemap.get_used_cells_by_id(walkableCellId)
 #	walkableCells += tilemap.get_used_cells_by_id(2)
 	
 	for point in walkableCells:

@@ -22,13 +22,14 @@ func getCurrentCellIdx():
 	return currentCellIdx
 
 func getCellIdx(pos : Vector2):
-	return tilemap.world_to_map(pos)
+	return level.getCellIdxFromPos(pos)
 
 func getCellPos(cellIdx : Vector2):
 	return level.getPosFromCellIdx(cellIdx)
 
-func _ready():
-	currentCellIdx = getCellIdx(global_position)
+func setupPosition(globalPosition):
+	global_position = globalPosition
+	currentCellIdx = getCellIdx(globalPosition)
 
 func rotateCC():
 	var oldRot = currentRotation * 90
@@ -53,9 +54,9 @@ func moveForward():
 	return move(MOVES[currentRotation])
 
 func playAnimationPulse(node):
-	$Tween.interpolate_property(node, "global_scale", Vector2(1.0, 1.0), Vector2(1.4, 1.4), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.interpolate_property(node, "scale", Vector2(0.125, 0.125), Vector2(0.125 * 1.3, 0.125 * 1.3), 0.3, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
-	$Tween.interpolate_property(node, "global_scale", Vector2(1.4, 1.4), Vector2(1.0, 1.0), 0.2, Tween.TRANS_SINE, Tween.EASE_IN)
+	$Tween.interpolate_property(node, "scale", Vector2(0.125 * 1.3, 0.125 * 1.3), Vector2(0.125, 0.125), 0.3, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
 
 func move(offset : Vector2):
@@ -64,7 +65,7 @@ func move(offset : Vector2):
 	var targetCellIdx = currentCellIdx + offset
 	var targetCell = tilemap.get_cell(targetCellIdx.x, targetCellIdx.y)
 	
-	if targetCell != 1 and targetCell != 2:
+	if not level.isCellIdAnyFloor(targetCell):
 		return {
 			success = false, 
 			targetCellIdx = targetCellIdx, 

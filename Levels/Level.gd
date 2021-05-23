@@ -15,10 +15,52 @@ const ENTITIES = {
 	'generator': preload("res://Entities/Generator.tscn")
 }
 
-onready var cellSize = tilemap.cell_size * tilemap.global_scale
+const tilemapScale = Vector2(0.125, 0.125)
+onready var cellSize = tilemap.cell_size * tilemapScale
 onready var halfCellSize = cellSize * 0.5
 
+const WALL = [4,5,6,7,8,9,10]
+const COPPER = [11,12,13,14]
+const DARK_FLOOR = [21, 22]
+const FLOOR = [15, 16]
+
 #func 
+
+
+#func getAnyCopper():
+#	return getRandomInt([11,12,13,14])
+#func getAnyWall():
+#	return getRandomInt([4,5,6,7,8,9,10])
+#func getDarkFloors():
+#	return [21, 22]
+#func getFloors():
+#	return [15, 16]
+
+func _putFloor(cellIdx):
+	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
+	tilemap.set_cell(cellIdx.x, cellIdx.y, FLOOR[x])
+	
+func _putDarkFloor(cellIdx):
+	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
+	tilemap.set_cell(cellIdx.x, cellIdx.y, DARK_FLOOR[x])
+
+func isCellIdAnyFloor(cellId):
+	return isCellIdFloor(cellId) or isCellIdDarkFloor(cellId)
+
+func isCellIdIWall(cellId : int):
+	return WALL.has(cellId)
+	
+func isCellIdCopper(cellId : int):
+	return COPPER.has(cellId)
+	
+func isCellIdFloor(cellId : int):
+	return FLOOR.has(cellId)
+	
+func isCellIdDarkFloor(cellId : int):
+	return DARK_FLOOR.has(cellId)
+	
+func isCellIdObstacle(cellId : int):
+	return isCellIdIWall(cellId) or isCellIdCopper(cellId)
 
 func getFirstMachine():
 	return $Machines.get_child(0)
@@ -41,13 +83,13 @@ func putObstacle(pos):
 	pathfinding.astar_remove_point(pos)
 
 func removeObstacle(pos):
-#	updateCell(pos, 1)
-	tilemap.set_cell(pos.x, pos.y, 1)
+	
+	_putDarkFloor(pos)
 	fogOfWar.revealTerrain(pos)
 	pathfinding.astar_add_point(pos)
 
 func isObstacle(idx : Vector2):
-	return tilemap.get_cell(idx.x, idx.y) == 0
+	return isCellIdObstacle(getCellType(idx))
 
 func getMachineFromIdx(idx : Vector2):
 	for machine in $Machines.get_children():
@@ -67,15 +109,21 @@ func _ready():
 	machine.attachModule('dpad_module', Vector2(0, 0))
 	machine.attachModule('empty_module', Vector2(0, 1))
 	machine.attachModule('empty_module', Vector2(1, 1))
+	
+	for entity in $Entities.get_children():
+		entity.setupPosition(entity.global_position)
+	
+	$Player.setupPosition($Player.global_position)
+	
 
 func getCellIdxFromMousePos() -> Vector2:
-	return tilemap.world_to_map(get_global_mouse_position() / tilemap.global_scale)# * tilemap.global_scale)
+	return tilemap.world_to_map(get_global_mouse_position() / tilemapScale)# * tilemap.global_scale)
 
 func getCellType(cellIdx) -> int:
 	return tilemap.get_cell(cellIdx.x, cellIdx.y)
 
 func getCellIdxFromPos(pos) -> Vector2:
-	return tilemap.world_to_map(pos / tilemap.global_scale)
+	return tilemap.world_to_map(pos / tilemapScale)
 	
 func getPosFromCellIdx(cellIdx) -> Vector2:
 	var fixedCellIdx = cellIdx
@@ -85,7 +133,7 @@ func getPosFromCellIdx(cellIdx) -> Vector2:
 	
 	var finalPos = fixedCellIdx * cellSize
 	
-	var pos = tilemap.map_to_world(fixedCellIdx) * tilemap.global_scale
+	var pos = tilemap.map_to_world(fixedCellIdx) * tilemapScale
 	pos.x = round(pos.x - 1)
 	pos.y = round(pos.y)
 	return pos
@@ -99,12 +147,12 @@ func _input(event):
 	if event.is_action_pressed("x"): #just remove tile
 		var cellIdx := getCellIdxFromMousePos()
 		var cell : = getCellType(cellIdx)
-		if cell == 0:
+		if isCellIdObstacle(cell):
 			removeObstacle(cellIdx)
 	if event.is_action_pressed("z"): #reveal tiles
 		var cellIdx := getCellIdxFromMousePos()
 		var cell := getCellType(cellIdx)
-		if cell == 1:
+		if isCellIdDarkFloor(cell):
 			fogOfWar.revealTerrain(cellIdx, true)
 
 func createNewMachine(cellIdx : Vector2):
@@ -123,8 +171,8 @@ func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
 func _onChunkGenerated(newCells):
 	for cellIdx in newCells:
 		var cell : int = getCellType(cellIdx)
-		if cell == 1:
+		if isCellIdDarkFloor(cell):
 			fogOfWar.revealTerrain(cellIdx)
 			pathfinding.astar_add_point(cellIdx)
-		elif cell == 2:
+		elif isCellIdFloor(cell):
 			pathfinding.astar_add_point(cellIdx)

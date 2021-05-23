@@ -4,9 +4,10 @@ signal cells_revealed
 
 onready var tilemap = get_parent()
 onready var mapGenerator = tilemap.get_node("MapGenerator")
+onready var level = get_parent().get_parent()
 
 func getCellIdx(pos : Vector2) -> Vector2:
-	return tilemap.world_to_map(pos)
+	return level.getCellIdxFromPos(pos)
 
 func getCell(cellIdx : Vector2) -> int:
 	return tilemap.get_cell(cellIdx.x, cellIdx.y) 
@@ -49,12 +50,12 @@ func _revealTerrain(firstCellIdx : Vector2, spreadedCells : Dictionary, spreaded
 		for offset in CELLS_OFFSETS:
 			var offsetedCellIdx = cellIdx + offset
 			var cell = getCell(offsetedCellIdx)
-			if cell == 1:
+			if level.isCellIdDarkFloor(cell):
 				var hashedOffsetedCellIdx = hashCellIdx(offsetedCellIdx)
 				if not spreadedCells.has(hashedOffsetedCellIdx):
 					spreadedCells[hashedOffsetedCellIdx] = offsetedCellIdx
 					spreadedCellsArr.append(offsetedCellIdx)
-			elif cell == 2:
+			elif level.isCellIdFloor(cell):
 				spreadedCells.shouldSpread = true
 
 #func _revealTerrain(cellIdx, spreadedCells, spreadedCellsArr):
