@@ -49,7 +49,7 @@ func _process(delta):
 					if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
 						currentHoveredModule.modulate = Color.white
 					if hoveredModule != null and hoveredModule != currentSelectedModule:
-						hoveredModule.modulate = Color.yellow
+						hoveredModule.modulate = Color(1.1, 1.1, 1.1, 1.0)
 					currentHoveredModule = hoveredModule
 			else:
 				if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
@@ -61,7 +61,7 @@ func _process(delta):
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
 				if state == 0 && pRangeToIdx() == true or state == 2 && pRangeToIdx() == true:
-					hoveredMachine.setOutline(2.0, Color(0.0, 1.0, 0.0, 0.7))
+					hoveredMachine.setOutline(1.0, Color(1.0, 1.0, 1.0, 0.6))
 				else: 
 					hoveredMachine.setOutline(0)
 			if currentHoveredMachine != null:
@@ -86,7 +86,7 @@ func selectModule(module):
 		var mouseIdx = currentHoveredMachine.getLocalMouseIdx()
 		nodeEditor.selectModule(currentHoveredMachine, mouseIdx)
 		currentSelectedModule = module
-		currentSelectedModule.modulate = Color.green
+		currentSelectedModule.modulate = Color(1.4, 1.4, 1.4, 1.0)
 		setCurrentEditingMachine(currentHoveredMachine)
 	elif module == null:
 		if currentSelectedModule != null:
