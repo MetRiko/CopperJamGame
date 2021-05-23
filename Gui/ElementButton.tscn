@@ -29,5 +29,5 @@ position = Vector2( 40, 15 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )
 hframes = 7
-vframes = 8
+vframes = 7
 frame = 11
