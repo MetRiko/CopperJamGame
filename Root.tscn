@@ -43,19 +43,21 @@ autostart = true
 
 [node name="PauseMenu" parent="PauseMenu" instance=ExtResource( 6 )]
 
-[node name="Cursor" type="Node2D" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Cursor" type="Node2D" parent="CanvasLayer"]
 script = ExtResource( 10 )
 
-[node name="Boots" type="Sprite" parent="Cursor"]
-scale = Vector2( 0.1, 0.1 )
+[node name="Boots" type="Sprite" parent="CanvasLayer/Cursor"]
+scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 9 )
 
-[node name="Wrench" type="Sprite" parent="Cursor"]
+[node name="Plus" type="Sprite" parent="CanvasLayer/Cursor"]
 visible = false
-scale = Vector2( 0.1, 0.1 )
-texture = ExtResource( 7 )
-
-[node name="Plus" type="Sprite" parent="Cursor"]
-visible = false
-scale = Vector2( 0.1, 0.1 )
+scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 8 )
+
+[node name="Wrench" type="Sprite" parent="CanvasLayer/Cursor"]
+visible = false
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 7 )
