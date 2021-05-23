@@ -33,6 +33,10 @@ const MODULES = {
 	'generator_module': {
 		'tscn': preload("res://Machine/Modules/GeneratorModule.tscn"),
 		'connections': []
+	},
+	'drill_module': {
+		'tscn': preload("res://Machine/Modules/DrillModule.tscn"),
+		'connections': ['down']
 	}
 }
 
@@ -73,9 +77,9 @@ func _input(event):
 #		var idx = getLocalMouseIdx()
 #		detachModule(idx, true)
 		
-#	if event.is_action_pressed("num8"):
-#		var idx = getLocalMouseIdx()
-#		damageModuleOnLocalIdx(idx, 1.0)
+	if event.is_action_pressed("num8"):
+		var idx = getLocalMouseIdx()
+		damageModuleOnLocalIdx(idx, 1.0)
 
 ############### Positions and idxes
 	
@@ -182,7 +186,6 @@ func setupPos(globalIdx : Vector2):
 	baseGlobalIdx = globalIdx
 	var pos = level.getPosFromCellIdx(globalIdx)
 	global_position = pos
-#	print(pos)
 	addAvailableIdx(Vector2(0, 0))
 
 func _recalculateViewportSize():
@@ -225,7 +228,7 @@ func isIdxInMachine(globalIdx : Vector2):
 func checkIfIdxAvailable(idx : Vector2):
 	var hashedIdx = hashIdx(idx)
 	return availableIdxes.has(hashedIdx)
-	
+
 func getOffsetsIdForAvailableConnections(moduleId : String, moduleLocalIdx : Vector2, rot := 0):
 	var moduleConnections = MODULES[moduleId].connections
 	var offsetsId = []
@@ -416,7 +419,7 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 
 	modules.add_child(newModule)
 	newModule.position = level.getPosFromCellIdx(localIdx)
-	newModule.setupModule(self, localIdx)
+	newModule.setupModule(self, localIdx, rot)
 	removeAvailableIdx(localIdx)
 	for offsetId in offsetsIdForConnections: 
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)

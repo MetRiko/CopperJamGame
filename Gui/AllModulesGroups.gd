@@ -31,9 +31,9 @@ const ALL_MODULES_GROUPS = [
 			},
 			{
 				'name': "Drill",
-				'moduleId': "drill",
+				'moduleId': "drill_module",
 				'frameId':14,
-				'tooltip': "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat eros a aliquet lobortis. Mauris viverra mauris urna, vitae rhoncus elit fermentum id.",
+				'tooltip': "To jest wiertło",
 				'cost': 10,
 				'state':true
 			},
