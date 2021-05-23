@@ -14,8 +14,8 @@ const INSTRUCTIONS_ORDER = []
 func _ready():
 	_setupNode("pylon_module", self, INSTRUCTIONS, INSTRUCTIONS_ORDER)
 
-func setupModule(machine, localIdx):
-	.setupModule(machine, localIdx)
+func setupModule(machine, localIdx, rot):
+	.setupModule(machine, localIdx, rot)
 	pylonIdxes = getPylonIdxes()
 
 func _process(delta):

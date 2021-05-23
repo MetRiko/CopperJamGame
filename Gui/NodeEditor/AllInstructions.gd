@@ -48,5 +48,13 @@ const ALL_INSTRUCTIONS = {
 	'is_diode_off': {
 		'frameId': 37,
 		'name': 'is_diode_off'
+	},
+	'turn_on_drill': {
+		'frameId': 46,
+		'name': 'Turn on drill'
+	},
+	'turn_off_drill': {
+		'frameId': 47,
+		'name': 'Turn off drill'
 	}
 }

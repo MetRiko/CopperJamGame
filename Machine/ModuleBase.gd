@@ -16,6 +16,8 @@ var _rotation := 0
 var _moduleId := ''
 var _healthController = null
 
+var _rot := 0
+
 const OFFSETS = [
 	Vector2(0, -1),
 	Vector2(1, 0),
@@ -62,7 +64,7 @@ func rotateModuleC(node):
 # Getters
 
 func getForwardVector():
-	return OFFSETS[_rotation % 4]
+	return OFFSETS[_rot % 4]
 
 func getInstructions():
 	return _instructions
@@ -74,7 +76,7 @@ func getModuleId():
 	return _moduleId
 
 func getCurrentRotation():
-	return _rotation
+	return _rot
 
 func getMachine():
 	return _machine
@@ -125,9 +127,10 @@ func _createHealthController():
 	_healthController.global_position.x += 32.0 * 0.5
 	_healthController.connect("no_health", self, "onNoHealth")
 
-func setupModule(machine, localIdx):
+func setupModule(machine, localIdx, rot):
 	self._localIdx = localIdx
 	self._machine = machine
+	self._rot = rot
 	_createHealthController()
 	
 func callInstruction(instructionId):
