@@ -27,7 +27,6 @@ tracks/1/keys = {
 }
 
 [node name="Player" type="Node2D"]
-position = Vector2( 96, 128 )
 script = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]

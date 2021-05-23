@@ -14,8 +14,9 @@ texture = ExtResource( 1 )
 region_rect = Rect2( 108, 0, 54, 54 )
 
 [node name="InstructionsButtons" type="HBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 104.0
+margin_bottom = 32.0
+mouse_filter = 2
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -24,8 +25,8 @@ __meta__ = {
 [node name="InstructionButton" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 32.0
-margin_bottom = 40.0
+margin_right = 51.2
+margin_bottom = 51.2
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
@@ -34,9 +35,9 @@ custom_styles/normal = SubResource( 2 )
 [node name="InstructionButton2" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 36.0
-margin_right = 68.0
-margin_bottom = 40.0
+margin_left = 55.0
+margin_right = 106.2
+margin_bottom = 51.2
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
@@ -45,9 +46,9 @@ custom_styles/normal = SubResource( 2 )
 [node name="InstructionButton3" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 40.0
+margin_left = 110.0
+margin_right = 161.2
+margin_bottom = 51.2
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )

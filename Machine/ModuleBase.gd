@@ -26,9 +26,9 @@ const OFFSETS = [
 # Animations
 
 func playAnimationPulse(node):
-	_tween.interpolate_property(node, "global_scale", Vector2(1.0, 1.0), Vector2(1.4, 1.4), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+	_tween.interpolate_property(node, "scale", Vector2(0.125, 0.125), Vector2(0.125 * 1.3, 0.125 * 1.3), 0.3, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
-	_tween.interpolate_property(node, "global_scale", Vector2(1.4, 1.4), Vector2(1.0, 1.0), 0.2, Tween.TRANS_SINE, Tween.EASE_IN)
+	_tween.interpolate_property(node, "scale", Vector2(0.125 * 1.3, 0.125 * 1.3), Vector2(0.125, 0.125), 0.3, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
 
 func playAnimationRotate(node, startRot, targetRot):

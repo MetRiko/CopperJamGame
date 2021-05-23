@@ -28,20 +28,23 @@ func moveLeft():
 	var dir = Vector2(-1, 0)
 	if getMachine().canMove(dir):
 		playAnimationPulse($Sprite)
-		playAnimationRotateC($Sprite)
+#		playAnimationRotateC($Sprite)
 		getMachine().move(dir)
 	
 func moveRight():
 	var dir = Vector2(1, 0)
 	if getMachine().canMove(dir):
+		playAnimationPulse($Sprite)
 		getMachine().move(dir)
 
 func moveUp():
 	var dir = Vector2(0, -1)
 	if getMachine().canMove(dir):
+		playAnimationPulse($Sprite)
 		getMachine().move(dir)
 		
 func moveDown():
 	var dir = Vector2(0, 1)
 	if getMachine().canMove(dir):
+		playAnimationPulse($Sprite)
 		getMachine().move(dir)
