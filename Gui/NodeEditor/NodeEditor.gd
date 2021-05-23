@@ -24,7 +24,7 @@ func _selectMachine(machine):
 	if selectedMachine != machine:
 		if selectedMachine != null:
 			selectedMachine.disconnect("module_removed", self, "onModuleRemoved")
-			selectedMachine.connect("machine_removed", self, "onMachineRemoved")
+			selectedMachine.disconnect("machine_removed", self, "onMachineRemoved")
 		if machine != null:
 			machine.connect("module_removed", self, "onModuleRemoved")
 			machine.connect("machine_removed", self, "onMachineRemoved")

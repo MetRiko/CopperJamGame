@@ -41,8 +41,8 @@ func _process(delta):
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
 		
 		if state == 2 or state == 0:
-			if not is_instance_valid(currentHoveredModule):
-				currentHoveredModule = null
+#			if not is_instance_valid(currentHoveredModule):
+#				currentHoveredModule = null
 			if hoveredMachine != null:
 				var hoveredModule = hoveredMachine.getModuleFromLocalIdx(hoveredMachine.getLocalMouseIdx())
 				if currentHoveredModule != hoveredModule:
@@ -56,8 +56,8 @@ func _process(delta):
 					currentHoveredModule.modulate = Color.white
 				currentHoveredModule = null
 
-		if not is_instance_valid(currentHoveredMachine):
-			currentHoveredMachine = null
+#		if not is_instance_valid(currentHoveredMachine):
+#			currentHoveredMachine = null
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
 				if state == 0 or state == 2:
