@@ -45,17 +45,25 @@ func _process(delta):
 		
 	
 func onButtonsInstructionsChange(newButtonsInstructions, module):
-	instructionsButtons.setButtons(newButtonsInstructions)
+	
+	var noConditions = []
+	for instruction in newButtonsInstructions:
+		if not instruction.has('condition') or instruction['condition'] == false:
+			noConditions.append(instruction)
+	
+	print(noConditions)
+	
+	instructionsButtons.setButtons(noConditions)
 	
 	instructionsButtons.connectButtons(self, "onButtonClick")
 	currentModule = module
-	if module == null or newButtonsInstructions.size() == 0:
+	if module == null or noConditions.size() == 0:
 		visible = false
 	else:
 		visible = true
 #		rect_global_position = Vector2(10, 10)
 #		rect_global_position = module.global_position - Vector2(859.0 * 0.125 * 0.5 - 32.0 * 0.5, -10.0)
-		buttonsCount = newButtonsInstructions.size()
+		buttonsCount = noConditions.size()
 	
 #	if newButtonsInstructions.size() > 0:
 #		sizeChanged = true

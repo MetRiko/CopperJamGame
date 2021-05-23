@@ -43,10 +43,12 @@ const ALL_INSTRUCTIONS = {
 	},
 	'is_diode_on': {
 		'frameId': 45,
-		'name': 'is_diode_on'
+		'name': 'is_diode_on',
+		'condition': true
 	},
 	'is_diode_off': {
 		'frameId': 44,
-		'name': 'is_diode_off'
+		'name': 'is_diode_off',
+		'condition': true
 	}
 }
