@@ -17,7 +17,6 @@ const data = preload("res://Gui/AllModulesGroups.gd").ALL_MODULES_GROUPS
 func _ready():
 	get_node("Control").set_visible(false)
 	copperAmmount = 200
-	$MiedzCounter/Label.set_text(str(copperAmmount))
 	var groupId = 0
 	for tab in tabCont.get_children():
 		var buttonId = 0
@@ -46,6 +45,10 @@ func button_enter(groupId, buttonId):
 		if data[groupId].elements[buttonId].tooltip != null:
 			$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
 
+func addCopper(copperValue):
+	print(copperValue)
+	copperAmmount += copperValue
+	$MiedzCounter/Label.text = str(copperAmmount)
 
 func button_exit(groupId, buttonId):
 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"

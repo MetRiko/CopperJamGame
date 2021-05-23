@@ -22,5 +22,8 @@ func moveForward():
 	var result = .moveForward()
 	
 	if result.success == false:
-		Game.level.removeObstacle(result.targetCellIdx)
-		playAnimationPulse($Sprite)
+		if Game.level.getCopperValueOnIdx(result.targetCellIdx) != null:
+			var copperValue = Game.level.getCopperValueOnIdx(result.targetCellIdx)
+			Game.level.removeObstacle(result.targetCellIdx)
+			Game.gui_addCopper(copperValue)
+			playAnimationPulse($Sprite)

@@ -18,7 +18,7 @@ func _ready():
 	$Particles2D.emitting = false
 
 ##############  Module base - END
-
+onready var gui = Game.gui
 onready var level = Game.level
 
 var drillOn = false
@@ -46,6 +46,8 @@ func onBeat(a, b):
 	if drillOn == true:
 		_animateDrill()
 		var obstacleGlobalIdx = getForwardVector() + getGlobalIdx()
-		print(obstacleGlobalIdx)
 		if level.isObstacle(obstacleGlobalIdx):
+			var copperValue = level.getCopperValueOnIdx(obstacleGlobalIdx)
+			if copperValue != null:
+				gui.addCopper(copperValue)
 			level.removeObstacle(obstacleGlobalIdx)

@@ -37,6 +37,9 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 theme = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="Sprite" parent="MiedzCounter"]
 texture = ExtResource( 1 )
@@ -54,8 +57,6 @@ grow_horizontal = 2
 grow_vertical = 2
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "
-"
 __meta__ = {
 "_edit_use_anchors_": false
 }

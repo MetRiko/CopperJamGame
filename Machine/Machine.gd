@@ -37,6 +37,14 @@ const MODULES = {
 	'drill_module': {
 		'tscn': preload("res://Machine/Modules/DrillModule.tscn"),
 		'connections': ['down']
+	},
+	'vertical_module': {
+		'tscn': preload("res://Machine/Modules/VerticalModule.tscn"),
+		'connections': ['left', 'right', 'up', 'down']
+	},
+	'horizontal_module': {
+		'tscn': preload("res://Machine/Modules/HorizontalModule.tscn"),
+		'connections': ['left', 'right', 'up', 'down']
 	}
 }
 

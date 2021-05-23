@@ -18,7 +18,7 @@ const ALL_MODULES_GROUPS = [
 				'moduleId' : "dpad_module",
 				'frameId':4,
 				'tooltip' : "To jest moduł ruchu w czterech kierunkach",
-				'cost': 10,
+				'cost': 50,
 				'state':true
 			},
 			{
@@ -46,14 +46,6 @@ const ALL_MODULES_GROUPS = [
 				'state':true
 			},
 			{
-				'name': "Pylon", 
-				'moduleId' : "pylon_module",
-				'frameId':43,
-				'tooltip': "To jest pylon zwiększający zasięg pracy maszyny",
-				'cost': 30,
-				'state':true
-			},
-			{
 				'name': "Generator", 
 				'moduleId' : "generator_module",
 				'frameId':33,
@@ -62,27 +54,33 @@ const ALL_MODULES_GROUPS = [
 				'state':true
 			},
 			{
-				'name': "Turret", 
-				'moduleId' : "turret",
-				'frameId':null,
-				'state':false
+				'name': "Vertical", 
+				'moduleId' : "vertical_module",
+				'frameId':2,
+				'tooltip': "To jest moduł ruchu pionowego",
+				'cost': 25,
+				'state':true
 			},
 			{
-				'name': "Tank", 
-				'moduleId' : "tank",
-				'frameId':null,
-				'state':false
-			}
+				'name': "Horizontal", 
+				'moduleId' : "horizontal_module",
+				'frameId':3,
+				'tooltip': "To jest moduł ruchu poziomego",
+				'cost': 25,
+				'state':true
+			},
 		]
 	},
 	{
 		'groupName': "Group 2",
 		'elements': [
 			{
-				'name': "Tank",
-				'moduleId' : "turret",
-				'frameId':null,
-				'state':false
+				'name': "Pylon", 
+				'moduleId' : "pylon_module",
+				'frameId':43,
+				'tooltip': "To jest pylon zwiększający zasięg pracy maszyny",
+				'cost': 30,
+				'state':true
 			},
 			{
 				'name': "Turret",
