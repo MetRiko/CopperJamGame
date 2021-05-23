@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
 [ext_resource path="res://Levels/FogOfWar.gd" type="Script" id=3]
-[ext_resource path="res://Entities/Drill.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Levels/Level.gd" type="Script" id=5]
 [ext_resource path="res://Entities/Enemy.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Pathfinding.gd" type="Script" id=7]
@@ -55,8 +54,6 @@ vframes = 6
 frame = 16
 
 [node name="Entities" type="Node2D" parent="."]
-
-[node name="Drill" parent="Entities" instance=ExtResource( 4 )]
 
 [node name="Enemy" parent="Entities" instance=ExtResource( 6 )]
 

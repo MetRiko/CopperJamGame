@@ -2,6 +2,8 @@ extends Node2D
 
 class_name ModuleBase
 
+const healthControllerTscn = preload("res://Machine/ModuleHealthController.tscn")
+
 var _machine = null
 var _localIdx := Vector2()
 
@@ -12,6 +14,7 @@ var _instructionsOrder = []
 
 var _rotation := 0
 var _moduleId := ''
+var _healthController = null
 
 const OFFSETS = [
 	Vector2(0, -1),
@@ -84,16 +87,49 @@ func getGlobalIdx():
 
 # Core
 
+func doDamage(value):
+	_healthController.doDamage(value)
+	playAnimationPulse($Sprite)
+
 #func getPossibleConnectionsIdxex():
 
 func isConditionInstruction(instructionId):
 	var instruction = _instructions.get(instructionId)
 	return instruction != null and instruction.has('conditionFunctionName')
 
+func onNoHealth():
+	_machine.detachModule(_localIdx, true)
+
+func clearBeforeFree():
+	if is_instance_valid(_healthController):
+		_healthController.queue_free()
+#	_tween.interpolate_property($Sprite, 'global_rotation_degrees', global_rotation_degrees, global_rotation_degrees + 720.0, 0.8, Tween.TRANS_SINE, Tween.EASE_OUT)
+#	_tween.start()
+#	_tween.interpolate_property($Sprite, 'global_scale', global_scale, Vector2(0, 0), 0.8, Tween.TRANS_SINE, Tween.EASE_OUT)
+#	_tween.start()
+
+	_tween.interpolate_property($Sprite, 'global_scale', $Sprite.global_scale, Vector2(1.2, 1.2), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+	_tween.start()
+	_tween.interpolate_property($Sprite, 'modulate', $Sprite.modulate, Color(3.0, 3.0, 3.0, 1.0), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+	_tween.start()
+	yield(_tween, "tween_completed")
+	_tween.interpolate_property($Sprite, 'modulate', $Sprite.modulate, Color(0.0, 0.0, 0.0, 0.0), 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
+	_tween.start()
+	_tween.interpolate_property($Sprite, 'global_scale', $Sprite.global_scale, Vector2(0.0, 0.0), 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
+	_tween.start()
+
+func _createHealthController():
+	_healthController = healthControllerTscn.instance()
+	_machine.healthControllers.add_child(_healthController)
+	_healthController.position = position
+	_healthController.global_position.x += 32.0 * 0.5
+	_healthController.connect("no_health", self, "onNoHealth")
+
 func setupModule(machine, localIdx):
 	self._localIdx = localIdx
 	self._machine = machine
-
+	_createHealthController()
+	
 func callInstruction(instructionId):
 	var instruction = _instructions.get(instructionId)
 	if instruction != null:

@@ -185,7 +185,8 @@ func removeNodesRelatedToModule(moduleLocalIdx):
 		if node.instructionId != 'node_start' and node.instructionId != 'node_end':
 			if node.moduleLocalIdx == moduleLocalIdx:
 				var hashedIdx = machine.hashIdx(node.editorIdx)
-				removeNode(node.editorIdx)
+				addNode('missing_instruction', node.editorIdx, moduleLocalIdx, {})
+#				removeNode(node.editorIdx)
 
 func removeNode(editorIdx : Vector2):
 	var hashedEditorIdx = machine.hashIdx(editorIdx)
@@ -224,7 +225,7 @@ func addNode(instructionId : String, editorIdx : Vector2, moduleLocalIdx : Vecto
 		return nodeData
 
 func justCallInstruction(localModuleIdx, instructionId):
-	if instructionId == 'nop':
+	if instructionId == 'nop' or instructionId == 'missing_instruction':
 		return true
 	var module = machine.getModuleFromLocalIdx(localModuleIdx)
 	if module != null:

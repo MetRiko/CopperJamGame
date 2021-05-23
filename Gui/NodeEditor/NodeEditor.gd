@@ -24,8 +24,10 @@ func _selectMachine(machine):
 	if selectedMachine != machine:
 		if selectedMachine != null:
 			selectedMachine.disconnect("module_removed", self, "onModuleRemoved")
+			selectedMachine.connect("machine_removed", self, "onMachineRemoved")
 		if machine != null:
 			machine.connect("module_removed", self, "onModuleRemoved")
+			machine.connect("machine_removed", self, "onMachineRemoved")
 	selectedMachine = machine
 
 func selectModule(machine, moduleLocalIdx):
@@ -77,6 +79,11 @@ func getSelectedModule():
 		var module = selectedMachine.getModuleFromLocalIdx(selectedModuleLocalIdx)
 		return module
 	return null
+
+func onMachineRemoved(removedMachine):
+	if selectedMachine == removedMachine:
+		selectedMachine = null
+		selectModule(null, Vector2())
 
 func onModuleRemoved(machine, moduleLocalIdx, module):
 	if machine == selectedMachine and selectedModuleLocalIdx == moduleLocalIdx:

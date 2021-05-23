@@ -1,11 +1,13 @@
 extends Node2D
 
 signal module_removed
+signal machine_removed
 
 onready var level = Game.level
 
 onready var modules = $VC/Viewport/Modules
 onready var processor = $Processor
+onready var healthControllers = $HealthControllers
 
 const MODULES = {
 	'dpad_module': {
@@ -50,6 +52,9 @@ var availableIdxes := {} #local
 var baseModule = null
 var baseGlobalIdx := Vector2()
 
+var removeMachine = false
+var modulesQueuedToRemove = []
+
 func _input(event):
 	if event.is_action_pressed("ui_up"):
 		justCallInstruction(Vector2(0, 0), 'move_up')
@@ -59,6 +64,14 @@ func _input(event):
 		justCallInstruction(Vector2(0, 0), 'move_left')
 	if event.is_action_pressed("ui_right"):
 		justCallInstruction(Vector2(0, 0), 'move_right')
+		
+#	if event.is_action_pressed("num7"):
+#		var idx = getLocalMouseIdx()
+#		detachModule(idx, true)
+		
+#	if event.is_action_pressed("num8"):
+#		var idx = getLocalMouseIdx()
+#		damageModuleOnLocalIdx(idx, 1.0)
 
 ############### Positions and idxes
 	
@@ -126,7 +139,35 @@ func getModuleFromLocalIdx(localIdx):
 		return module.module
 	return null
 	
+############### Health
+
+func damageModuleOnLocalIdx(localIdx, damageValue):
+	var hashedLocalIdx = hashIdx(localIdx)
+	var module = installedModules.get(hashedLocalIdx)
+	if module != null:
+		module.module.doDamage(damageValue)
+	else:
+		push_error("Module doesn't exist") 
+
 ############### Core
+	
+var clearingState = 0
+	
+func _process(delta):
+	if not modulesQueuedToRemove.empty() and clearingState == 0:
+		if removeMachine == true:
+			$CoreBorder.visible = false
+		clearingState = 1
+		for module in modulesQueuedToRemove:
+			module.clearBeforeFree()
+		yield(get_tree().create_timer(0.8), "timeout")
+		for module in modulesQueuedToRemove:
+			module.queue_free()
+		modulesQueuedToRemove = []
+		_recalculateViewportSize()
+		clearingState = 0
+		if removeMachine == true:
+			queue_free()
 	
 func _ready():
 	$VC.material = $VC.material.duplicate()
@@ -217,9 +258,11 @@ func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot :
 func canDetachModule(localIdx : Vector2):
 	if installedModules.size() == 0:
 		return false
+	if localIdx == Vector2(0, 0):
+		return false
 	if installedModules.size() == 1 and installedModules.values()[0].localIdx == localIdx:
 		return true
-		
+	
 	var modulesChecked = {}
 	var firstModuleIdx = installedModules.values()[0].localIdx
 	if firstModuleIdx == localIdx:
@@ -260,11 +303,14 @@ func recalculateAvailableIdxes():
 				newAvailableIdxes[hashedIdx] = idx
 	self.availableIdxes = newAvailableIdxes
 
-func detachModule(localIdx : Vector2):
+func detachModule(localIdx : Vector2, forceDetach = false):
 	if not canDetachModule(localIdx):
-		printerr("Cannot detach this module!")
-		push_error("Cannot detach this module!")
-		return 
+		if forceDetach == true:
+			_forceDetach(localIdx)
+			return
+		else:
+			push_error("Cannot detach module!")
+			return 
 	
 	
 	var hashedLocalIdx = hashIdx(localIdx)
@@ -275,13 +321,67 @@ func detachModule(localIdx : Vector2):
 	
 	processor.removeNodesRelatedToModule(localIdx)
 	emit_signal("module_removed", self, localIdx, moduleData.module)
-	moduleData.module.queue_free()
+	modulesQueuedToRemove.append(moduleData.module)
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
+
+func getFloodedModulesWithoutOne(beginLocalIdx : Vector2, ignoreIdx : Vector2):
+	var hashedIgnoreIdx = hashIdx(ignoreIdx)
+	var hashedIdx = hashIdx(beginLocalIdx)
+	var module = installedModules[hashedIdx]
+	var floodedModules = {}
+	floodedModules[hashedIdx] = module
+	_getFloodedModulesWithoutOne(module, hashedIgnoreIdx, floodedModules)
+	return floodedModules
 	
-	_recalculateViewportSize()
+func _getFloodedModulesWithoutOne(module, hashedIgnoreIdx, floodedModules):
 	
+	var OFFSETS = [
+		Vector2(0, -1),
+		Vector2(1, 0),
+		Vector2(0, 1),
+		Vector2(-1, 0)
+	]
 	
+	for offset in OFFSETS:
+		var idx = offset + module.localIdx
+		if module.availableIdxes.has(idx):
+			var hashedIdx = hashIdx(offset + module.localIdx)
+			if hashedIdx != hashedIgnoreIdx:
+				var installedModule = installedModules.get(hashedIdx)
+				if not floodedModules.has(hashedIdx) and installedModule != null:
+					floodedModules[hashedIdx] = installedModule
+					_getFloodedModulesWithoutOne(installedModule, hashedIgnoreIdx, floodedModules)
+
+func _forceDetach(localIdx : Vector2):
+	
+	var hashedLocalIdx = hashIdx(localIdx)
+	if not installedModules.has(hashedLocalIdx):
+		return
+		
+	var modulesToRemove = []
+	if localIdx != Vector2(0, 0):
+		var modulesConnectedToCore = getFloodedModulesWithoutOne(Vector2(0, 0), localIdx)
+		for moduleId in installedModules.keys():
+			if not modulesConnectedToCore.has(moduleId):
+				var moduleToRemove = installedModules[moduleId]
+				var moduleToRemoveLocalIdx = moduleToRemove.localIdx
+				processor.removeNodesRelatedToModule(moduleToRemoveLocalIdx)
+				modulesToRemove.append(moduleToRemove)
+	else:
+		modulesToRemove = installedModules.values()
+	
+	for moduleToRemove in modulesToRemove:
+		emit_signal("module_removed", self, moduleToRemove.localIdx, moduleToRemove.module)
+		modulesQueuedToRemove.append(moduleToRemove.module)
+		installedModules.erase(hashIdx(moduleToRemove.localIdx))
+	
+	if localIdx == Vector2(0, 0):
+		emit_signal("machine_removed", self)
+		removeMachine = true
+		return
+		
+	recalculateAvailableIdxes()
 	
 
 func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
@@ -311,8 +411,8 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 	}
 
 	modules.add_child(newModule)
-	newModule.setupModule(self, localIdx)
 	newModule.position = level.getPosFromCellIdx(localIdx)
+	newModule.setupModule(self, localIdx)
 	removeAvailableIdx(localIdx)
 	for offsetId in offsetsIdForConnections: 
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)

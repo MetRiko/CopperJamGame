@@ -15,7 +15,7 @@ func _ready():
 	Game.beatController.connect("beat", self, "_onBeat")
 	
 func _onBeat(currentBeat, beats):
-	playAnimation()
+	playAnimationPulse($Sprite)
 
 func moveForward():
 	var result = .moveForward()
@@ -23,4 +23,4 @@ func moveForward():
 	if result.success == false:
 		Game.tilemap.set_cell(result.targetCellIdx.x, result.targetCellIdx.y, 1)
 		Game.tilemap.get_node("FogOfWar").revealTerrain(result.targetCellIdx)
-		playAnimation()
+		playAnimationPulse($Sprite)

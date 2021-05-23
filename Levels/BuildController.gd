@@ -41,12 +41,14 @@ func _process(delta):
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)
 		
 		if state == 2 or state == 0:
+			if not is_instance_valid(currentHoveredModule):
+				currentHoveredModule = null
 			if hoveredMachine != null:
 				var hoveredModule = hoveredMachine.getModuleFromLocalIdx(hoveredMachine.getLocalMouseIdx())
 				if currentHoveredModule != hoveredModule:
 					if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
 						currentHoveredModule.modulate = Color.white
-					if hoveredModule != currentSelectedModule:
+					if hoveredModule != null and hoveredModule != currentSelectedModule:
 						hoveredModule.modulate = Color.yellow
 					currentHoveredModule = hoveredModule
 			else:
@@ -54,6 +56,8 @@ func _process(delta):
 					currentHoveredModule.modulate = Color.white
 				currentHoveredModule = null
 
+		if not is_instance_valid(currentHoveredMachine):
+			currentHoveredMachine = null
 		if currentHoveredMachine != hoveredMachine:
 			if hoveredMachine != null:
 				if state == 0 or state == 2:
@@ -69,8 +73,10 @@ func setCurrentEditingMachine(nextMachine):
 	if currentEditingMachine != nextMachine:
 		if currentEditingMachine != null:
 			currentEditingMachine.disconnect("module_removed", self, "onModuleRemoved")
+			currentEditingMachine.disconnect("machine_removed", self, "onMachineRemoved")
 		if nextMachine != null:
 			nextMachine.connect("module_removed", self, "onModuleRemoved")
+			nextMachine.connect("machine_removed", self, "onMachineRemoved")
 	currentEditingMachine = nextMachine
 
 func selectModule(module):
@@ -89,6 +95,13 @@ func selectModule(module):
 			currentSelectedModule = null
 		state = 0
 		hide_gui()
+
+func onMachineRemoved(machine):
+	if machine == currentHoveredMachine:
+		currentHoveredMachine = null
+	if machine == currentEditingMachine or not is_instance_valid(currentEditingMachine):
+		currentEditingMachine = null
+		state = 0
 
 func _unhandled_input(event):
 	if entityData != null:
@@ -120,9 +133,7 @@ func _unhandled_input(event):
 		if event.is_action_pressed("RMB"):
 			changeState(0)
 
-
 	elif state == 2:
-
 		
 		if event.is_action_pressed("LMB"):
 			if entityData != null:
@@ -131,6 +142,8 @@ func _unhandled_input(event):
 				entityData = null
 				$Sprite.visible = false
 			else:
+				if not is_instance_valid(currentSelectedModule):
+					currentSelectedModule = null
 				selectModule(currentHoveredModule)
 
 		if event.is_action_pressed("RMB"):
@@ -156,19 +169,20 @@ func _draw():
 		drawCursorSquare(Color(0,0,1,0.8))
 	if state == 2:
 		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
-		var posit = currentEditingMachine.getAvailableGlobalFreeSlots()
-		if posit.has(level.getCellIdxFromMousePos()):
-			drawCursorSquare(Color(1,0,0,0.8))
-		for slot in posit:
-			var vec = level.getPosFromCellIdx(slot)
-			draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.3))
-		drawAllowedSides()
+		if currentEditingMachine != null:
+			var posit = currentEditingMachine.getAvailableGlobalFreeSlots()
+			if posit.has(level.getCellIdxFromMousePos()):
+				drawCursorSquare(Color(1,0,0,0.8))
+			for slot in posit:
+				var vec = level.getPosFromCellIdx(slot)
+				draw_circle((vec+(tilemap.cell_size/2)),5,Color(1,0,0,0.3))
+			drawAllowedSides()
 
 func onModuleRemoved(machine, moduleLocalIdx, module):
-	if currentHoveredModule != null and currentHoveredModule == module:
+	if currentHoveredModule == module or not is_instance_valid(currentHoveredModule):
 		currentHoveredModule = null
-	if currentSelectedModule == module:
-		currentHoveredModule = null
+	if currentSelectedModule == module or not is_instance_valid(currentSelectedModule):
+		currentSelectedModule = null
 		selectModule(null)
 
 func changeTargetModule():

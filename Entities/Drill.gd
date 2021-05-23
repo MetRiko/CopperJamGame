@@ -23,4 +23,4 @@ func moveForward():
 	
 	if result.success == false:
 		Game.level.removeObstacle(result.targetCellIdx)
-		playAnimation()
+		playAnimationPulse($Sprite)

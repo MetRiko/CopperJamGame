@@ -46,13 +46,16 @@ func _updateRotation(currRot, targetRot):
 		targetRot = -90
 	$Tween.interpolate_property($Sprite, "global_rotation_degrees", currRot, targetRot, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
-	playAnimation()
+	playAnimationPulse($Sprite)
 
 func moveForward():
 	return move(MOVES[currentRotation])
 
-func playAnimation():
-	$Anim.play("Move", -1, 5.0)
+func playAnimationPulse(node):
+	$Tween.interpolate_property(node, "global_scale", Vector2(1.0, 1.0), Vector2(1.4, 1.4), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.start()
+	$Tween.interpolate_property(node, "global_scale", Vector2(1.4, 1.4), Vector2(1.0, 1.0), 0.2, Tween.TRANS_SINE, Tween.EASE_IN)
+	$Tween.start()
 
 func move(offset : Vector2):
 	
@@ -72,7 +75,7 @@ func move(offset : Vector2):
 	var targetPos = getCellPos(currentCellIdx)
 	$Tween.interpolate_property(self, "global_position", global_position, targetPos, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
-	playAnimation()
+	playAnimationPulse($Sprite)
 	
 	return {
 		success = true, 

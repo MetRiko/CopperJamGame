@@ -206,13 +206,16 @@ func _process(delta):
 			gizmoSprite.modulate = Color('#2aceab')
 			gizmoSprite.modulate.a = 1.0
 			gizmoSprite.visible = true
-		elif nodeEditor.selectedMachine != null and nodeEditor.selectedMachine.getProcessor().getNodeFromEditorIdx(currentGizmoIdx) != null:
-			gizmoSprite.modulate = Color('#ceab2a')
-			gizmoSprite.modulate.a = 1.0
-			gizmoSprite.visible = true
-			gizmoSprite.frame = 0
 		else:
-			gizmoSprite.visible = false
+			if not is_instance_valid(nodeEditor.selectedMachine):
+				nodeEditor.selectedMachine = null
+			if nodeEditor.selectedMachine != null and nodeEditor.selectedMachine.getProcessor().getNodeFromEditorIdx(currentGizmoIdx) != null:
+				gizmoSprite.modulate = Color('#ceab2a')
+				gizmoSprite.modulate.a = 1.0
+				gizmoSprite.visible = true
+				gizmoSprite.frame = 0
+			else:
+				gizmoSprite.visible = false
 		
 	else:
 		currentGizmoIdx = null

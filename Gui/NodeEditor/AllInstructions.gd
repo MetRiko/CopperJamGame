@@ -5,6 +5,10 @@ const ALL_INSTRUCTIONS = {
 		'frameId': 0,
 		'name': 'Empty instruction'
 	},
+	'missing_instruction': {
+		'frameId': 16,
+		'name': 'Missing instruction'
+	},
 	'node_start': {
 		'frameId': 2,
 		'name': 'Node start'

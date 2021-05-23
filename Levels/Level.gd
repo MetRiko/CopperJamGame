@@ -82,7 +82,7 @@ func _input(event):
 		createEntity('drill', getCellIdxFromMousePos())
 	if event.is_action_pressed("num5"):
 		createEntity('generator', getCellIdxFromMousePos())
-		
+
 	if event.is_action_pressed("x"): #just remove tile
 		var cellIdx := getCellIdxFromMousePos()
 		var cell : = getCellType(cellIdx)
