@@ -3,8 +3,15 @@ extends Resource
 
 const ALL_MODULES_GROUPS = [
 	{
-		'groupName': "Group 1",
 		'elements': [
+			{
+				'name': "Generator", 
+				'moduleId' : "generator_module",
+				'frameId':33,
+				'tooltip': "To jest generator, po jego zniszczeniu przegrasz grę",
+				'cost': 0,
+				'state':true
+			},
 			{
 				'name': "Pusty moduł",
 				'moduleId' : "empty_module",
@@ -26,7 +33,7 @@ const ALL_MODULES_GROUPS = [
 				'moduleId' : "diode_module",
 				'frameId':10,
 				'tooltip' : "To jest dioda",
-				'cost': 10,
+				'cost': 15,
 				'state':true
 			},
 			{
@@ -34,7 +41,7 @@ const ALL_MODULES_GROUPS = [
 				'moduleId': "drill_module",
 				'frameId':14,
 				'tooltip': "To jest wiertło",
-				'cost': 10,
+				'cost': 20,
 				'state':true
 			},
 			{
@@ -42,15 +49,7 @@ const ALL_MODULES_GROUPS = [
 				'moduleId' : "turret_module",
 				'frameId':18,
 				'tooltip': "To jest wieżyczka",
-				'cost': 15,
-				'state':true
-			},
-			{
-				'name': "Generator", 
-				'moduleId' : "generator_module",
-				'frameId':33,
-				'tooltip': "To jest generator, po jego zniszczeniu przegrasz grę",
-				'cost': 0,
+				'cost': 20,
 				'state':true
 			},
 			{
@@ -69,11 +68,6 @@ const ALL_MODULES_GROUPS = [
 				'cost': 25,
 				'state':true
 			},
-		]
-	},
-	{
-		'groupName': "Group 2",
-		'elements': [
 			{
 				'name': "Pylon", 
 				'moduleId' : "pylon_module",
@@ -93,12 +87,7 @@ const ALL_MODULES_GROUPS = [
 				'moduleId' : "turret",
 				'frameId':null,
 				'state':false
-			}
-		]
-	},
-	{
-		'groupName': "Group 3",
-		'elements': [
+			},
 			{
 				'name': "Tank",
 				'moduleId' : "turret",

@@ -205,9 +205,11 @@ func changeState(stateNum: int):
 
 func hide_gui():
 	gui.get_node("Control").set_visible(false)
+	gui.get_node("ColorRect").set_visible(false)
 
 func show_gui():
 	gui.get_node("Control").set_visible(true)
+	gui.get_node("ColorRect").set_visible(true)
 
 func machine_mode():
 	if state == 1:

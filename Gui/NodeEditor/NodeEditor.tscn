@@ -1,9 +1,14 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Gui/NodeEditor/NodeEditor.gd" type="Script" id=1]
 [ext_resource path="res://Gui/NodeEditor/InstructionsButtons.tscn" type="PackedScene" id=2]
+[ext_resource path="res://res/background_programming.png" type="Texture" id=3]
 [ext_resource path="res://Gui/NodeEditor/Editor.gd" type="Script" id=4]
 [ext_resource path="res://res/action_blocks.png" type="Texture" id=5]
+[ext_resource path="res://res/przycisk_stop.png" type="Texture" id=6]
+[ext_resource path="res://res/przycisk_granie.png" type="Texture" id=7]
+[ext_resource path="res://res/przycisk_stop2.png" type="Texture" id=8]
+[ext_resource path="res://res/restart.png" type="Texture" id=9]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -13,7 +18,7 @@
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
-[sub_resource type="Theme" id=6]
+[sub_resource type="Theme" id=5]
 Button/colors/font_color = Color( 0, 0, 0, 1 )
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -441,15 +446,53 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
-[sub_resource type="StyleBoxEmpty" id=7]
+[sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 7 )
+region_rect = Rect2( 0, 0, 78, 78 )
 
-[sub_resource type="StyleBoxEmpty" id=8]
+[sub_resource type="StyleBoxTexture" id=7]
+texture = ExtResource( 7 )
+region_rect = Rect2( 0, 0, 78, 78 )
 
-[sub_resource type="StyleBoxEmpty" id=9]
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 7 )
+region_rect = Rect2( 0, 0, 78, 78 )
 
-[sub_resource type="StyleBoxEmpty" id=10]
+[sub_resource type="StyleBoxTexture" id=9]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 79, 78 )
 
-[sub_resource type="StyleBoxEmpty" id=5]
+[sub_resource type="StyleBoxTexture" id=10]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 79, 78 )
+
+[sub_resource type="StyleBoxTexture" id=11]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 79, 78 )
+
+[sub_resource type="StyleBoxTexture" id=12]
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 78, 78 )
+
+[sub_resource type="StyleBoxTexture" id=13]
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 78, 78 )
+
+[sub_resource type="StyleBoxTexture" id=14]
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 78, 78 )
+
+[sub_resource type="StyleBoxTexture" id=15]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 79, 78 )
+
+[sub_resource type="StyleBoxTexture" id=16]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 79, 78 )
+
+[sub_resource type="StyleBoxTexture" id=17]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 79, 78 )
 
 [node name="NodeEditor" type="Control"]
 anchor_right = 1.0
@@ -460,11 +503,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="."]
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.784314 )
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -416.0
+margin_right = 6.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -416.0
+margin_top = -16.0
+margin_bottom = -16.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -472,126 +530,86 @@ __meta__ = {
 [node name="Margin" type="MarginContainer" parent="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = -14.0
-margin_bottom = -10.0
+margin_left = 20.0
+margin_top = 38.0
+margin_right = -20.0
+margin_bottom = -20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
-margin_right = 392.0
-margin_bottom = 790.0
+margin_right = 376.0
+margin_bottom = 752.0
 custom_constants/separation = 0
 
 [node name="InstructionsButtons" parent="Panel/Margin/VBox" instance=ExtResource( 2 )]
-margin_right = 392.0
-margin_bottom = 51.0
+margin_right = 376.0
+margin_bottom = 45.0
 
 [node name="InstructionsButtons2" parent="Panel/Margin/VBox" instance=ExtResource( 2 )]
-margin_top = 51.0
-margin_right = 392.0
-margin_bottom = 102.0
+margin_top = 45.0
+margin_right = 376.0
+margin_bottom = 90.0
 alignment = 2
 
-[node name="ColorRect" type="ColorRect" parent="Panel/Margin/VBox"]
-margin_top = 102.0
-margin_right = 392.0
-margin_bottom = 106.0
-rect_min_size = Vector2( 0, 4 )
-color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
-
 [node name="Toolbar" type="HBoxContainer" parent="Panel/Margin/VBox"]
-margin_top = 106.0
-margin_right = 392.0
-margin_bottom = 170.0
+margin_top = 90.0
+margin_right = 376.0
+margin_bottom = 154.0
 custom_constants/separation = 0
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 68.0
-margin_right = 132.0
+margin_left = 60.0
+margin_right = 124.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 focus_mode = 0
-theme = SubResource( 6 )
+theme = SubResource( 5 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 
-[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/PlayButton"]
-scale = Vector2( 0.25, 0.25 )
-texture = ExtResource( 5 )
-centered = false
-hframes = 7
-vframes = 7
-frame = 19
-
 [node name="PauseButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 132.0
-margin_right = 196.0
+margin_left = 124.0
+margin_right = 188.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 focus_mode = 0
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/focus = SubResource( 9 )
-custom_styles/disabled = SubResource( 10 )
-custom_styles/normal = SubResource( 5 )
-
-[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/PauseButton"]
-scale = Vector2( 0.25, 0.25 )
-texture = ExtResource( 5 )
-centered = false
-hframes = 7
-vframes = 7
-frame = 33
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 
 [node name="RestartButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 196.0
-margin_right = 260.0
+margin_left = 188.0
+margin_right = 252.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 focus_mode = 0
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/focus = SubResource( 9 )
-custom_styles/disabled = SubResource( 10 )
-custom_styles/normal = SubResource( 5 )
-
-[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/RestartButton"]
-scale = Vector2( 0.25, 0.25 )
-texture = ExtResource( 5 )
-centered = false
-hframes = 7
-vframes = 7
-frame = 40
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
 
 [node name="StopButton" type="Button" parent="Panel/Margin/VBox/Toolbar"]
-margin_left = 260.0
-margin_right = 324.0
+margin_left = 252.0
+margin_right = 316.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/focus = SubResource( 9 )
-custom_styles/disabled = SubResource( 10 )
-custom_styles/normal = SubResource( 5 )
-
-[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Toolbar/StopButton"]
-scale = Vector2( 0.25, 0.25 )
-texture = ExtResource( 5 )
-centered = false
-hframes = 7
-vframes = 7
-frame = 26
+custom_styles/hover = SubResource( 15 )
+custom_styles/pressed = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
 
 [node name="Editor" type="ColorRect" parent="Panel/Margin/VBox"]
-margin_top = 170.0
-margin_right = 392.0
-margin_bottom = 790.0
+anchor_top = -0.00132979
+anchor_bottom = -0.00132979
+margin_top = 154.0
+margin_right = 376.0
+margin_bottom = 752.0
 rect_clip_content = true
 size_flags_vertical = 3
 color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )

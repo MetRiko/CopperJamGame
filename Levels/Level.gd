@@ -21,8 +21,8 @@ onready var halfCellSize = cellSize * 0.5
 
 const WALL = [4,5,6,7,8,9,10]
 const COPPER = [11,12,13,14]
-const DARK_FLOOR = [15, 23, 24, 25]
-const FLOOR = [16, 26, 27, 28]
+const DARK_FLOOR = [16, 26, 27, 28]
+const FLOOR = [15, 23, 24, 25]
 
 const COPPER_VALUES = [1, 2, 3, 4]
 

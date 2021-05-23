@@ -15,9 +15,9 @@ region_rect = Rect2( 512, 0, 256, 256 )
 [node name="InstructionButton" type="Button"]
 anchor_right = 0.036
 anchor_bottom = 0.063
-margin_right = -0.640003
-margin_bottom = 0.169998
-rect_min_size = Vector2( 51.2, 51.2 )
+margin_right = -6.84
+margin_bottom = -6.03
+rect_min_size = Vector2( 45, 45 )
 focus_mode = 0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
@@ -28,8 +28,8 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 9.53674e-07, 9.53674e-07 )
-scale = Vector2( 0.2, 0.2 )
+position = Vector2( 9.53674e-07, -0.14865 )
+scale = Vector2( 0.175612, 0.175612 )
 texture = ExtResource( 2 )
 centered = false
 hframes = 7
