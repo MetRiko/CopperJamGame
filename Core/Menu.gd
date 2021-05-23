@@ -48,7 +48,7 @@ func start_game():
 	visible = false
 	gui.visible = true
 	#$KGHM.visible = false
-	beatController.setPause(false)
+#	beatController.setPause(false)
 
 func restart():
 	#get_node("TextureRect").visible = false

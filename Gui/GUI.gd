@@ -59,10 +59,11 @@ func button_pressed(groupId, buttonId):
 			emit_signal("module_button_pressed", moduleData)
 		$Control/VBoxContainer/ColorRect/Tooltip.text = "Insufficient cost"
 
-func button_pause():
-	if beatController.isPaused() == false:
-		pauseMenu.visible = true
-		beatController.setPause(true)
+#func button_pause():
+#
+#	if beatController.isPaused() == false:
+#		pauseMenu.visible = true
+#		beatController.setPause(true)
 
 func build_mode():
 	level.get_node("Controllers/BuildController").hide_gui()
