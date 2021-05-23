@@ -49,7 +49,7 @@ func _process(delta):
 					if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
 						currentHoveredModule.modulate = Color.white
 					if hoveredModule != null and hoveredModule != currentSelectedModule:
-						hoveredModule.modulate = Color(1.1, 1.1, 1.1, 1.0)
+						hoveredModule.modulate = Color(1.2, 1.2, 1.2, 1.0)
 					currentHoveredModule = hoveredModule
 			else:
 				if currentHoveredModule != null and currentHoveredModule != currentSelectedModule:
@@ -165,9 +165,9 @@ func _draw():
 #			elif level.isObstacle(idx) == false && level.getMachineFromIdx(idx) != null: 
 #				draw_rect(Rect2(level.getPosFromCellIdx(idx)-Vector2(1.5,1.5),level.getCellSize() + Vector2(4.0,4.0)),Color(0,1,1,0.8),false,1,false)
 		if currentHoveredMachine == null:
-			drawCursorSquare(Color(0,1,0,0.8))
+			drawCursorSquare(Color(0.0,0.5,0.5,0.2))
 	if state == 1:
-		drawCursorSquare(Color(0,0,1,0.8))
+		drawCursorSquare(Color(0.5,0,0.5,0.8))
 	if state == 2:
 		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(level.getCellSize())
 		if currentEditingMachine != null:
@@ -219,8 +219,8 @@ func clear_target():
 	targetBackup = null
 
 func drawCursorSquare(col: Color):
-		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(level.getCellSize())
-		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.5,false)
+		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(level.getCellSize()) + Vector2(4,4)
+		draw_rect(Rect2(pos,Vector2(24,24)),col,true, 1.5,false)
 
 func drawAllowedSides():
 	var colorOfLine = Color(0.5, 0.5, 1, 0.9)
