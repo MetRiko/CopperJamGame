@@ -35,16 +35,16 @@ func _ready():
 		
 		
 
-func pause_menu_button_pressed(numOfButton):
-	if numOfButton == 0:
-		print("resuming")
-		resume()
-	elif numOfButton == 1:
-		print("restarting")
-		Game.menu.restart()
-	elif numOfButton == 2:
-		print("exiting to menu")
-		exit_to_menu()
+#func pause_menu_button_pressed(numOfButton):
+#	if numOfButton == 0:
+#		print("resuming")
+#		resume()
+#	elif numOfButton == 1:
+#		print("restarting")
+#		Game.menu.restart()
+#	elif numOfButton == 2:
+#		print("exiting to menu")
+#		exit_to_menu()
 		
 func resume():
 	get_node(".").visible = false

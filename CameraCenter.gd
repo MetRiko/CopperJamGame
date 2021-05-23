@@ -17,7 +17,7 @@ func _ready():
 
 func get_input(delta):
 	#if menu.gameStarted == true:
-		if beatController.isPaused() == false:
+#		if beatController.isPaused() == false:
 			
 			var dir = Vector2()
 			
@@ -36,5 +36,5 @@ func get_input(delta):
 
 func _physics_process(delta):
 	get_input(delta)
-	if beatController.isPaused() == false:
-		move_and_slide(velocity)
+#	if beatController.isPaused() == false:
+	move_and_slide(velocity)

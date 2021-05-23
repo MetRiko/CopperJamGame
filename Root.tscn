@@ -74,3 +74,5 @@ texture = ExtResource( 11 )
 hframes = 4
 vframes = 4
 frame = 10
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

@@ -57,7 +57,7 @@ scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 4 )
 hframes = 7
 vframes = 7
-frame = 11
+frame = 18
 
 [node name="Entities" type="Node2D" parent="."]
 
