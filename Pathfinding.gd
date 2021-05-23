@@ -3,6 +3,7 @@ extends Node2D
 export var drawLines := bool(false)
 
 onready var tilemap = Game.tilemap
+onready var level = Game.level
 
 var astar = AStar2D.new()
 const BASE_LINE_WIDTH = 1.0
@@ -118,9 +119,9 @@ func _draw():
 		var point_start = _point_path[0]
 		var point_end = _point_path[len(_point_path) - 1]
 
-		var last_point = tilemap.map_to_world(Vector2(point_start.x, point_start.y)) + _half_cell_size
+		var last_point = level.getPosFromCellIdx(Vector2(point_start.x, point_start.y)) + _half_cell_size
 		for index in range(1, len(_point_path)):
-			var current_point = tilemap.map_to_world(Vector2(_point_path[index].x, _point_path[index].y)) + _half_cell_size
+			var current_point = level.getPosFromCellIdx(Vector2(_point_path[index].x, _point_path[index].y)) + _half_cell_size
 			draw_line(last_point, current_point, DRAW_COLOR, BASE_LINE_WIDTH, true)
 			draw_circle(current_point, BASE_LINE_WIDTH * 2.0, DRAW_COLOR)
 			last_point = current_point

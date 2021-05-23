@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://res/action_blocks.png" type="Texture" id=1]
-[ext_resource path="res://Gui/NodeEditor/InstructionButton.gd" type="Script" id=2]
 [ext_resource path="res://Gui/InstructionsButtons.gd" type="Script" id=3]
 [ext_resource path="res://Gui/NodeEditor/InstructionButton.tscn" type="PackedScene" id=4]
 
@@ -22,43 +21,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InstructionButton" type="Button" parent="." instance=ExtResource( 4 )]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+[node name="InstructionButton" parent="." instance=ExtResource( 4 )]
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
 custom_styles/normal = SubResource( 2 )
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="InstructionButton2" type="Button" parent="." instance=ExtResource( 4 )]
+[node name="InstructionButton2" parent="." instance=ExtResource( 4 )]
 margin_left = 44.0
 margin_right = 84.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
 custom_styles/normal = SubResource( 2 )
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="InstructionButton3" type="Button" parent="." instance=ExtResource( 4 )]
+[node name="InstructionButton3" parent="." instance=ExtResource( 4 )]
 margin_left = 88.0
 margin_right = 128.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
 custom_styles/normal = SubResource( 2 )
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}

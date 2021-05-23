@@ -5,6 +5,7 @@ class_name EntityBase
 signal moved
 
 onready var tilemap = Game.tilemap
+onready var level = Game.level
 
 var currentCellIdx := Vector2()
 
@@ -24,7 +25,7 @@ func getCellIdx(pos : Vector2):
 	return tilemap.world_to_map(pos)
 
 func getCellPos(cellIdx : Vector2):
-	return tilemap.map_to_world(cellIdx)
+	return level.getPosFromCellIdx(cellIdx)
 
 func _ready():
 	currentCellIdx = getCellIdx(global_position)

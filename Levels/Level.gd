@@ -6,6 +6,7 @@ onready var entities = $Entities
 onready var mapGenerator = tilemap.get_node("MapGenerator")
 onready var fogOfWar = tilemap.get_node("FogOfWar")
 onready var pathfinding = tilemap.get_node("Pathfinding")
+onready var machines = $Machines
 
 const machineTscn = preload("res://Machine/Machine.tscn")
 
@@ -75,7 +76,17 @@ func getCellIdxFromPos(pos) -> Vector2:
 	return tilemap.world_to_map(pos)
 	
 func getPosFromCellIdx(cellIdx) -> Vector2:
-	return tilemap.map_to_world(cellIdx)
+	var fixedCellIdx = cellIdx
+
+	fixedCellIdx.x = round(fixedCellIdx.x)
+	fixedCellIdx.y = round(fixedCellIdx.y)
+	
+	var finalPos = fixedCellIdx * cellSize
+	
+	var pos = tilemap.map_to_world(fixedCellIdx)
+	pos.x = round(pos.x - 1)
+	pos.y = round(pos.y)
+	return pos
 
 func _input(event):
 	if event.is_action_pressed("num4"):
@@ -96,15 +107,15 @@ func _input(event):
 
 func createNewMachine(cellIdx : Vector2):
 	var newMachine = machineTscn.instance()
-	$Machines.add_child(newMachine)
-	newMachine.setupPos(cellIdx)
+	machines.add_child(newMachine)
+	newMachine.setupPos(cellIdx)	
 	return newMachine
 
 func createEntity(entityId : String, cellIdx : Vector2, revealTerrain = true):
 	if ENTITIES.has(entityId):
 		var entity = ENTITIES[entityId].instance()
 		entities.add_child(entity)
-		entity.global_position = tilemap.map_to_world(cellIdx)
+		entity.global_position = getPosFromCellIdx(cellIdx)
 		fogOfWar.revealTerrain(cellIdx, revealTerrain)
 		
 func _onChunkGenerated(newCells):

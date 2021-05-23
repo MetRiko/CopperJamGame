@@ -1,5 +1,7 @@
 extends Control
 
+signal buttons_instructions_changed
+
 onready var level = Game.level
 
 onready var editor = $Panel/Margin/VBox/Editor
@@ -59,6 +61,7 @@ func _updateButtons():
 	if module == null:
 		instructionsButtons.setButtons([])
 		instructionsButtons2.setButtons([])
+		emit_signal("buttons_instructions_changed", [], module)
 #		instructionsOrder = []
 #		for button in instructionsButtons.get_children():
 #			button.setInstructionData(null)
@@ -77,6 +80,7 @@ func _updateButtons():
 	
 	instructionsButtons.connectButtons(self, "onInstructionButtonPressed")
 	instructionsButtons2.connectButtons(self, "onInstructionButtonPressed")
+	emit_signal("buttons_instructions_changed", allInstructionsButtons, module)
 	
 #	for i in range(instructionsButtons.get_child_count()):
 #		var button = instructionsButtons.get_child(i)

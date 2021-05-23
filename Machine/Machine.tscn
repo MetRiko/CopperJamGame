@@ -1,23 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Machine/MachineProcessor.gd" type="Script" id=1]
 [ext_resource path="res://Machine/Machine.gd" type="Script" id=2]
 [ext_resource path="res://Machine/MachineMovement.gd" type="Script" id=3]
 [ext_resource path="res://Machine/Modules/DPadModule.tscn" type="PackedScene" id=4]
 [ext_resource path="res://res/machine_parts.png" type="Texture" id=5]
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-void fragment() {
-	
-	vec4 color = textureLod(TEXTURE, UV, 1.0);
-	
-	COLOR.r = 1.0;
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
 
 [sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
@@ -67,7 +54,6 @@ shader_param/width = 0.0
 shader_param/outline_color = Color( 1, 1, 1, 1 )
 
 [node name="Machine" type="Node2D"]
-material = SubResource( 2 )
 script = ExtResource( 2 )
 
 [node name="Movement" type="Node2D" parent="."]

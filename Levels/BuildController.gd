@@ -34,7 +34,7 @@ func _process(delta):
 	var mouseIdx = level.getCellIdxFromMousePos()
 	if entityData != null:
 		if state == 2:
-			$Sprite.global_position = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+			$Sprite.global_position = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 	
 	if currentMouseIdx != mouseIdx:
 		currentMouseIdx = mouseIdx
@@ -155,7 +155,7 @@ func _unhandled_input(event):
 
 func _draw():
 	var mouseIdx = level.getCellIdxFromMousePos()
-	var posOfSprite = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+	var posOfSprite = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 	var hoveredMachine = level.getMachineFromIdx(mouseIdx)
 	if state == 0:
 		for idx in calcRange():
@@ -168,7 +168,7 @@ func _draw():
 	if state == 1:
 		drawCursorSquare(Color(0,0,1,0.8))
 	if state == 2:
-		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
+		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
 		if currentEditingMachine != null:
 			var posit = currentEditingMachine.getAvailableGlobalFreeSlots()
 			if posit.has(level.getCellIdxFromMousePos()):
@@ -218,13 +218,13 @@ func clear_target():
 	targetBackup = null
 
 func drawCursorSquare(col: Color):
-		var pos = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
+		var pos = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position()) - Vector2(1,1)))+Vector2(tilemap.cell_size)
 		draw_rect(Rect2(pos,Vector2(32,32)),col,false, 1.5,false)
 
 func drawAllowedSides():
 	var colorOfLine = Color(0.5, 0.5, 1, 0.9)
 	if entityData != null:
-		var posOfSprite = Vector2(tilemap.map_to_world(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
+		var posOfSprite = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(tilemap.cell_size/2)
 		var lineVectors = currentEditingMachine.getOffsetsIdForAvailableConnections(entityData,posOfSprite,spriteRotation)
 		for offsetsId in lineVectors:
 			if offsetsId == 0:
