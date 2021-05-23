@@ -148,10 +148,10 @@ func _ready():
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
 	
-	var machine = createNewMachine(Vector2(-1, 2))
-	machine.attachModule('dpad_module', Vector2(0, 0))
-	machine.attachModule('empty_module', Vector2(0, 1))
-	machine.attachModule('empty_module', Vector2(1, 1))
+#	var machine = createNewMachine(Vector2(-1, 2))
+#	machine.attachModule('dpad_module', Vector2(0, 0))
+#	machine.attachModule('empty_module', Vector2(0, 1))
+#	machine.attachModule('empty_module', Vector2(1, 1))
 	
 	for entity in $Entities.get_children():
 		entity.setupPosition(entity.global_position)
