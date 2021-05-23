@@ -2,11 +2,11 @@ extends Resource
 
 const ALL_INSTRUCTIONS = {
 	'nop': {
-		'frameId': 2,
+		'frameId': 3,
 		'name': 'Empty instruction'
 	},
 	'missing_instruction': {
-		'frameId': 16,
+		'frameId': 39,
 		'name': 'Missing instruction'
 	},
 	'node_start': {
@@ -34,21 +34,19 @@ const ALL_INSTRUCTIONS = {
 		'name': 'Move down'
 	},	
 	'turn_on_diode': {
-		'frameId': 43,
+		'frameId': 36,
 		'name': 'turn_on_diode'
 	},
 	'turn_off_diode': {
-		'frameId': 42,
+		'frameId': 35,
 		'name': 'turn_off_diode'
 	},
 	'is_diode_on': {
-		'frameId': 45,
-		'name': 'is_diode_on',
-		'condition': true
+		'frameId': 38,
+		'name': 'is_diode_on'
 	},
 	'is_diode_off': {
-		'frameId': 44,
-		'name': 'is_diode_off',
-		'condition': true
+		'frameId': 37,
+		'name': 'is_diode_off'
 	}
 }
