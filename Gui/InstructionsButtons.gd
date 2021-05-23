@@ -20,5 +20,6 @@ func _ready():
 		
 func clearButtons():
 	for button in get_children():
+		remove_child(button)
 		button.queue_free()
 	
