@@ -1,22 +1,32 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Gui/NodeEditor/InstructionButton.gd" type="Script" id=1]
 [ext_resource path="res://res/action_blocks.png" type="Texture" id=2]
-[ext_resource path="res://font/buttonDisappear.tres" type="Theme" id=3]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 2 )
+region_rect = Rect2( 108, 0, 54, 54 )
+modulate_color = Color( 0.678431, 0.65098, 0.882353, 1 )
+
+[sub_resource type="StyleBoxTexture" id=2]
+texture = ExtResource( 2 )
+region_rect = Rect2( 108, 0, 54, 54 )
 
 [node name="InstructionButton" type="Button"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
 focus_mode = 0
-theme = ExtResource( 3 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 1 )
+custom_styles/disabled = SubResource( 2 )
+custom_styles/normal = SubResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.505882, 0.458824, 0.666667, 1 )
 position = Vector2( 20, 20 )
 scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 2 )
