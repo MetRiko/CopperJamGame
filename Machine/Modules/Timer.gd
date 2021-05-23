@@ -13,4 +13,3 @@ func _ready():
 
 func hide():
 	get_parent().visible = true
-	get_parent().visible = true

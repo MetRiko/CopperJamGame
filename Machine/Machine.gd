@@ -29,6 +29,10 @@ const MODULES = {
 	'pylon_module': {
 		'tscn': preload("res://Machine/Modules/PylonModule.tscn"),
 		'connections': []
+	},
+	'generator_module': {
+		'tscn': preload("res://Machine/Modules/GeneratorModule.tscn"),
+		'connections': []
 	}
 }
 

@@ -54,10 +54,12 @@ const ALL_MODULES_GROUPS = [
 				'state':true
 			},
 			{
-				'name': "Tank", 
-				'moduleId' : "tank",
-				'frameId':null,
-				'state':false
+				'name': "Generator", 
+				'moduleId' : "generator_module",
+				'frameId':33,
+				'tooltip': "To jest generator, po jego zniszczeniu przegrasz grę",
+				'cost': 0,
+				'state':true
 			},
 			{
 				'name': "Turret", 
