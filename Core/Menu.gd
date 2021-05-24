@@ -24,7 +24,9 @@ func _ready():
 	start_game()
 	$TextureRect/VBoxContainer/Start.connect("pressed", self, "onStartGame")
 	$TextureRect/VBoxContainer/Quit.connect("pressed", self, "onQuitGame")
-
+	$WindowDialog.queue_free()
+	$TextureRect.queue_free()
+	set_process_input(false)
 
 func main_menu_button_pressed(numOfButton):
 	if numOfButton == 0:
@@ -45,7 +47,9 @@ func onQuitGame():
 
 func start_game():
 	gameStarted = true
-	visible = false
+	$WindowDialog.visible = false
+	$TextureRect.visible = false
+	visible = true
 	gui.visible = true
 	#$KGHM.visible = false
 #	beatController.setPause(false)

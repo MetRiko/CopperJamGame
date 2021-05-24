@@ -7,20 +7,20 @@
 [ext_resource path="res://Core/KGHM.gd" type="Script" id=5]
 [ext_resource path="res://font/OpenSans-Regular.ttf" type="DynamicFontData" id=6]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 26
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 6 )
 
-[sub_resource type="Theme" id=5]
-default_font = SubResource( 4 )
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 3 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=5]
 size = 90
 use_mipmaps = true
 font_data = ExtResource( 4 )
@@ -28,6 +28,7 @@ font_data = ExtResource( 4 )
 [node name="Menu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -38,7 +39,8 @@ visible = true
 self_modulate = Color( 0.423529, 0.545098, 0.588235, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/title_font = SubResource( 2 )
+mouse_filter = 2
+custom_fonts/title_font = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -47,7 +49,7 @@ __meta__ = {
 margin_left = 95.0
 margin_right = 1346.0
 margin_bottom = 583.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "Hello and welcome to the Drillstruct Project. Here, at Drillstruct we simulate the behavior of a person dropped very deep underground. You will be placed about 1300 to 1500 meters deep inside a copper reserve. Show us what you will do! Oh, and for convenience’s sake we removed all the other materials and left little caves for you. You might even encounter some previous participants of our Drillstruct Project, you might not want that though. Well, enjoy spending the rest of your life here. And remember, copper is the future! Well, your future at least…"
 autowrap = true
 
@@ -55,7 +57,7 @@ autowrap = true
 self_modulate = Color( 0.219608, 0.239216, 0.282353, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 5 )
+theme = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -84,7 +86,7 @@ visible = false
 margin_right = 522.0
 margin_bottom = 124.0
 rect_min_size = Vector2( 0, 100 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 5 )
 text = "BuildStruct"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -98,9 +100,9 @@ text = "Start game"
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
-margin_top = 387.0
-margin_right = 462.0
-margin_bottom = 457.0
+margin_top = 385.0
+margin_right = 522.0
+margin_bottom = 455.0
 text = "Options"
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
@@ -110,9 +112,9 @@ margin_bottom = 505.0
 text = "Quit"
 
 [node name="KGHM" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false

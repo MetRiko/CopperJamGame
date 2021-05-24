@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Core/Menu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Core/Camera.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://res/row-1-col-1.png" type="Texture" id=9]
 [ext_resource path="res://Cursor.gd" type="Script" id=10]
 [ext_resource path="res://res/cursors.png" type="Texture" id=11]
+[ext_resource path="res://res/building_music.ogg" type="AudioStream" id=12]
 
 [node name="Root" type="Node2D"]
 script = ExtResource( 5 )
@@ -76,3 +77,4 @@ vframes = 4
 frame = 10
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )

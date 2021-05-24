@@ -25,8 +25,8 @@ __meta__ = {
 [node name="InstructionButton" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 51.2
-margin_bottom = 51.2
+margin_right = 45.0
+margin_bottom = 45.0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
@@ -35,9 +35,9 @@ custom_styles/normal = SubResource( 2 )
 [node name="InstructionButton2" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 55.0
-margin_right = 106.2
-margin_bottom = 51.2
+margin_left = 49.0
+margin_right = 94.0
+margin_bottom = 45.0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )
@@ -46,9 +46,9 @@ custom_styles/normal = SubResource( 2 )
 [node name="InstructionButton3" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 110.0
-margin_right = 161.2
-margin_bottom = 51.2
+margin_left = 98.0
+margin_right = 143.0
+margin_bottom = 45.0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/disabled = SubResource( 2 )

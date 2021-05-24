@@ -9,8 +9,11 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#OS.set_window_fullscreen(!OS.window_fullscreen)
-	var timer = get_node("Timer")
-	timer.connect("timeout", self, "hide_KGHM")
-	timer.start()
-	yield(timer, "timeout")
+#	var timer = get_node("Timer")
+#	timer.connect("timeout", self, "hide_KGHM")
+#	timer.start()
+#	yield(timer, "timeout")
+#	queue_free()
+
+	yield(get_tree().create_timer(5.0), "timeout")
 	queue_free()
