@@ -9,10 +9,10 @@ var isPaused = true
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause") && beatController.isPaused() == false && menu.visible == false:
-		$".".visible = true
+		show()
 		beatController.setPause(true)
 	elif event.is_action_pressed("pause") && beatController.isPaused() == true:
-		$".".visible = false
+		hide()
 		beatController.setPause(false)
 
 #get_tree().quit()
@@ -47,12 +47,12 @@ func _ready():
 #		exit_to_menu()
 		
 func resume():
-	get_node(".").visible = false
+	hide()
 	beatController.setPause(false)
 
 func exit_to_menu():
-	menu.visible = true
-	gui.visible = false
-	get_node(".").visible = false
+	menu.show()
+	gui.hide()
+	hide()
 
 

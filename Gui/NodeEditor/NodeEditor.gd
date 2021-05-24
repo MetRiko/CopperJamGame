@@ -39,13 +39,13 @@ func _selectMachine(machine):
 
 func selectModule(machine, moduleLocalIdx):
 	if machine != null:
-		visible = true
+		show()
 		_selectMachine(machine)
 		selectedModuleLocalIdx = moduleLocalIdx
 		_updateButtons()
 		_updateEditor()
 	else:
-		visible = false
+		hide()
 		_selectMachine(machine)
 		selectedModuleLocalIdx = null
 		_updateButtons()

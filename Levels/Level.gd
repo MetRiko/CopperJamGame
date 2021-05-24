@@ -8,6 +8,8 @@ onready var fogOfWar = tilemap.get_node("FogOfWar")
 onready var pathfinding = tilemap.get_node("Pathfinding")
 onready var machines = $Machines
 
+#onready var buildController = $Controllers/BuildController
+
 const machineTscn = preload("res://Machine/Machine.tscn")
 
 const ENTITIES = {
@@ -27,14 +29,15 @@ const FLOOR = [15, 23, 24, 25]
 
 const COPPER_VALUES = [1, 2, 3, 4]
 
-#func 
-
 func convertDarkFloorCellIdToFloor(cellId):
 	var id = DARK_FLOOR.find(cellId)
 	if id != -1:
 		return FLOOR[id]
 	else:
 		return FLOOR[randi()%FLOOR.size()]
+
+func getBuildController():
+	return $Controllers/BuildController
 
 #func getAnyCopper():
 #	return getRandomInt([11,12,13,14])

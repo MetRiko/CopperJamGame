@@ -129,40 +129,46 @@ __meta__ = {
 }
 
 [node name="Button" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
+margin_right = 95.0
+margin_bottom = 95.0
 
 [node name="Button2" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_left = 68.0
-margin_right = 132.0
+margin_left = 99.0
+margin_right = 194.0
+margin_bottom = 95.0
 
 [node name="Button3" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_left = 136.0
-margin_right = 200.0
+margin_left = 198.0
+margin_right = 293.0
+margin_bottom = 95.0
 
 [node name="Button4" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_left = 204.0
-margin_right = 268.0
+margin_left = 297.0
+margin_right = 392.0
+margin_bottom = 95.0
 
 [node name="Button5" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_top = 34.0
-margin_bottom = 64.0
+margin_top = 99.0
+margin_right = 95.0
+margin_bottom = 194.0
 
 [node name="Button6" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_left = 68.0
-margin_top = 34.0
-margin_right = 132.0
-margin_bottom = 64.0
+margin_left = 99.0
+margin_top = 99.0
+margin_right = 194.0
+margin_bottom = 194.0
 
 [node name="Button7" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_left = 136.0
-margin_top = 34.0
-margin_right = 200.0
-margin_bottom = 64.0
+margin_left = 198.0
+margin_top = 99.0
+margin_right = 293.0
+margin_bottom = 194.0
 
 [node name="Button8" parent="Control/TabContainer/Tabs/GridContainer" instance=ExtResource( 4 )]
-margin_left = 204.0
-margin_top = 34.0
-margin_right = 268.0
-margin_bottom = 64.0
+margin_left = 297.0
+margin_top = 99.0
+margin_right = 392.0
+margin_bottom = 194.0
 
 [node name="Tabs2" type="Tabs" parent="Control/TabContainer"]
 visible = false

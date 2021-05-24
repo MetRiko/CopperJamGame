@@ -2,7 +2,7 @@ extends Node2D
 
 onready var level = Game.level
 
-onready var buildController = level.get_node("Controllers/BuildController")
+onready var buildController = level.getBuildController()
 
 const CURSORS = {
 	0: 0,		# Boots

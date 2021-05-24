@@ -6,12 +6,11 @@ func setInstructionData(instructionData):
 	if instructionData != null:
 		self.instructionData = instructionData
 #		text = instructionData.name
-		disabled = false
-		$Sprite.visible = true
+		show()
 		$Sprite.frame = instructionData.frameId
 	else:
-		disabled = true
-		$Sprite.visible = false
+		hide()
+
 
 func getInstructionData():
 	return instructionData

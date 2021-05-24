@@ -13,7 +13,7 @@ var sizeChanged = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	nodeEditor.connect("buttons_instructions_changed", self, "onButtonsInstructionsChange")
-	visible = false
+	hide()
 	
 #func _process(delta):
 #	if sizeChanged == true:
@@ -44,7 +44,7 @@ func _process(delta):
 	if is_instance_valid(currentModule):
 		rect_global_position = Game.level.getPosFromCellIdx(currentModule.getGlobalIdx()) + Vector2(32.0 * 0.5, -32.0) # - Vector2(859.0 * 0.125 * 0.5 - 32.0 * 0.5, -10.0)
 	else:
-		visible = false
+		hide()
 
 func onButtonsInstructionsChange(newButtonsInstructions, module):
 	
@@ -52,17 +52,15 @@ func onButtonsInstructionsChange(newButtonsInstructions, module):
 	for instruction in newButtonsInstructions:
 		if not instruction.has('condition') or instruction['condition'] == false:
 			noConditions.append(instruction)
-	
-	print(noConditions)
-	
+
 	instructionsButtons.setButtons(noConditions)
 	
 	instructionsButtons.connectButtons(self, "onButtonClick")
 	currentModule = module
 	if module == null or noConditions.size() == 0:
-		visible = false
+		hide()
 	else:
-		visible = true
+		show()
 #		rect_global_position = Vector2(10, 10)
 #		rect_global_position = module.global_position - Vector2(859.0 * 0.125 * 0.5 - 32.0 * 0.5, -10.0)
 		buttonsCount = noConditions.size()

@@ -32,7 +32,7 @@ func build_object(moduleData):
 	moduleDataLocal = moduleData
 	if entityData != null:
 		$Sprite.frame = moduleData.frameId if moduleData.frameId != null else 0
-		$Sprite.visible = true
+		show()
 
 func _process(delta):
 	var mouseIdx = level.getCellIdxFromMousePos()
@@ -132,7 +132,7 @@ func _unhandled_input(event):
 	if state == 1:
 		if event.is_action_pressed("LMB") && pRangeToIdx() == true:
 			show_gui()
-			machine_mode()
+			createNewMachineOnCursor()
 			gui.get_node("ExitBuildMode").set_visible(true)
 			changeState(2)
 	elif state == 1:
@@ -211,16 +211,14 @@ func changeState(stateNum: int):
 		setCurrentEditingMachine(null)
 
 func hide_gui():
-	gui.get_node("Control").set_visible(false)
-	gui.get_node("ColorRect").set_visible(false)
+	gui.hideShop()
 
 func show_gui():
-	gui.get_node("Control").set_visible(true)
-	gui.get_node("ColorRect").set_visible(true)
+	gui.showShop()
 
-func machine_mode():
-	if state == 1:
-		setCurrentEditingMachine(level.createNewMachine(level.getCellIdxFromMousePos()))
+func createNewMachineOnCursor():
+	var newMachine = level.createNewMachine(level.getCellIdxFromMousePos())
+	setCurrentEditingMachine(newMachine)
 
 func clear_target():
 	targetModule.set_modulate(defaultColor)

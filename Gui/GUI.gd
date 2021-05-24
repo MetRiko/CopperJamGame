@@ -6,8 +6,9 @@ signal module_button_pressed
 onready var beatController = Game.beatController
 onready var menu = Game.menu
 onready var tilemap = Game.tilemap
-onready var level = Game.level
+onready var level = get_parent().get_parent()
 onready var pauseMenu = Game.pauseMenu
+onready var buildController = level.getBuildController()
 onready var tabCont = get_node("Control/TextureRect/NinePatchRect/PanelContainer")
 var buttonNum := int()
 var copperAmmount :=int()
@@ -33,8 +34,8 @@ func _ready():
 			button.set_modulate(Color(0.5,0.5,0.5,1))
 		buttonId += 1
 	$Settings.connect("pressed", self, "button_pause")
-	$BuildMode.connect("pressed", self, "build_mode")
-	$ExitBuildMode.connect("pressed", self, "exit_build_mode")
+	$BuildMode.connect("pressed", self, "hideShop")
+	$ExitBuildMode.connect("pressed", self, "showShop")
 #$MiedzCounter/Label.connect("gui_input",self,"copper_counter")
 
 func button_enter(groupId, buttonId):
@@ -65,19 +66,20 @@ func button_pressed(groupId, buttonId):
 #		pauseMenu.visible = true
 #		beatController.setPause(true)
 
-func build_mode():
-	level.get_node("Controllers/BuildController").hide_gui()
-	level.get_node("Controllers/BuildController").changeState(1)
-	get_node("ExitBuildMode").set_visible(false)
+func hideShop():
+	$Control.visible = false
+	$ColorRect.visible = false
+	$ExitBuildMode.visible = false
+	buildController.changeState(1)
 
-func exit_build_mode():
-	level.get_node("Controllers/BuildController").hide_gui()
-	level.get_node("Controllers/BuildController").changeState(0)
-	get_node("ExitBuildMode").set_visible(false)
+func showShop():
+	$Control.visible = true
+	$ColorRect.visible = true
+	$ExitBuildMode.visible = false
+	buildController.changeState(0)
 
 func copper_counter(copperAmmount):
 	$MiedzCounter/Label.set_text(str(copperAmmount))
-
 
 #func lock_shop_item(moduleName: String):
 #	var groupCount = 0
