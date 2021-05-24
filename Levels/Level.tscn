@@ -55,8 +55,8 @@ self_modulate = Color( 1, 1, 1, 0.470588 )
 position = Vector2( 16.9271, 16.4816 )
 scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 4 )
-hframes = 7
 vframes = 7
+hframes = 7
 frame = 11
 
 [node name="Entities" type="Node2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Core/Menu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Core/Camera.tscn" type="PackedScene" id=2]
@@ -6,9 +6,6 @@
 [ext_resource path="res://Levels/Level.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Root.gd" type="Script" id=5]
 [ext_resource path="res://Gui/PauseMenu.tscn" type="PackedScene" id=6]
-[ext_resource path="res://res/row-1-col-4.png" type="Texture" id=7]
-[ext_resource path="res://res/row-1-col-2.png" type="Texture" id=8]
-[ext_resource path="res://res/row-1-col-1.png" type="Texture" id=9]
 [ext_resource path="res://Cursor.gd" type="Script" id=10]
 [ext_resource path="res://res/cursors.png" type="Texture" id=11]
 [ext_resource path="res://res/building_music.ogg" type="AudioStream" id=12]
@@ -51,29 +48,12 @@ visible = false
 [node name="Cursor" type="Node2D" parent="CanvasLayer"]
 script = ExtResource( 10 )
 
-[node name="Boots" type="Sprite" parent="CanvasLayer/Cursor"]
-position = Vector2( 7, 7 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 9 )
-
-[node name="Plus" type="Sprite" parent="CanvasLayer/Cursor"]
-visible = false
-position = Vector2( 7, 7 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 8 )
-
-[node name="Wrench" type="Sprite" parent="CanvasLayer/Cursor"]
-visible = false
-position = Vector2( 10, 10 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 7 )
-
-[node name="Target" type="Sprite" parent="CanvasLayer/Cursor"]
+[node name="Img" type="Sprite" parent="CanvasLayer/Cursor"]
 position = Vector2( 4, 5 )
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 11 )
-hframes = 4
 vframes = 4
+hframes = 4
 frame = 10
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
