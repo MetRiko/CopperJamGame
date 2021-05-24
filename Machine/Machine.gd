@@ -289,7 +289,7 @@ func canDetachModule(localIdx : Vector2):
 	modulesChecked[hashedFirstModuleIdx] = firstModuleIdx
 	_canDetachModule(localIdx, firstModuleIdx, modulesChecked)
 	return modulesChecked.size() == installedModules.size() - 1
-	
+
 func _canDetachModule(ignoredIdx : Vector2, localIdx : Vector2, modulesChecked : Dictionary):
 	var modulesToCheck = [
 		localIdx + OFFSETS[0],

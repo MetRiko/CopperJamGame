@@ -39,7 +39,7 @@ func _process(delta):
 	if entityData != null:
 		if state == 2:
 			$Sprite.global_position = Vector2(level.getPosFromCellIdx(level.getCellIdxFromPos(get_global_mouse_position())))+Vector2(level.getCellSize()/2)
-	
+
 	if currentMouseIdx != mouseIdx:
 		currentMouseIdx = mouseIdx
 		var hoveredMachine = level.getMachineFromIdx(mouseIdx)

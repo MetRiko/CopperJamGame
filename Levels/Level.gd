@@ -143,7 +143,7 @@ func generateChunks(size : int):
 
 func _ready():
 
-	generateChunks(10)
+	generateChunks(5)
 
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()
