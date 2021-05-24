@@ -14,6 +14,8 @@ func _ready():
 #	timer.start()
 #	yield(timer, "timeout")
 #	queue_free()
-
-	yield(get_tree().create_timer(5.0), "timeout")
+	yield(get_tree().create_timer(4.7), "timeout")
+	$Tween.interpolate_property(self, "modulate:a", 1.0, 0.0, 0.3, Tween.TRANS_SINE, Tween.EASE_IN)
+	$Tween.start()
+	yield($Tween, "tween_completed")
 	queue_free()

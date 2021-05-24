@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/plansza_gra.png-54f5babca18d7510f1014254440a34c8.stex"
+path="res://.import/mainmenu_buttons (2).png-3e8fcf3ff325f03c9023cab4c5971b6c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://res/plansza_gra.png"
-dest_files=[ "res://.import/plansza_gra.png-54f5babca18d7510f1014254440a34c8.stex" ]
+source_file="res://res/Menu/mainmenu_buttons (2).png"
+dest_files=[ "res://.import/mainmenu_buttons (2).png-3e8fcf3ff325f03c9023cab4c5971b6c.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

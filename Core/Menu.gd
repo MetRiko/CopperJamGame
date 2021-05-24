@@ -4,6 +4,9 @@ onready var beatController = Game.beatController
 onready var gui = Game.gui
 var gameStarted := false
 
+onready var camera = Game.root.get_node("Camera")
+onready var level = Game.level
+
 const buttonData = [
 	{
 		'name': "Start",
@@ -21,46 +24,28 @@ const buttonData = [
 
 
 func _ready():
-	hide()
-	start_game()
 	$TextureRect/VBoxContainer/Start.connect("pressed", self, "onStartGame")
 	$TextureRect/VBoxContainer/Quit.connect("pressed", self, "onQuitGame")
-
-func main_menu_button_pressed(numOfButton):
-	if numOfButton == 0:
-		print("starting the game")
-		start_game()
-	elif numOfButton == 1:
-		print("no button here")
-		#restart()
-	elif numOfButton == 2:
-		print("exiting")
-		exit_game()
+	camera.disableCamera()
+	level.set_process(false)
+	Game.musicController.enableMainTheme()
+	Game.musicController.enableChillTheme()
 
 func onStartGame():
-	start_game()
+	startGame()
 	
 func onQuitGame():
-	exit_game()
+	exitGame()
 
-func start_game():
+func startGame():
+	Game.musicController.disableMainTheme()
+	camera.enableCamera()
+	level.set_process(true)
 	gameStarted = true
-	$WindowDialog.hide()
-	$TextureRect.hide()
-	show()
 	gui.show()
-#	gui.hide()
-	#$KGHM.visible = false
-#	beatController.setPause(false)
-	queue_free()
+	hide()
+	get_parent().get_parent().set_process(false)
 
-func restart():
-	#get_node("TextureRect").visible = false
-	pass
-
-func exit_game():
+func exitGame():
 	get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 
-#func _unhandled_input(event):
-#	if get_node("TextureRect").visible == false and event.is_action_pressed("pause"):
-#		get_node("TextureRect").visible == true

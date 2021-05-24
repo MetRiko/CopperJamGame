@@ -12,6 +12,12 @@ export (int) var speed = 800
 
 var velocity = Vector2()
 
+func disableCamera():
+	set_physics_process(false)
+
+func enableCamera():
+	set_physics_process(true)
+
 func _ready():
 	speed = 500.0 * sqrt($CameraNode._zoom_level)
 

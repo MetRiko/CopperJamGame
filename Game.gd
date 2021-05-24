@@ -10,4 +10,5 @@ onready var gui = root.get_node("Level/CanvasLayer/GUI")
 onready var menu = root.get_node("MainMenu/Menu")
 onready var pauseMenu = root.get_node("PauseMenu/PauseMenu")
 onready var nodeEditor = root.get_node("Level/CanvasLayer/NodeEditor")
+onready var musicController = root.get_node("MusicController")
 

@@ -17,11 +17,11 @@
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxTexture" id=10]
+[sub_resource type="StyleBoxTexture" id=3]
 texture = ExtResource( 6 )
 region_rect = Rect2( 0, 0, 154, 154 )
 
-[sub_resource type="StyleBoxTexture" id=11]
+[sub_resource type="StyleBoxTexture" id=4]
 texture = ExtResource( 5 )
 region_rect = Rect2( 0, 0, 153, 153 )
 
@@ -29,7 +29,7 @@ region_rect = Rect2( 0, 0, 153, 153 )
 texture = ExtResource( 6 )
 region_rect = Rect2( 0, 0, 154, 154 )
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=6]
 size = 14
 use_mipmaps = true
 font_data = ExtResource( 3 )
@@ -114,8 +114,8 @@ margin_top = -95.5612
 margin_right = 1.00513
 margin_bottom = 4.43884
 rect_min_size = Vector2( 100, 100 )
-custom_styles/hover = SubResource( 10 )
-custom_styles/pressed = SubResource( 11 )
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
 custom_styles/normal = SubResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -275,7 +275,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -49.0
 rect_min_size = Vector2( 5, 0 )
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 text = "Tooltip"
