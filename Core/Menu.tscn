@@ -131,6 +131,7 @@ margin_top = 461.0
 margin_right = 386.5
 margin_bottom = 564.5
 rect_min_size = Vector2( 373.5, 103.5 )
+rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -145,6 +146,7 @@ margin_top = 594.0
 margin_right = 386.5
 margin_bottom = 697.5
 rect_min_size = Vector2( 373.5, 103.5 )
+rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -175,10 +177,12 @@ centered = false
 
 [node name="Tween" type="Tween" parent="KGHM"]
 
-[node name="logo" type="Sprite" parent="."]
+[node name="Logo" type="Sprite" parent="."]
 material = SubResource( 9 )
 position = Vector2( 1056, 224 )
 scale = Vector2( 0.436759, 0.436759 )
 texture = ExtResource( 11 )
+
+[node name="Tween" type="Tween" parent="."]
 
 [editable path="TextureRect/VBoxContainer/Start"]
