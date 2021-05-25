@@ -210,9 +210,17 @@ func _leftClickWhenBuildingState():
 			var module = level.getModuleFromIdx(currentMouseIdx)
 			_selectModule(module)
 
-		# on floor - attach module
+		# on floor - attach module / create new machine
 		elif hoveredObject == HOVERED_JUST_FLOOR:
-			_attachSelectedModule(currentMouseIdx)
+			
+			# not selected module - create new machine
+			if selectedModule == null:
+				_placeNewMachine()
+				_attachSelectedModule(currentMouseIdx)
+				
+			# selected module - attach module
+			else:
+				_attachSelectedModule(currentMouseIdx)
 		
 
 func _rightClickWhenNormalState(): 
@@ -292,6 +300,8 @@ func _selectModule(module):
 		var machine = selectedModule.getMachine()
 		if machine.getModulesCount() == 0:
 			machine.queue_free()
+			
+	_cancelNewMachine()
 		
 	if module != null:
 		module.modulate = Color(1.4, 1.4, 1.4, 1.0)

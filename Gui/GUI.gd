@@ -37,14 +37,27 @@ func onBuildModeButtonToggled(toggled):
 
 # Switching between states
 
+func hideShop():
+	$Tween.interpolate_property(shop, "modulate:a", 1.0, 0.0, 0.12, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.start()
+	yield($Tween, "tween_completed")
+	shop.hide()
+	
+func showShop():
+	shop.show()
+	shop.modulate.a = 0.0
+	$Tween.interpolate_property(shop, "modulate:a", 0.0, 1.0, 0.12, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.start()
+	yield($Tween, "tween_completed")
+
 func onStateChanged(newState):
 	if newState == playerInputController.BUILDING_STATE:
 		buildModeButton.pressed = true
-		shop.show()
+		showShop()
 		buildModeButton.material.set_shader_param("enabled", true)
 	elif newState == playerInputController.NORMAL_STATE:
 		buildModeButton.pressed = false
-		shop.hide()
+		hideShop()
 		buildModeButton.material.set_shader_param("enabled", false)
 
 # Shop

@@ -367,7 +367,7 @@ func detachModule(localIdx : Vector2, forceDetach = false, emitSignal = true):
 		global_position = level.getPosFromCellIdx(baseGlobalIdx)
 	
 	processor.removeNodesRelatedToModule(localIdx)
-	emit_signal("module_removed", self, localIdx, moduleData.module)
+	emit_signal("module_removed", localIdx, moduleData.module)
 	modulesQueuedToRemove.append(moduleData.module)
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
@@ -422,12 +422,12 @@ func _forceDetach(localIdx : Vector2, emitSignal = true):
 		modulesToRemove = installedModules.values()
 	
 	for moduleToRemove in modulesToRemove:
-		emit_signal("module_removed", self, moduleToRemove.localIdx, moduleToRemove.module)
+		emit_signal("module_removed", moduleToRemove.localIdx, moduleToRemove.module)
 		modulesQueuedToRemove.append(moduleToRemove.module)
 		installedModules.erase(hashIdx(moduleToRemove.localIdx))
 	
 	if localIdx == Vector2(0, 0):
-		emit_signal("machine_removed", self)
+		emit_signal("machine_removed")
 		removeMachine = true
 		return
 		

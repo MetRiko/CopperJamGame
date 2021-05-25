@@ -29,10 +29,12 @@ func _ready():
 func onModuleSelected(module):
 	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine) and latestSelectedMachine != module:
 		latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
+		latestSelectedMachine.connect("machine_removed", self, "onMachineRemoved")
 
 	if module != null:
 		latestSelectedMachine = module.getMachine()
 		latestSelectedMachine.connect("machine_state_changed", self, "onMachineStateChanged")
+		latestSelectedMachine.connect("machine_removed", self, "onMachineRemoved")
 		_calculateFreeSlots(latestSelectedMachine)
 
 func onMachineStateChanged():
@@ -56,6 +58,9 @@ func onModuleToAttachChanged(moduleId, rot):
 		if content.moduleId == moduleId:
 			gizmo.frame = content.frameId
 			return
+	
+	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+		_calculateFreeSlots(latestSelectedMachine)
 
 func onHoveredObjectChanged(newHoveredObject):
 	var floorGizmoSize = floorGizmo.get_rect().size * floorGizmo.global_scale
@@ -72,11 +77,14 @@ func onStateChanged(state):
 		if selectedModule != null and is_instance_valid(selectedModule):
 			_calculateFreeSlots(selectedModule.getMachine())
 
+func onMachineRemoved():
+	_calculateFreeSlots(null)
+
 func _calculateFreeSlots(machine):
-	if machine != null:
+	if machine != null and is_instance_valid(machine):
 		freeSlotsIdxes = machine.getAvailableGlobalFreeSlots()
-		if latestSelectedMachine != machine:
-			machine.connect("machine_state_changed", self, "onMachineStateChanged")
+#		if latestSelectedMachine != machine:
+#			machine.connect("machine_state_changed", self, "onMachineStateChanged")
 		latestSelectedMachine = machine
 	else:
 		freeSlotsIdxes = []

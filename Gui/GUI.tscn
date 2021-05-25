@@ -43,11 +43,9 @@ shader_param/enabled = false
 
 [sub_resource type="StyleBoxTexture" id=4]
 texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 155, 154 )
 
 [sub_resource type="StyleBoxTexture" id=5]
 texture = ExtResource( 8 )
-region_rect = Rect2( 0, 0, 155, 154 )
 
 [sub_resource type="StyleBoxTexture" id=6]
 texture = ExtResource( 6 )
@@ -79,11 +77,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Tween" type="Tween" parent="."]
+
 [node name="CopperCounter" type="NinePatchRect" parent="."]
-margin_left = 69.0
-margin_top = 711.0
-margin_right = 253.0
-margin_bottom = 794.0
+margin_left = 125.0
+margin_top = 700.0
+margin_right = 309.0
+margin_bottom = 783.0
 mouse_filter = 0
 texture = ExtResource( 10 )
 patch_margin_left = 20
@@ -135,10 +135,10 @@ __meta__ = {
 [node name="BuildModeButton" type="Button" parent="."]
 self_modulate = Color( 1, 1, 0.996078, 1 )
 material = SubResource( 3 )
-margin_left = 14.0
-margin_top = 720.0
-margin_right = 76.0
-margin_bottom = 782.0
+margin_left = 31.0
+margin_top = 698.0
+margin_right = 111.0
+margin_bottom = 778.0
 focus_mode = 0
 custom_styles/hover = SubResource( 4 )
 custom_styles/pressed = SubResource( 4 )
@@ -169,10 +169,10 @@ __meta__ = {
 [node name="Shop" type="Control" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = -410.0
-margin_right = 2.0
-margin_bottom = -410.0
+margin_left = 10.0
+margin_top = -426.0
+margin_right = 10.0
+margin_bottom = -426.0
 mouse_filter = 1
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -182,10 +182,10 @@ __meta__ = {
 
 [node name="Back" type="NinePatchRect" parent="Shop"]
 self_modulate = Color( 0.815686, 0.815686, 0.815686, 0.784314 )
-margin_left = -4.75
-margin_top = 66.4375
-margin_right = 570.25
-margin_bottom = 341.438
+margin_left = 2.98513
+margin_top = 50.4375
+margin_right = 577.985
+margin_bottom = 325.438
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = ExtResource( 7 )
@@ -199,12 +199,15 @@ __meta__ = {
 }
 
 [node name="Panels" type="Control" parent="Shop"]
-margin_left = 20.0
-margin_top = 98.0
-margin_right = 538.0
-margin_bottom = 311.0
+margin_left = 28.0
+margin_top = 82.0
+margin_right = 546.0
+margin_bottom = 295.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ModulesButtons" type="Control" parent="Shop/Panels"]
 margin_right = 314.0
@@ -296,6 +299,9 @@ margin_left = 318.0
 margin_right = 518.0
 margin_bottom = 171.0
 rect_min_size = Vector2( 200, 150 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Back2" type="NinePatchRect" parent="Shop/Panels/Description"]
 self_modulate = Color( 0.815686, 0.815686, 0.815686, 0.784314 )
