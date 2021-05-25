@@ -45,7 +45,7 @@ func _updateCursor(hoveredObject):
 	if pic.isNormalState():
 		# on module - use
 		if hoveredObject == pic.HOVERED_MODULE:
-			changeCursor(CURSORS.CURSOR)
+			changeCursor(CURSORS.ARROW)
 		# on enemy - target
 		elif hoveredObject == pic.HOVERED_ENEMY:
 			changeCursor(CURSORS.TARGET)

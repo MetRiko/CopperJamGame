@@ -10,11 +10,15 @@ var freeSlotsIdxes = []
 var latestHoveredObject = null
 var possibleConnectionsOffsets = []
 
+var latestModuleIdToAttach = null
+var latestRotModuleToAttach = null
+
 func _ready():
 	playerInputController.connect("module_selected", self, "onModuleSelected")
 	playerInputController.connect("module_to_attach_changed", self, "onModuleToAttachChanged")
 	playerInputController.connect("hovered_object_changed", self, "onHoveredObjectChanged")
 	playerInputController.connect("new_machine_placed", self, "onNewMachinePlaced")
+	playerInputController.connect("state_changed", self, "onStateChanged")
 	
 	onModuleSelected(null)
 	onModuleToAttachChanged(null, 0)
@@ -22,48 +26,68 @@ func _ready():
 
 func onModuleSelected(module):
 	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine) and latestSelectedMachine != module:
-
 		latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
 
 	if module != null:
 		latestSelectedMachine = module.getMachine()
 		latestSelectedMachine.connect("machine_state_changed", self, "onMachineStateChanged")
+		_calculateFreeSlots(latestSelectedMachine)
 
 func onMachineStateChanged():
 	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-		freeSlotsIdxes = latestSelectedMachine.getAvailableGlobalFreeSlots()
+		if latestSelectedMachine.getModulesCount() == 0:
+			freeSlotsIdxes = []
+		else:
+			freeSlotsIdxes = latestSelectedMachine.getAvailableGlobalFreeSlots()
 	else:
 		freeSlotsIdxes = []
-	
 	update()
 
 func onNewMachinePlaced(newMachine):
-	freeSlotsIdxes = newMachine.getAvailableGlobalFreeSlots()
-	if latestSelectedMachine != newMachine:
-		newMachine.getMachine().connect("machine_state_changed", self, "onMachineStateChanged")
-	latestSelectedMachine = newMachine
-	update()
+	_calculateFreeSlots(newMachine)
 
 func onModuleToAttachChanged(moduleId, rot):
-	if moduleId == null:
-		gizmo.visible = false
-		possibleConnectionsOffsets = []
-	else:
-		gizmo.visible = true
-		gizmo.rotation = rot * 90.0
-		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-			possibleConnectionsOffsets = latestSelectedMachine.getOffsetsForAvailableConnections(moduleId, rot)
-		else:
-			possibleConnectionsOffsets = []
-	update()
+	latestModuleIdToAttach = moduleId
+	latestRotModuleToAttach = rot
+	_calculateConnections(moduleId, rot)
 
 func onHoveredObjectChanged(newHoveredObject):
 	var floorGizmoSize = floorGizmo.get_rect().size * floorGizmo.global_scale
 
 	var pos = level.getPosFromCellIdx(playerInputController.getMouseIdx())
-	gizmo.global_position = pos
-	floorGizmo.global_position = pos + level.getHalfCellSize() #level.getCellSize() - floorGizmoSize)
-	print(level.getCellSize() - floorGizmoSize)
+	gizmo.global_position = pos + level.getHalfCellSize()
+	floorGizmo.global_position = pos + level.getHalfCellSize()
+	
+	_calculateConnections(latestModuleIdToAttach, latestRotModuleToAttach)
+
+func onStateChanged(state):
+	if state == playerInputController.BUILDING_STATE:
+		var selectedModule = playerInputController.getSelectedModule()
+		if selectedModule != null and is_instance_valid(selectedModule):
+			_calculateFreeSlots(selectedModule.getMachine())
+
+func _calculateFreeSlots(machine):
+	if machine != null:
+		freeSlotsIdxes = machine.getAvailableGlobalFreeSlots()
+		if latestSelectedMachine != machine:
+			machine.connect("machine_state_changed", self, "onMachineStateChanged")
+		latestSelectedMachine = machine
+	else:
+		freeSlotsIdxes = []
+	update()
+
+func _calculateConnections(moduleId, rot):
+	if moduleId == null:
+		gizmo.visible = false
+		possibleConnectionsOffsets = []
+	else:
+		gizmo.visible = true
+		gizmo.rotation_degrees = rot * 90.0
+		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+			possibleConnectionsOffsets = latestSelectedMachine.getOffsetsForAvailableConnections(moduleId, rot)
+		else:
+			possibleConnectionsOffsets = []
+	update()
 
 func _draw():
 	var radius = 4.0

@@ -173,25 +173,40 @@ func damageModuleOnLocalIdx(localIdx, damageValue):
 		push_error("Module doesn't exist") 
 
 ############### Core
-	
+
 var clearingState = 0
-	
+
 func _process(delta):
-	if not modulesQueuedToRemove.empty() and clearingState == 0:
-		if removeMachine == true:
+	if not modulesQueuedToRemove.empty():
+		for module in modulesQueuedToRemove:
+			module.destroy()
+			modulesQueuedToRemove.erase(module)
+		if installedModules.empty():
 			$CoreBorder.visible = false
-		clearingState = 1
-		for module in modulesQueuedToRemove:
-			module.clearBeforeFree()
-		yield(get_tree().create_timer(0.8), "timeout")
-		for module in modulesQueuedToRemove:
-			module.queue_free()
-		modulesQueuedToRemove = []
+
+#func _process(delta):
+#	if not modulesQueuedToRemove.empty() and clearingState == 0:
+#		if removeMachine == true:
+#			$CoreBorder.visible = false
+#		clearingState = 1
+#		for module in modulesQueuedToRemove:
+#			module.destroy()
+##		yield(get_tree().create_timer(0.8), "timeout")
+##		for module in modulesQueuedToRemove:
+##			module.queue_free()
+#		modulesQueuedToRemove = []
+#		_recalculateViewportSize()
+#		clearingState = 0
+#		if removeMachine == true:
+#			queue_free()
+
+func onModuleDestroyed():
+	if modulesQueuedToRemove.empty():
 		_recalculateViewportSize()
-		clearingState = 0
-		if removeMachine == true:
+		
+		if installedModules.empty():
 			queue_free()
-	
+
 func _ready():
 	$VC.material = $VC.material.duplicate()
 	for module in modules.get_children():
@@ -280,8 +295,12 @@ func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot :
 	var availableConnections = getAvailableConnections(moduleId, moduleLocalIdx, rot)
 	for localIdx in availableConnections:
 		var hashedLocalIdx = hashIdx(localIdx)
-		if installedModules.get(hashedLocalIdx) != null:
-			return true
+		var module = installedModules.get(hashedLocalIdx)
+		if module != null:
+			var freeSlotsFromModule = module.availableIdxes
+			for freeSlotIdx in freeSlotsFromModule:
+				if freeSlotIdx == moduleLocalIdx:
+					return true
 	return false
 
 func canDetachModule(localIdx : Vector2):
@@ -442,13 +461,15 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = 
 		'module': newModule,
 		'localIdx': localIdx,
 		'rot': rot,
-		'availableConnections': availableConnections,
-		'availableIdxes': availableIdxes
+		'availableConnections': availableConnections, # offsets
+		'availableIdxes': availableIdxes # offsets
 	}
 
 	modules.add_child(newModule)
 	newModule.position = level.getPosFromCellIdx(localIdx)
 	newModule.setupModule(self, localIdx, rot)
+	newModule.connect("module_destroyed", self, "onModuleDestroyed")
+
 	removeAvailableIdx(localIdx)
 	for offsetId in offsetsIdForConnections: 
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)

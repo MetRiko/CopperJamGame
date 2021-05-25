@@ -2,6 +2,8 @@ extends Node2D
 
 class_name ModuleBase
 
+signal module_destroyed
+
 const healthControllerTscn = preload("res://Machine/ModuleHealthController.tscn")
 
 var _machine = null
@@ -102,24 +104,29 @@ func isConditionInstruction(instructionId):
 func onNoHealth():
 	_machine.detachModule(_localIdx, true)
 
-func clearBeforeFree():
+func destroy():
+#	var pos = global_position
+	Game.level.moveObjectToDestroyedObjects(self)
+	global_position = Game.level.getPosFromCellIdx(getGlobalIdx())
+	
 	if is_instance_valid(_healthController):
 		_healthController.queue_free()
-#	_tween.interpolate_property($Sprite, 'global_rotation_degrees', global_rotation_degrees, global_rotation_degrees + 720.0, 0.8, Tween.TRANS_SINE, Tween.EASE_OUT)
-#	_tween.start()
-#	_tween.interpolate_property($Sprite, 'global_scale', global_scale, Vector2(0, 0), 0.8, Tween.TRANS_SINE, Tween.EASE_OUT)
-#	_tween.start()
 
 	_tween.interpolate_property($Sprite, 'global_scale', $Sprite.global_scale, Vector2(0.125 * 1.2, 0.125 * 1.2), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
 	_tween.interpolate_property($Sprite, 'modulate', $Sprite.modulate, Color(3.0, 3.0, 3.0, 1.0), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
 	yield(_tween, "tween_completed")
+	
 	_tween.interpolate_property($Sprite, 'modulate', $Sprite.modulate, Color(0.0, 0.0, 0.0, 0.0), 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
 	_tween.interpolate_property($Sprite, 'global_scale', $Sprite.global_scale, Vector2(0.0, 0.0), 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
-
+	yield(_tween, "tween_all_completed")
+	
+	emit_signal("module_destroyed")
+	queue_free()
+	
 func _createHealthController():
 	_healthController = healthControllerTscn.instance()
 	_machine.healthControllers.add_child(_healthController)

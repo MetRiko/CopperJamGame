@@ -72,7 +72,6 @@ func move(offset : Vector2):
 	machine.baseGlobalIdx.x += offset.x
 	machine.baseGlobalIdx.y += offset.y
 	var targetPos = level.getPosFromCellIdx(machine.baseGlobalIdx)
-	print(targetPos)
 	_playMoveAnimation(targetPos)
 	
 	return {

@@ -48,6 +48,13 @@ func getPlayerInputController():
 #func getFloors():
 #	return [15, 16]
 
+func moveObjectToDestroyedObjects(node):
+	var pos = node.global_position
+	node.get_parent().remove_child(node)
+	$DestroyedObjects.add_child(node)
+#	node.position = Vector2(0.0, 0.0)
+	node.global_position = pos
+
 func putFloor(cellIdx):
 #	var x = int(cellIdx.x + cellIdx.y + 10000000) % 2
 #	tilemap.set_cell(cellIdx.x, cellIdx.y, FLOOR[x])
@@ -192,11 +199,6 @@ func getPosFromCellIdx(cellIdx) -> Vector2:
 	return pos
 
 func _input(event):
-	if event.is_action_pressed("num4"):
-		createEntity('drill', getCellIdxFromMousePos())
-	if event.is_action_pressed("num5"):
-		createEntity('generator', getCellIdxFromMousePos())
-
 	if event.is_action_pressed("x"): #just remove tile
 		var cellIdx := getCellIdxFromMousePos()
 		var cell : = getCellType(cellIdx)

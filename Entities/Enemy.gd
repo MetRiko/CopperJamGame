@@ -53,7 +53,6 @@ func calculateBestPath():
 	
 	var paths = []
 	for moduleIdx in machinesRandomIdxes:
-		print(currentCellIdx, moduleIdx)
 		var path = pathfinding.pathfind(currentCellIdx, moduleIdx)	
 		paths.append(path)
 	
