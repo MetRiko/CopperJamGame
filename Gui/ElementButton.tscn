@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://res/machine_parts.png" type="Texture" id=1]
-[ext_resource path="res://Gui/ElementButton.gd" type="Script" id=2]
-[ext_resource path="res://res/button_background.png" type="Texture" id=3]
+[ext_resource path="res://Gui/ModuleButton.gd" type="Script" id=2]
+[ext_resource path="res://res/Gui/button_background.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 3 )
@@ -16,7 +16,7 @@ region_rect = Rect2( 0, 0, 91, 91 )
 texture = ExtResource( 3 )
 region_rect = Rect2( 0, 0, 91, 91 )
 
-[node name="Button" type="Button"]
+[node name="ModuleButton" type="Button"]
 self_modulate = Color( 1, 1, 1, 0.196078 )
 margin_right = 90.0
 margin_bottom = 90.0
@@ -29,7 +29,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="Sprite" parent="."]
+[node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 48, 48 )
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 1 )

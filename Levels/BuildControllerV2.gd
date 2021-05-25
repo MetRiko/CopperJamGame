@@ -5,6 +5,104 @@ onready var level = Game.level
 onready var gui = Game.gui
 onready var nodeEditor = Game.nodeEditor
 
+enum {
+	NORMAL_STATE,
+	NEW_MACHINE_STATE,
+	BUILDING_STATE
+}
+
+var state := NORMAL_STATE
+
+var currentHoveredModuleIdx = Vector2()
+var currentHoveredEnemyIdx = Vector2()
+var currentSelectedModuleIdx = Vector2()
+var isHoveredObstacle = false
+var currentMouseIdx = Vector2(-100, -100)
+
+func switchToNewMachineState():
+	state = NEW_MACHINE_STATE
+
+func switchToWalkingState():
+	state = NORMAL_STATE
+
+# Logic
+
+func _ready():
+	Game.beatController.connect("beat", self, "onBeat")
+
+func _process(delta):
+	_updateHoveredData()
+
+func onBeat():
+	_updateHoveredData()
+
+func _updateHoveredData():
+	var mouseIdx = level.getCellIdxFromMousePos()
+	if mouseIdx != currentMouseIdx:
+		_changeCurrentMouseIdx(mouseIdx)
+
+func _changeCurrentMouseIdx(mouseIdx):
+	currentMouseIdx = mouseIdx
+	
+	var machine = level.getMachineFromIdx(mouseIdx)
+	if machine != null:
+		currentHoveredModuleIdx = mouseIdx
+	
+	var enemy = level.getEntityFromIdx(mouseIdx)
+	if enemy != null:
+		currentHoveredEnemyIdx = mouseIdx
+
+	isHoveredObstacle = level.isObstacle(mouseIdx)
+
+############### Player input
+
+func _unhandled_input(event):
+	if event.is_action_pressed("LMB"):
+		if state == NORMAL_STATE:
+			_leftClickWhenNormalState()
+		elif state == NEW_MACHINE_STATE:
+			_leftClickWhenNewMachineState()
+		elif state == BUILDING_STATE:
+			_leftClickWhenBuildingState()
+
+	if event.is_action_pressed("RMG"):
+		if state == NORMAL_STATE:
+			_rightClickWhenNormalState()
+		elif state == NEW_MACHINE_STATE:
+			_rightClickWhenNewMachineState()
+		elif state == BUILDING_STATE:
+			_rightClickWhenBuildingState()
+
+func _leftClickWhenNormalState():
+	if isHoveredObstacle == true:
+		pass
+	elif currentHoveredModuleIdx != null:
+		selectModule(currentHoveredModuleIdx)
+
+func _leftClickWhenNewMachineState():
+	pass
+
+func _leftClickWhenBuildingState():
+	pass
+
+func _rightClickWhenNormalState():
+	pass
+
+func _rightClickWhenNewMachineState():
+	pass
+
+func _rightClickWhenBuildingState():
+	pass
+	
+############### Actions
+
+func selectModule(idx):
+
+# Render 
+
+
+
+
 var state := 0
 var currentEditingMachine = null
 export var playerBuildRange := 180.0

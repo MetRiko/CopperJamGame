@@ -1,17 +1,41 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
 [ext_resource path="res://Levels/FogOfWar.gd" type="Script" id=3]
 [ext_resource path="res://res/machine_parts.png" type="Texture" id=4]
 [ext_resource path="res://Levels/Level.gd" type="Script" id=5]
+[ext_resource path="res://Levels/BuildingRenderer.gd" type="Script" id=6]
 [ext_resource path="res://Pathfinding.gd" type="Script" id=7]
 [ext_resource path="res://Entities/Player.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Levels/BuildController.gd" type="Script" id=9]
+[ext_resource path="res://Levels/PlayerInputController.gd" type="Script" id=9]
 [ext_resource path="res://Gui/NodeEditor/NodeEditor.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Gui/ModuleUI.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Levels/EntitySpawner.gd" type="Script" id=12]
 [ext_resource path="res://Gui/GUI.tscn" type="PackedScene" id=13]
+[ext_resource path="res://res/floor_cursor.png" type="Texture" id=14]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void fragment() {
+	vec4 stex = textureLod(SCREEN_TEXTURE, SCREEN_UV, 1.0);
+	vec4 tex = textureLod(TEXTURE, UV, 1.0);
+	
+	float m1 = ((sin(TIME * 3.0 + (UV.x + UV.y) * 4.0) + 1.0) * 0.5) * 1.0;
+	float m2 = ((cos(TIME * 3.0 - (UV.x + UV.y) * 4.0) + 1.0) * 0.5) * 1.0;
+	
+	vec4 c = stex;
+	
+	c.g += c.g * (pow(tex.r, 4.0) * tex.a * pow((m1), 2.2)) * 0.8;
+	c.b -= c.b * (pow(tex.r, 4.0) * tex.a * pow((m2), 2.2)) * 0.8;
+	c.r += c.r * (pow(tex.r, 4.0) * tex.a * pow((m2 + m1), 2.2)) * 0.8;
+	
+	COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
@@ -19,7 +43,6 @@ script = ExtResource( 5 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GUI" parent="CanvasLayer" instance=ExtResource( 13 )]
-visible = false
 margin_left = 0.0
 margin_right = 0.0
 
@@ -27,6 +50,8 @@ margin_right = 0.0
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2( 0.125, 0.125 )
+z_index = -1
+z_as_relative = false
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 256, 256 )
 format = 1
@@ -44,21 +69,6 @@ script = ExtResource( 7 )
 [node name="EntitySpawner" type="Node" parent="TileMap"]
 script = ExtResource( 12 )
 
-[node name="Controllers" type="Node2D" parent="."]
-
-[node name="BuildController" type="Node2D" parent="Controllers"]
-script = ExtResource( 9 )
-
-[node name="Sprite" type="Sprite" parent="Controllers/BuildController"]
-visible = false
-self_modulate = Color( 1, 1, 1, 0.470588 )
-position = Vector2( 16.9271, 16.4816 )
-scale = Vector2( 0.125, 0.125 )
-texture = ExtResource( 4 )
-hframes = 7
-vframes = 7
-frame = 11
-
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="Machines" type="Node2D" parent="."]
@@ -71,3 +81,27 @@ margin_left = 672.0
 margin_top = -32.0
 margin_right = 712.0
 margin_bottom = 8.0
+
+[node name="Controllers" type="Node2D" parent="."]
+
+[node name="PlayerInputController" type="Node2D" parent="Controllers"]
+script = ExtResource( 9 )
+
+[node name="Renderers" type="Node2D" parent="."]
+
+[node name="BuildingRenderer" type="Node2D" parent="Renderers"]
+script = ExtResource( 6 )
+
+[node name="Gizmo" type="Sprite" parent="Renderers/BuildingRenderer"]
+scale = Vector2( 0.125, 0.125 )
+texture = ExtResource( 4 )
+centered = false
+hframes = 7
+vframes = 7
+
+[node name="FloorGizmo" type="Sprite" parent="Renderers/BuildingRenderer"]
+material = SubResource( 2 )
+scale = Vector2( 0.1, 0.1 )
+z_index = -1
+z_as_relative = false
+texture = ExtResource( 14 )

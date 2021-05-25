@@ -10,16 +10,12 @@ onready var healthController = $ModuleHealthController
 
 var healingBeat = 0
 
-func _unhandled_input(event):
-	if event.is_action_pressed('RMB'):
-		
-		var targetCellIdx = level.getCellIdxFromMousePos()
-		var cell = level.getCellType(targetCellIdx)
-		if level.isCellIdAnyFloor(cell) and level.getMachineFromIdx(targetCellIdx) == null:
-			moveTargetIdx = targetCellIdx
-#			var pointPath = tilemap.get_node('Pathfinding').pathfind(currentCellIdx, tilemap.world_to_map(get_global_mouse_position()))
-		else:
-			moveTargetIdx = null
+func autoMoveToIdx(idx):
+	var cell = level.getCellType(idx)
+	if level.isCellIdAnyFloor(cell) and level.getMachineFromIdx(idx) == null:
+		moveTargetIdx = idx
+	else:
+		moveTargetIdx = null
 
 func _ready():
 	Game.beatController.connect("quarter_beat", self, "_onQuarterBeat")

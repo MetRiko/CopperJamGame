@@ -1,107 +1,152 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
-[ext_resource path="res://res/cooper_ingot.png" type="Texture" id=1]
+[ext_resource path="res://res/Gui/cooper_ingot.png" type="Texture" id=1]
 [ext_resource path="res://Gui/GUI.gd" type="Script" id=2]
 [ext_resource path="res://font/OpenSans-Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Gui/ElementButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://res/Kolozembate_wcisnienty.png" type="Texture" id=5]
 [ext_resource path="res://res/Kolozembate.png" type="Texture" id=6]
-[ext_resource path="res://res/tab.png" type="Texture" id=7]
-[ext_resource path="res://res/build_button.png" type="Texture" id=8]
-[ext_resource path="res://res/parts_slots.png" type="Texture" id=9]
-[ext_resource path="res://res/square.png" type="Texture" id=10]
-[ext_resource path="res://res/build_button_pressed.png" type="Texture" id=11]
+[ext_resource path="res://res/Gui/tab.png" type="Texture" id=7]
+[ext_resource path="res://res/Gui/build_button.png" type="Texture" id=8]
+[ext_resource path="res://res/Gui/parts_slots.png" type="Texture" id=9]
+[ext_resource path="res://res/Gui/square.png" type="Texture" id=10]
+[ext_resource path="res://res/Gui/build_button_pressed.png" type="Texture" id=11]
+[ext_resource path="res://font/OpenSans-SemiBold.ttf" type="DynamicFontData" id=12]
 
-[sub_resource type="Theme" id=1]
+[sub_resource type="DynamicFont" id=1]
+size = 17
+font_data = ExtResource( 12 )
 
-[sub_resource type="DynamicFont" id=2]
-font_data = ExtResource( 3 )
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
 
-[sub_resource type="StyleBoxTexture" id=3]
-texture = ExtResource( 6 )
-region_rect = Rect2( 0, 0, 154, 154 )
+uniform bool enabled = false;
+
+void fragment() {
+	
+	vec4 tex = textureLod(TEXTURE, UV, 1.0);
+	
+	if (enabled && tex.r > 0.2 && tex.b < 0.8) {
+		tex.r += (1.0 + sin(TIME * 5.0 + UV.x * 10.0 + UV.y * 10.0)) * 0.5 * 0.3;
+//		tex.b -= (1.0 + sin(TIME * 5.0 + UV.x * 10.0 + UV.y * 10.0)) * 0.5 * 0.1;
+		tex.r *= 1.5 + sin(TIME * 10.0 + (UV.x + UV.y) * 10.0) * 0.5;
+		tex.g *= 1.5 + sin(TIME * 10.0 + (UV.x + UV.y) * 10.0) * 0.5;
+	}
+	
+	COLOR = tex;
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/enabled = false
 
 [sub_resource type="StyleBoxTexture" id=4]
-texture = ExtResource( 5 )
-region_rect = Rect2( 0, 0, 153, 153 )
-
-[sub_resource type="StyleBoxTexture" id=5]
-texture = ExtResource( 6 )
-region_rect = Rect2( 0, 0, 154, 154 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 14
-use_mipmaps = true
-font_data = ExtResource( 3 )
-
-[sub_resource type="StyleBoxTexture" id=7]
-texture = ExtResource( 8 )
-region_rect = Rect2( 16, 16, 112, 112 )
-
-[sub_resource type="StyleBoxTexture" id=8]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 155, 154 )
 
-[sub_resource type="StyleBoxTexture" id=9]
+[sub_resource type="StyleBoxTexture" id=5]
 texture = ExtResource( 8 )
-region_rect = Rect2( 16, 16, 112, 112 )
+region_rect = Rect2( 0, 0, 155, 154 )
+
+[sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 154, 154 )
+
+[sub_resource type="StyleBoxTexture" id=7]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 153, 153 )
+
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 154, 154 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 14
+use_mipmaps = true
+font_data = ExtResource( 3 )
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.12244
+margin_top = -0.297302
 margin_right = -1.12244
+margin_bottom = -0.297302
 mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MiedzCounter" type="Control" parent="."]
-self_modulate = Color( 0, 0, 0, 1 )
-margin_left = 80.0
-margin_top = 725.0
-margin_right = 580.0
-margin_bottom = 775.0
-grow_horizontal = 0
-grow_vertical = 0
-rect_min_size = Vector2( 500, 50 )
-mouse_filter = 2
-theme = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="MiedzCounter"]
-margin_left = -16.8369
-margin_top = -10.5612
-margin_right = 258.163
-margin_bottom = 126.439
-rect_scale = Vector2( 0.65, 0.55 )
+[node name="CopperCounter" type="NinePatchRect" parent="."]
+margin_left = 69.0
+margin_top = 711.0
+margin_right = 253.0
+margin_bottom = 794.0
 mouse_filter = 0
 texture = ExtResource( 10 )
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="MiedzCounter"]
-margin_left = 55.8627
-margin_top = 10.0
-margin_right = 555.863
-margin_bottom = 58.8695
+[node name="HBoxContainer" type="HBoxContainer" parent="CopperCounter"]
+margin_left = 20.0
+margin_top = 11.0
+margin_right = 176.0
+margin_bottom = 63.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CopperIcon" type="TextureRect" parent="CopperCounter/HBoxContainer"]
+margin_right = 36.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 36, 36 )
+size_flags_vertical = 15
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CopperCounter/HBoxContainer"]
+margin_left = 44.0
+margin_right = 156.0
+margin_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.701961, 0.556863, 1 )
 text = "200"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="copper_ingot" type="Sprite" parent="MiedzCounter"]
-position = Vector2( 29, 22.6593 )
-scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 1 )
+[node name="BuildModeButton" type="Button" parent="."]
+self_modulate = Color( 1, 1, 0.996078, 1 )
+material = SubResource( 3 )
+margin_left = 14.0
+margin_top = 720.0
+margin_right = 76.0
+margin_bottom = 782.0
+focus_mode = 0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+toggle_mode = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Settings" type="Button" parent="."]
 visible = false
@@ -114,168 +159,178 @@ margin_top = -95.5612
 margin_right = 1.00513
 margin_bottom = 4.43884
 rect_min_size = Vector2( 100, 100 )
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ExitBuildMode" type="Button" parent="."]
-visible = false
-margin_left = -103.137
-margin_top = 425.05
-margin_right = -43.1371
-margin_bottom = 455.05
-text = "nobuild"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="ExitBuildMode"]
-anchor_left = 0.074
-anchor_top = 0.03
-anchor_right = 1.074
-anchor_bottom = 1.03
-margin_left = -0.00919437
-margin_top = -0.00151372
-margin_right = -0.00919342
-margin_bottom = -0.00151825
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Control" type="Control" parent="."]
+[node name="Shop" type="Control" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -400.0
-margin_right = 700.0
+margin_left = 2.0
+margin_top = -410.0
+margin_right = 2.0
+margin_bottom = -410.0
 mouse_filter = 1
+size_flags_horizontal = 0
+size_flags_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="Back" type="NinePatchRect" parent="Shop"]
 self_modulate = Color( 0.815686, 0.815686, 0.815686, 0.784314 )
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -120.0
-margin_right = 1152.0
-margin_bottom = 364.0
-rect_scale = Vector2( 0.5, 0.5 )
+margin_left = -4.75
+margin_top = 66.4375
+margin_right = 570.25
+margin_bottom = 341.438
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource( 7 )
+region_rect = Rect2( -20, -30, 1190, 540 )
+patch_margin_left = 90
+patch_margin_top = 90
+patch_margin_right = 90
+patch_margin_bottom = 90
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Control/TextureRect"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 35.0
-margin_top = -449.0
-margin_right = 635.0
-margin_bottom = -49.0
-rect_min_size = Vector2( 600, 300 )
+[node name="Panels" type="Control" parent="Shop"]
+margin_left = 20.0
+margin_top = 98.0
+margin_right = 538.0
+margin_bottom = 311.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="ModulesButtons" type="Control" parent="Shop/Panels"]
+margin_right = 314.0
+margin_bottom = 213.0
+rect_min_size = Vector2( 314, 213 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="TextureRect" parent="Control/TextureRect/NinePatchRect"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -5.0
-margin_right = 3.0
-margin_bottom = 1.0
+[node name="ButtonsBack" type="TextureRect" parent="Shop/Panels/ModulesButtons"]
+margin_left = 4.0
+margin_top = 3.0
+margin_right = 607.0
+margin_bottom = 409.0
+rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="GridContainer" type="GridContainer" parent="Control/TextureRect/NinePatchRect/PanelContainer"]
+[node name="ButtonsGrid" type="GridContainer" parent="Shop/Panels/ModulesButtons"]
 margin_left = 7.0
-margin_top = 9.0
-margin_right = 599.0
-margin_bottom = 400.0
+margin_top = 7.0
+margin_right = 597.0
+margin_bottom = 201.0
+rect_min_size = Vector2( 295, 97 )
+rect_scale = Vector2( 0.5, 0.5 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
 columns = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_right = 95.0
 margin_bottom = 95.0
 
-[node name="Button2" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button2" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 99.0
 margin_right = 194.0
 margin_bottom = 95.0
 
-[node name="Button3" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button3" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 198.0
 margin_right = 293.0
 margin_bottom = 95.0
 
-[node name="Button4" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button4" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 297.0
 margin_right = 392.0
 margin_bottom = 95.0
 
-[node name="Button5" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button5" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 396.0
 margin_right = 491.0
 margin_bottom = 95.0
 
-[node name="Button6" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button6" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 495.0
 margin_right = 590.0
 margin_bottom = 95.0
 
-[node name="Button7" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button7" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_top = 99.0
 margin_right = 95.0
 margin_bottom = 194.0
 
-[node name="Button8" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button8" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 99.0
 margin_top = 99.0
 margin_right = 194.0
 margin_bottom = 194.0
 
-[node name="Button9" parent="Control/TextureRect/NinePatchRect/PanelContainer/GridContainer" instance=ExtResource( 4 )]
+[node name="Button9" parent="Shop/Panels/ModulesButtons/ButtonsGrid" instance=ExtResource( 4 )]
 margin_left = 198.0
 margin_top = 99.0
 margin_right = 293.0
 margin_bottom = 194.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+[node name="Description" type="Control" parent="Shop/Panels"]
 self_modulate = Color( 0.2, 0.2, 0.2, 1 )
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -378.0
-margin_top = -105.0
-margin_right = -148.0
-margin_bottom = 45.0
+margin_left = 318.0
+margin_right = 518.0
+margin_bottom = 171.0
 rect_min_size = Vector2( 200, 150 )
-alignment = 1
+
+[node name="Back2" type="NinePatchRect" parent="Shop/Panels/Description"]
+self_modulate = Color( 0.815686, 0.815686, 0.815686, 0.784314 )
+margin_left = 11.0
+margin_top = -1.0
+margin_right = 191.0
+margin_bottom = 167.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+region_rect = Rect2( -20, -30, 1190, 540 )
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="Control/VBoxContainer"]
-self_modulate = Color( 0.815686, 0.815686, 0.815686, 0.784314 )
-margin_right = 230.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 132, 0 )
+[node name="VBoxContainer" type="VBoxContainer" parent="Shop/Panels/Description"]
+margin_left = 21.0
+margin_top = 17.0
+margin_right = 180.0
+margin_bottom = 169.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.14902, 0.14902, 0.14902, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Tooltip" type="Label" parent="Control/VBoxContainer/ColorRect"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -49.0
+[node name="ModuleName" type="Label" parent="Shop/Panels/Description/VBoxContainer"]
+margin_right = 159.0
+margin_bottom = 20.0
 rect_min_size = Vector2( 5, 0 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 text = "Tooltip"
@@ -285,53 +340,51 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control/VBoxContainer/ColorRect"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 63.7007
-margin_top = -47.4454
-margin_right = 63.7007
-margin_bottom = -0.445435
+[node name="ModuleTooltip" type="Label" parent="Shop/Panels/Description/VBoxContainer"]
+margin_top = 24.0
+margin_right = 159.0
+margin_bottom = 152.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="Control" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 322.0
-margin_top = -155.0
-margin_right = 322.0
-margin_bottom = -108.0
+[node name="Cost" type="HBoxContainer" parent="Shop/Panels"]
+margin_left = 340.0
+margin_top = 158.0
+margin_right = 496.0
+margin_bottom = 210.0
+custom_constants/separation = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="ColorRect"]
-position = Vector2( 36.2708, 23.4868 )
-scale = Vector2( 0.3, 0.3 )
+[node name="CopperIcon" type="TextureRect" parent="Shop/Panels/Cost"]
+margin_right = 36.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 36, 36 )
+size_flags_vertical = 15
 texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="ColorRect"]
-margin_left = 54.0
-margin_right = 230.0
-margin_bottom = 47.0
+[node name="Label" type="Label" parent="Shop/Panels/Cost"]
+margin_left = 44.0
+margin_right = 156.0
+margin_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.701961, 0.556863, 1 )
+text = "200"
 valign = 1
-
-[node name="BuildMode" type="Button" parent="."]
-self_modulate = Color( 1, 1, 0.996078, 1 )
-margin_left = 14.4308
-margin_top = 720.319
-margin_right = 174.431
-margin_bottom = 880.319
-rect_min_size = Vector2( 160, 160 )
-rect_scale = Vector2( 0.35, 0.35 )
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/normal = SubResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

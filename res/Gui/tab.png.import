@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cooper_ingot.png-39cb04456340d288abb845181b9f25ff.stex"
+path="res://.import/tab.png-8685e9ccf5e3fdb961584c0011b4cdef.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://res/cooper_ingot.png"
-dest_files=[ "res://.import/cooper_ingot.png-39cb04456340d288abb845181b9f25ff.stex" ]
+source_file="res://res/Gui/tab.png"
+dest_files=[ "res://.import/tab.png-8685e9ccf5e3fdb961584c0011b4cdef.stex" ]
 
 [params]
 

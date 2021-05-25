@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tab.png-0b737d6083bcdeedd2d66ea9400d2f58.stex"
+path="res://.import/floor_cursor.png-a601b7fe696c2ac1ba97c9ae6a6ce430.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://res/tab.png"
-dest_files=[ "res://.import/tab.png-0b737d6083bcdeedd2d66ea9400d2f58.stex" ]
+source_file="res://res/floor_cursor.png"
+dest_files=[ "res://.import/floor_cursor.png-a601b7fe696c2ac1ba97c9ae6a6ce430.stex" ]
 
 [params]
 

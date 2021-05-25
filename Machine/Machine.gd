@@ -2,6 +2,7 @@ extends Node2D
 
 signal module_removed
 signal machine_removed
+signal machine_state_changed
 
 onready var level = Game.level
 
@@ -157,7 +158,10 @@ func getModuleFromLocalIdx(localIdx):
 	if module != null:
 		return module.module
 	return null
-	
+
+func getModuleFromGlobalIdx(globalIdx):
+	return getModuleFromLocalIdx(convertToLocalIdx(globalIdx))
+
 ############### Health
 
 func damageModuleOnLocalIdx(localIdx, damageValue):
@@ -236,11 +240,18 @@ func isIdxInMachine(globalIdx : Vector2):
 	var hashedLocalIdx = hashIdx(convertToLocalIdx(globalIdx))
 	return installedModules.has(hashedLocalIdx)
 
-func checkIfIdxAvailable(idx : Vector2):
-	var hashedIdx = hashIdx(idx)
+func checkIfIdxAvailable(localIdx : Vector2):
+	var hashedIdx = hashIdx(localIdx)
 	return availableIdxes.has(hashedIdx)
 
-func getOffsetsIdForAvailableConnections(moduleId : String, moduleLocalIdx : Vector2, rot := 0):
+func getOffsetsForAvailableConnections(moduleId : String, rot := 0):
+	var offsets = []
+	var ids = getOffsetsIdForAvailableConnections(moduleId, rot)
+	for id in ids:
+		offsets.append(OFFSETS[id])
+	return offsets
+
+func getOffsetsIdForAvailableConnections(moduleId : String, rot := 0):
 	var moduleConnections = MODULES[moduleId].connections
 	var offsetsId = []
 	for connection in moduleConnections:
@@ -250,14 +261,14 @@ func getOffsetsIdForAvailableConnections(moduleId : String, moduleLocalIdx : Vec
 	return offsetsId
 	
 func getAvailableConnections(moduleId : String, moduleLocalIdx : Vector2, rot := 0):
-	var offsetsIdAfterRotation = getOffsetsIdForAvailableConnections(moduleId, moduleLocalIdx, rot)
+	var offsetsIdAfterRotation = getOffsetsIdForAvailableConnections(moduleId, rot)
 	var availableConnections = []
 	for offsetId in offsetsIdAfterRotation:
 		availableConnections.append(OFFSETS[offsetId] + moduleLocalIdx)
 	return availableConnections
 	
 func getAvailableIdxes(moduleId : String, moduleLocalIdx : Vector2, rot := 0):
-	var offsetsIdAfterRotation = getOffsetsIdForAvailableConnections(moduleId, moduleLocalIdx, rot)
+	var offsetsIdAfterRotation = getOffsetsIdForAvailableConnections(moduleId, rot)
 	var availableIdxes = []
 	for offsetId in offsetsIdAfterRotation:
 		availableIdxes.append(OFFSETS[(offsetId + 2) % 4] + moduleLocalIdx)
@@ -321,10 +332,10 @@ func recalculateAvailableIdxes():
 				newAvailableIdxes[hashedIdx] = idx
 	self.availableIdxes = newAvailableIdxes
 
-func detachModule(localIdx : Vector2, forceDetach = false):
+func detachModule(localIdx : Vector2, forceDetach = false, emitSignal = true):
 	if not canDetachModule(localIdx):
 		if forceDetach == true:
-			_forceDetach(localIdx)
+			_forceDetach(localIdx, emitSignal)
 			return
 		else:
 			push_error("Cannot detach module!")
@@ -341,6 +352,9 @@ func detachModule(localIdx : Vector2, forceDetach = false):
 	modulesQueuedToRemove.append(moduleData.module)
 	installedModules.erase(hashedLocalIdx)
 	recalculateAvailableIdxes()
+	
+	if emitSignal == true:
+		emit_signal("machine_state_changed")
 
 func getFloodedModulesWithoutOne(beginLocalIdx : Vector2, ignoreIdx : Vector2):
 	var hashedIgnoreIdx = hashIdx(ignoreIdx)
@@ -370,7 +384,7 @@ func _getFloodedModulesWithoutOne(module, hashedIgnoreIdx, floodedModules):
 					floodedModules[hashedIdx] = installedModule
 					_getFloodedModulesWithoutOne(installedModule, hashedIgnoreIdx, floodedModules)
 
-func _forceDetach(localIdx : Vector2):
+func _forceDetach(localIdx : Vector2, emitSignal = true):
 	
 	var hashedLocalIdx = hashIdx(localIdx)
 	if not installedModules.has(hashedLocalIdx):
@@ -400,8 +414,13 @@ func _forceDetach(localIdx : Vector2):
 		
 	recalculateAvailableIdxes()
 	
+	emit_signal("machine_state_changed")
+	
 
-func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
+func canAttachModule(moduleId : String, localIdx : Vector2, rot := 0):
+	return checkIfIdxAvailable(localIdx) and isAnyConnectionAvailable(moduleId, localIdx, rot)
+
+func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = true): #local idx
 	
 	if not checkIfIdxAvailable(localIdx):
 		printerr("Unavailable module idx!")
@@ -413,7 +432,7 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 		printerr("No available connection for this module!")
 		return
 		
-	var offsetsIdForConnections = getOffsetsIdForAvailableConnections(moduleId, localIdx, rot)
+	var offsetsIdForConnections = getOffsetsIdForAvailableConnections(moduleId, rot)
 	var availableConnections = getAvailableConnections(moduleId, localIdx, rot)
 	var availableIdxes = getAvailableIdxes(moduleId, localIdx, rot)
 
@@ -435,6 +454,9 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0): #local idx
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)
 	
 	_recalculateViewportSize()
+
+	if emitSignal == true:
+		emit_signal("machine_state_changed")
 		
 func getLocalMouseIdx():
 	return level.getCellIdxFromPos(get_global_mouse_position()) - baseGlobalIdx

@@ -1,6 +1,7 @@
 extends Control
 
 onready var beatController = Game.beatController
+onready var playerInputController = Game.level.getPlayerInputController()
 onready var gui = Game.gui
 var gameStarted := false
 
@@ -30,6 +31,8 @@ func _ready():
 	level.set_process(false)
 	Game.musicController.enableMainTheme()
 	Game.musicController.enableChillTheme()
+	playerInputController.disablePlayerInput()
+	gui.hide()
 
 func onStartGame():
 	startGame()
@@ -67,9 +70,10 @@ func startGame():
 	
 	camera.enableCamera()
 	level.set_process(true)
-	gameStarted = true
-	get_parent().get_parent().set_process(false)
+	playerInputController.enablePlayerInput()
 	gui.show()
+	playerInputController.changeStateToNormal()
+	gameStarted = true
 	hide()
 
 func exitGame():

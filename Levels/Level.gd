@@ -36,8 +36,8 @@ func convertDarkFloorCellIdToFloor(cellId):
 	else:
 		return FLOOR[randi()%FLOOR.size()]
 
-func getBuildController():
-	return $Controllers/BuildController
+func getPlayerInputController():
+	return $Controllers/PlayerInputController
 
 #func getAnyCopper():
 #	return getRandomInt([11,12,13,14])
@@ -134,6 +134,12 @@ func getMachineFromIdx(idx : Vector2):
 	for machine in $Machines.get_children():
 		if machine.isIdxInMachine(idx):
 			return machine
+	return null
+
+func getModuleFromIdx(idx : Vector2):
+	var machine = getMachineFromIdx(idx)
+	if machine != null:
+		return machine.getModuleFromGlobalIdx(idx)
 	return null
 
 var chunksToGenerate = []

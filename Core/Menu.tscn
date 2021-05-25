@@ -3,7 +3,7 @@
 [ext_resource path="res://res/plansza_gra.png" type="Texture" id=1]
 [ext_resource path="res://Core/Menu.gd" type="Script" id=2]
 [ext_resource path="res://Gui/MenuButton.tscn" type="PackedScene" id=3]
-[ext_resource path="res://res/tab.png" type="Texture" id=4]
+[ext_resource path="res://res/Gui/tab.png" type="Texture" id=4]
 [ext_resource path="res://Core/KGHM.gd" type="Script" id=5]
 [ext_resource path="res://font/OpenSans-Regular.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://res/Menu/start_hover.png" type="Texture" id=7]
@@ -25,22 +25,22 @@ outline_size = 1
 outline_color = Color( 0.0823529, 0.0823529, 0.133333, 1 )
 font_data = ExtResource( 6 )
 
-[sub_resource type="ShaderMaterial" id=9]
+[sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 12 )
 
-[sub_resource type="StyleBoxTexture" id=4]
+[sub_resource type="StyleBoxTexture" id=5]
 texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=5]
+[sub_resource type="StyleBoxTexture" id=6]
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=6]
+[sub_resource type="StyleBoxTexture" id=7]
 texture = ExtResource( 9 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=7]
+[sub_resource type="StyleBoxTexture" id=8]
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
@@ -125,7 +125,7 @@ margin_bottom = 431.0
 rect_min_size = Vector2( 0, 200 )
 
 [node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 9 )
+material = SubResource( 4 )
 margin_left = 13.0
 margin_top = 461.0
 margin_right = 386.5
@@ -135,12 +135,12 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 4 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 9 )
+material = SubResource( 4 )
 margin_left = 13.0
 margin_top = 594.0
 margin_right = 386.5
@@ -150,9 +150,9 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
@@ -178,7 +178,7 @@ centered = false
 [node name="Tween" type="Tween" parent="KGHM"]
 
 [node name="Logo" type="Sprite" parent="."]
-material = SubResource( 9 )
+material = SubResource( 4 )
 position = Vector2( 1056, 224 )
 scale = Vector2( 0.436759, 0.436759 )
 texture = ExtResource( 11 )
