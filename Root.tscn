@@ -67,6 +67,6 @@ script = ExtResource( 10 )
 position = Vector2( 4, 5 )
 scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 11 )
-vframes = 4
 hframes = 4
+vframes = 4
 frame = 10
