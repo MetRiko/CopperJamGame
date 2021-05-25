@@ -5,6 +5,8 @@ onready var gizmo = $Gizmo
 onready var floorGizmo = $FloorGizmo
 onready var playerInputController = level.getPlayerInputController()
 
+const ALL_SHOP_CONTENT = preload("res://Gui/AllShopContent.gd").ALL_SHOP_CONTENT
+
 var latestSelectedMachine = null
 var freeSlotsIdxes = []
 var latestHoveredObject = null
@@ -50,6 +52,10 @@ func onModuleToAttachChanged(moduleId, rot):
 	latestModuleIdToAttach = moduleId
 	latestRotModuleToAttach = rot
 	_calculateConnections(moduleId, rot)
+	for content in ALL_SHOP_CONTENT:
+		if content.moduleId == moduleId:
+			gizmo.frame = content.frameId
+			return
 
 func onHoveredObjectChanged(newHoveredObject):
 	var floorGizmoSize = floorGizmo.get_rect().size * floorGizmo.global_scale
