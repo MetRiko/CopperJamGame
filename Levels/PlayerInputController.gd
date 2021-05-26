@@ -43,7 +43,7 @@ var rotOfModuleToAttach = 0
 
 func getMouseIdx():
 	return currentMouseIdx
-	
+
 func getSelectedModule():
 	return selectedModule
 
@@ -156,6 +156,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("space"):
 		if state == NORMAL_STATE:
 			_changeState(BUILDING_STATE)
+			
 	if event.is_action_released("space"):
 		if state == BUILDING_STATE:
 			_changeState(NORMAL_STATE)
@@ -235,7 +236,7 @@ func _leftClickWhenBuildingState():
 func _rightClickWhenNormalState(): 
 	
 	# on floor - move player @TODO
-	if hoveredObject == HOVERED_JUST_FLOOR:
+	if hoveredObject == HOVERED_JUST_FLOOR or hoveredObject == HOVERED_ENEMY:
 		player.autoMoveToIdx(currentMouseIdx)
 
 func _rightClickWhenBuildingState(): # remove module / 
