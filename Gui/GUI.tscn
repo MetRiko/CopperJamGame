@@ -14,7 +14,7 @@
 [ext_resource path="res://font/OpenSans-SemiBold.ttf" type="DynamicFontData" id=12]
 
 [sub_resource type="DynamicFont" id=1]
-size = 17
+size = 20
 font_data = ExtResource( 12 )
 
 [sub_resource type="Shader" id=2]
@@ -67,9 +67,9 @@ font_data = ExtResource( 3 )
 [node name="GUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.12244
+margin_left = -1.37244
 margin_top = -0.297302
-margin_right = -1.12244
+margin_right = -1.37244
 margin_bottom = -0.297302
 mouse_filter = 2
 script = ExtResource( 2 )
@@ -80,10 +80,10 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="."]
 
 [node name="CopperCounter" type="NinePatchRect" parent="."]
-margin_left = 125.0
-margin_top = 700.0
-margin_right = 309.0
-margin_bottom = 783.0
+margin_left = 122.0
+margin_top = 709.0
+margin_right = 290.0
+margin_bottom = 766.0
 mouse_filter = 0
 texture = ExtResource( 10 )
 patch_margin_left = 20
@@ -94,19 +94,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CopperCounter"]
+[node name="HBoxContainer" type="Control" parent="CopperCounter"]
 margin_left = 20.0
 margin_top = 11.0
-margin_right = 176.0
-margin_bottom = 63.0
-custom_constants/separation = 8
+margin_right = 20.0
+margin_bottom = 11.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CopperIcon" type="TextureRect" parent="CopperCounter/HBoxContainer"]
-margin_right = 50.0
-margin_bottom = 52.0
+margin_left = -10.3848
+margin_top = -12.3596
+margin_right = 39.6152
+margin_bottom = 45.6404
 rect_min_size = Vector2( 50, 50 )
 size_flags_vertical = 15
 texture = ExtResource( 1 )
@@ -117,9 +118,10 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CopperCounter/HBoxContainer"]
-margin_left = 58.0
-margin_right = 156.0
-margin_bottom = 52.0
+margin_left = 51.2046
+margin_top = -8.15814
+margin_right = 187.205
+margin_bottom = 42.8419
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3

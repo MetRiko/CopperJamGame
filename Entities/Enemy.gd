@@ -47,7 +47,7 @@ func calculateBestPath():
 	for machine in machines:
 		var modules = machine.getModules()
 		if modules.size() > 0:
-			var randomModule = modules.values()[randi()%modules.size()]
+			var randomModule = modules[randi()%modules.size()]
 			var randomIdx = machine.convertToGlobalIdx(randomModule.localIdx)
 			machinesRandomIdxes.append(randomIdx)
 	

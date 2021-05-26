@@ -103,6 +103,16 @@ func convertToGlobalIdx(localIdx : Vector2):
 
 ############### Available slots
 
+func getAllAvailableGlobalFreeSlotsWithOffsets():	
+	var ret = []
+	for module in installedModules.values():
+		for idx in module.availableIdxes:
+			if availableIdxes.values().has(idx):
+				var offset = idx - module.localIdx
+				var globalIdx = convertToGlobalIdx(module.localIdx)
+				ret.append([globalIdx, offset])
+	return ret 
+
 func getAvailableGlobalFreeSlots():
 	var ret = []
 	for localIdx in availableIdxes.values():
@@ -147,7 +157,7 @@ func hasModules():
 	return not installedModules.empty()
 
 func getModules():
-	return installedModules
+	return installedModules.values()
 
 func getModulesCount():
 	return installedModules.size()

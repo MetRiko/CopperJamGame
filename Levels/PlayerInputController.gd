@@ -218,10 +218,16 @@ func _leftClickWhenBuildingState():
 				_placeNewMachine()
 				_attachSelectedModule(currentMouseIdx)
 				
-			# selected module - attach module
-			else:
-				_attachSelectedModule(currentMouseIdx)
-		
+			# selected module - attach module / unselect module 
+			elif selectedModule != null and is_instance_valid(selectedModule):
+				var machine = selectedModule.getMachine()
+				var localIdx = machine.convertToLocalIdx(currentMouseIdx)
+				var isAttachable = machine.canAttachModule(moduleToAttach, localIdx, rotOfModuleToAttach)
+				if isAttachable:
+					_attachSelectedModule(currentMouseIdx)
+				else:
+					_unselectModule()
+					
 
 func _rightClickWhenNormalState(): 
 	

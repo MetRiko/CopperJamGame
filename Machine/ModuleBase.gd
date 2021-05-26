@@ -71,6 +71,12 @@ func getForwardVector():
 func getInstructions():
 	return _instructions
 	
+func getOrderedInstructions():
+	var instructions = []
+	for instructionId in _instructionsOrder:
+		instructions.append(_instructions[instructionId])
+	return instructions
+	
 func getInstructionsOrder():
 	return _instructionsOrder
 
@@ -163,3 +169,8 @@ func _setupNode(moduleId, derivedNode, instructions, instructionsOrder):
 	
 	_tween = Tween.new()
 	derivedNode.add_child(_tween)
+	
+	for key in instructions.keys():
+		var instruction = instructions[key]
+		instruction['instructionId'] = key
+	

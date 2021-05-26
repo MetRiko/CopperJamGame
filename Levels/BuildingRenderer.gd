@@ -27,22 +27,41 @@ func _ready():
 	
 
 func onModuleSelected(module):
-	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine) and latestSelectedMachine != module:
-		latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
-		latestSelectedMachine.connect("machine_removed", self, "onMachineRemoved")
+	
+	var nextMachine = module.getMachine() if module != null else null
+	
+	if latestSelectedMachine != nextMachine and nextMachine != null:
+		nextMachine.connect("machine_state_changed", self, "onMachineStateChanged")
+		nextMachine.connect("machine_removed", self, "onMachineRemoved")
+		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+			if latestSelectedMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
+				latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
+				latestSelectedMachine.disconnect("machine_removed", self, "onMachineRemoved")
+		
+	latestSelectedMachine = nextMachine
+	_calculateFreeSlots(nextMachine)
 
-	if module != null:
-		latestSelectedMachine = module.getMachine()
-		latestSelectedMachine.connect("machine_state_changed", self, "onMachineStateChanged")
-		latestSelectedMachine.connect("machine_removed", self, "onMachineRemoved")
-		_calculateFreeSlots(latestSelectedMachine)
+#	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+#		if (module != null and latestSelectedMachine != module.getMachine()) or module == null:
+#			latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
+#			latestSelectedMachine.disconnect("machine_removed", self, "onMachineRemoved")
+#
+#	if module != null:
+#		var nextMachine = module.getMachine()
+#		if latestSelectedMachine != nextMachine:
+#			nextMachine.connect("machine_state_changed", self, "onMachineStateChanged")
+#			nextMachine.connect("machine_removed", self, "onMachineRemoved")
+#		latestSelectedMachine = nextMachine
+#		_calculateFreeSlots(latestSelectedMachine)
+#	else:
+#		latestSelectedMachine = null
 
 func onMachineStateChanged():
 	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
 		if latestSelectedMachine.getModulesCount() == 0:
 			freeSlotsIdxes = []
 		else:
-			freeSlotsIdxes = latestSelectedMachine.getAvailableGlobalFreeSlots()
+			freeSlotsIdxes = latestSelectedMachine.getAllAvailableGlobalFreeSlotsWithOffsets()
 	else:
 		freeSlotsIdxes = []
 	update()
@@ -57,10 +76,12 @@ func onModuleToAttachChanged(moduleId, rot):
 	for content in ALL_SHOP_CONTENT:
 		if content.moduleId == moduleId:
 			gizmo.frame = content.frameId
-			return
+			break
 	
 	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
 		_calculateFreeSlots(latestSelectedMachine)
+
+	_updateGizmoColor()
 
 func onHoveredObjectChanged(newHoveredObject):
 	var floorGizmoSize = floorGizmo.get_rect().size * floorGizmo.global_scale
@@ -70,21 +91,34 @@ func onHoveredObjectChanged(newHoveredObject):
 	floorGizmo.global_position = pos + level.getHalfCellSize() + Vector2(-1, 0)
 	
 	_calculateConnections(latestModuleIdToAttach, latestRotModuleToAttach)
+	_updateGizmoColor()
+
+func _updateGizmoColor():
+	if latestModuleIdToAttach != null:
+		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+			var localIdx = latestSelectedMachine.convertToLocalIdx(playerInputController.getMouseIdx())
+			var isAttachable = latestSelectedMachine.canAttachModule(latestModuleIdToAttach, localIdx, latestRotModuleToAttach)
+			if isAttachable:
+				gizmo.modulate = Color(0.0, 1.0, 0.0, 1.0)
+			else:
+				gizmo.modulate = Color(1.0, 0.0, 0.0, 1.0)
+		else:
+			gizmo.modulate = Color(1.0, 1.0, 0.0, 1.0)
 
 func onStateChanged(state):
 	if state == playerInputController.BUILDING_STATE:
 		var selectedModule = playerInputController.getSelectedModule()
 		if selectedModule != null and is_instance_valid(selectedModule):
 			_calculateFreeSlots(selectedModule.getMachine())
+	elif state == playerInputController.NORMAL_STATE:
+		_calculateFreeSlots(null)
 
 func onMachineRemoved():
 	_calculateFreeSlots(null)
 
 func _calculateFreeSlots(machine):
 	if machine != null and is_instance_valid(machine):
-		freeSlotsIdxes = machine.getAvailableGlobalFreeSlots()
-#		if latestSelectedMachine != machine:
-#			machine.connect("machine_state_changed", self, "onMachineStateChanged")
+		freeSlotsIdxes = machine.getAllAvailableGlobalFreeSlotsWithOffsets()
 		latestSelectedMachine = machine
 	else:
 		freeSlotsIdxes = []
@@ -105,8 +139,12 @@ func _calculateConnections(moduleId, rot):
 
 func _draw():
 	var radius = 4.0
-	for idx in freeSlotsIdxes:
-		var pos = level.getPosFromCellIdx(idx) + level.getHalfCellSize()
+	for idxWithOffset in freeSlotsIdxes:
+		var moduleIdx = idxWithOffset[0]
+		var offset = idxWithOffset[1]
+		print(offset)
+		var pos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
+		pos += offset * level.getHalfCellSize()
 		draw_circle(pos, radius, Color(1.0, 0.0, 0.0, 0.4))
 		
 	for offset in possibleConnectionsOffsets:

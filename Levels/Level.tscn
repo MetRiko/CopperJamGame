@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Levels/EntitySpawner.gd" type="Script" id=12]
 [ext_resource path="res://Gui/GUI.tscn" type="PackedScene" id=13]
 [ext_resource path="res://res/floor_cursor.png" type="Texture" id=14]
+[ext_resource path="res://Gui/ActionsPanel/ActionsPanel.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -77,6 +78,12 @@ script = ExtResource( 12 )
 
 [node name="Player" parent="." instance=ExtResource( 8 )]
 position = Vector2( 64, 64 )
+
+[node name="ActionsPanel" parent="." instance=ExtResource( 15 )]
+margin_left = 96.0
+margin_top = 160.0
+margin_right = 96.0
+margin_bottom = 160.0
 
 [node name="ModuleUI" parent="." instance=ExtResource( 11 )]
 margin_left = 672.0

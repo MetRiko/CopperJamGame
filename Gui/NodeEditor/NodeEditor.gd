@@ -12,7 +12,7 @@ onready var toolbar = $Panel/Margin/VBox/Toolbar
 var selectedMachine = null
 var selectedModuleLocalIdx = null
 
-const ALL_INSTRUCTIONS = preload("res://Gui/NodeEditor/AllInstructions.gd").ALL_INSTRUCTIONS
+const ALL_INSTRUCTIONS = preload("res://Gui/ActionsPanel/AllInstructions.gd").ALL_INSTRUCTIONS
 
 const ALL_INSTRUCTIONS_FOR_BOTTOM = [
 	ALL_INSTRUCTIONS['nop'], ALL_INSTRUCTIONS['node_start'], ALL_INSTRUCTIONS['node_end']

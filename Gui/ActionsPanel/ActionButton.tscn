@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Gui/ActionsPanel/ActionButton.gd" type="Script" id=1]
+[ext_resource path="res://res/action_blocks.png" type="Texture" id=2]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 2 )
+region_rect = Rect2( 512, 0, 256, 256 )
+modulate_color = Color( 0.764706, 0.764706, 0.764706, 1 )
+
+[sub_resource type="StyleBoxTexture" id=2]
+texture = ExtResource( 2 )
+region_rect = Rect2( 512, 0, 256, 256 )
+
+[node name="ActionButton" type="Button"]
+anchor_right = 0.031
+anchor_bottom = 0.056
+margin_right = 0.359993
+margin_bottom = -0.359997
+rect_min_size = Vector2( 45, 45 )
+focus_mode = 0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 9.53674e-07, -0.14865 )
+scale = Vector2( 0.175612, 0.175612 )
+texture = ExtResource( 2 )
+centered = false
+hframes = 7
+vframes = 7
+frame = 2
