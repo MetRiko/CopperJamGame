@@ -40,7 +40,7 @@ func disableTurret():
 	$Sprite.frame = 15 + (_rot % 4)
 
 func onBeat(a, b):
-	if enabled == true:
+	if enabled == true and is_instance_valid(_machine):
 		shoot()
 		playAnimationPulse($Sprite)
 

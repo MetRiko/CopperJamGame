@@ -43,7 +43,7 @@ func turnOffDrill():
 	$Particles2D.emitting = false
 
 func onBeat(a, b):
-	if drillOn == true:
+	if drillOn == true and is_instance_valid(_machine):
 		_animateDrill()
 		var obstacleGlobalIdx = getForwardVector() + getGlobalIdx()
 		if level.isObstacle(obstacleGlobalIdx):
