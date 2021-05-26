@@ -28,17 +28,25 @@ func _draw():
 	
 	if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
 		
-		var halfWidth = 1.0
-		var halfLength = level.getHalfCellSize().x + halfWidth
+		var OFFSETS = [
+			Vector2(0, -1),
+			Vector2(1, 0),
+			Vector2(0, 1),
+			Vector2(-1, 0)
+		]
+		
+		var halfWidth = 1.3
+		var halfLength = level.getHalfCellSize().x
 		var size = Vector2(halfWidth * 2.0, halfLength * 2.0)
 		
 		for idxWithOffset in possibleConnectionsOffsetsForHoveredMachine:
 			var moduleIdx = idxWithOffset[0]
 			var offset = idxWithOffset[1]
+			var offsetId = idxWithOffset[2]
 			
 			var modulePos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
 			
-			var rectCenterPos = modulePos + offset * 16.0
+			var rectCenterPos = modulePos + offset * 16.0 + OFFSETS[(offsetId + 1)%4] * halfWidth
 
 			var pointsOffsets = [
 				Vector2(offset.x, offset.y) * halfWidth,

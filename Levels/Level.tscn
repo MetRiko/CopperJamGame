@@ -25,10 +25,17 @@ shader = ExtResource( 17 )
 code = "shader_type canvas_item;
 
 void fragment() {
-	
+
 	vec4 stex = textureLod(SCREEN_TEXTURE, SCREEN_UV, 3.0);
 	
-	vec4 c = stex.r * stex;
+	float m = ((sin(TIME * 2.4 + ((SCREEN_UV.x + SCREEN_UV.y) * 5.8)) + 1.0) * 0.5) * 0.1 + 0.1;
+	
+	vec4 c = stex;
+	c.b = pow(stex.b + m, 2.5) * 3.5;
+	c.g = pow(stex.g + m, 1.6) * 3.5;
+	c.r = pow(stex.r + m, 0.7) * 3.5;
+	c.a = (c.r + c.g + c.b) * 0.3333 * 0.5;
+	
 	
 	COLOR = c;
 //	
@@ -135,7 +142,9 @@ texture = ExtResource( 14 )
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="Renderers"]
 copy_mode = 2
+rect = Rect2( 0, 0, 0, 0 )
 
 [node name="MachineOutlineRenderer" type="Node2D" parent="Renderers/BackBufferCopy"]
+modulate = Color( 1, 1, 1, 0.576471 )
 material = SubResource( 4 )
 script = ExtResource( 16 )

@@ -106,11 +106,13 @@ func convertToGlobalIdx(localIdx : Vector2):
 func getAllGlobalNeighboursWithOffsets():
 	var neighbours = []
 	for module in installedModules.values():
+		var i = -1
 		for offset in OFFSETS:
+			i += 1
 			var idx = module.localIdx + offset
 			var hashedIdx = hashIdx(idx)
 			if not installedModules.has(hashedIdx):
-				neighbours.append([convertToGlobalIdx(module.localIdx), offset])
+				neighbours.append([convertToGlobalIdx(module.localIdx), offset, i])
 	return neighbours
 
 func getAllAvailableGlobalFreeSlotsWithOffsets():
