@@ -61,7 +61,7 @@ const ALL_SHOP_CONTENT = [
 	{
 		'name': "Turret", 
 		'moduleId' : "turret_module",
-		'frameId':18,
+		'frameId':15,
 		'tooltip': "To jest wieżyczka",
 		'cost': 20,
 		'state':true
