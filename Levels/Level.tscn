@@ -40,7 +40,7 @@ void fragment() {
 	if (isColorInRange(tex, color1, dev) || isColorInRange(tex, color2, dev)) {
 //		c = vec4(0.0, 0.0, 0.0, 1.0);
 
-		float m = (TIME * 2.8 + (UV.x + UV.y) * 20.0 + (cos(SCREEN_UV.x - cameraPos.x) + sin(SCREEN_UV.y - cameraPos.y)) * 40.4);
+		float m = (TIME * 2.8 + (UV.x + UV.y) * 20.0 + (cos(SCREEN_UV.x + cameraPos.x) + sin(SCREEN_UV.y - cameraPos.y)) * 40.4);
 		m = (sin(m) + 1.0) * 0.5;
 		m = m * 0.6 + 3.6;
 
