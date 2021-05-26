@@ -156,7 +156,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("space"):
 		if state == NORMAL_STATE:
 			_changeState(BUILDING_STATE)
-			
+
 	if event.is_action_released("space"):
 		if state == BUILDING_STATE:
 			_changeState(NORMAL_STATE)
@@ -308,7 +308,7 @@ func _selectModule(module):
 		selectedModule.modulate = Color(1.0, 1.0, 1.0, 1.0)
 		
 		var machine = selectedModule.getMachine()
-		if machine.getModulesCount() == 0:
+		if is_instance_valid(machine) and machine.getModulesCount() == 0:
 			machine.queue_free()
 			
 	_cancelNewMachine()
