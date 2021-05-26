@@ -29,6 +29,9 @@ const FLOOR = [15, 23, 24, 25]
 
 const COPPER_VALUES = [1, 2, 3, 4]
 
+func _process(delta):
+	tilemap.material.set_shader_param("cameraPos", Game.camera.global_position / get_viewport().size * get_viewport_transform().get_scale())
+
 func convertDarkFloorCellIdToFloor(cellId):
 	var id = DARK_FLOOR.find(cellId)
 	if id != -1:

@@ -21,6 +21,7 @@
 [sub_resource type="Shader" id=5]
 code = "shader_type canvas_item;
 
+uniform vec2 cameraPos = vec2(0.0);
 
 bool isColorInRange(vec4 pixel, vec3 color, float dev) {
 	vec3 range = abs(pixel.rgb - color);
@@ -31,7 +32,7 @@ void fragment() {
 
 	vec4 tex = textureLod(TEXTURE, UV, 1.0);
 
-	float dev = 0.18;
+	float dev = 0.17; // 18 
 
 	vec3 color1 = vec3(0.87, 0.6, 0.49);
 	vec3 color2 = vec3(0.55, 0.26, 0.14);
@@ -39,7 +40,7 @@ void fragment() {
 	if (isColorInRange(tex, color1, dev) || isColorInRange(tex, color2, dev)) {
 //		c = vec4(0.0, 0.0, 0.0, 1.0);
 
-		float m = (TIME * 2.8 + (UV.x + UV.y) * 20.0 + (cos(SCREEN_UV.x) + sin(SCREEN_UV.y)) * 40.4);
+		float m = (TIME * 2.8 + (UV.x + UV.y) * 20.0 + (cos(SCREEN_UV.x - cameraPos.x) + sin(SCREEN_UV.y - cameraPos.y)) * 40.4);
 		m = (sin(m) + 1.0) * 0.5;
 		m = m * 0.6 + 3.6;
 
@@ -57,6 +58,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=6]
 shader = SubResource( 5 )
+shader_param/cameraPos = Vector2( 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 17 )
