@@ -47,6 +47,9 @@ func getMouseIdx():
 func getSelectedModule():
 	return selectedModule
 
+func getHoveredModule():
+	return latestHoveredModule
+
 # Core
 
 func enablePlayerInput():

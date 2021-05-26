@@ -103,7 +103,17 @@ func convertToGlobalIdx(localIdx : Vector2):
 
 ############### Available slots
 
-func getAllAvailableGlobalFreeSlotsWithOffsets():	
+func getAllGlobalNeighboursWithOffsets():
+	var neighbours = []
+	for module in installedModules.values():
+		for offset in OFFSETS:
+			var idx = module.localIdx + offset
+			var hashedIdx = hashIdx(idx)
+			if not installedModules.has(hashedIdx):
+				neighbours.append([convertToGlobalIdx(module.localIdx), offset])
+	return neighbours
+
+func getAllAvailableGlobalFreeSlotsWithOffsets():
 	var ret = []
 	for module in installedModules.values():
 		for idx in module.availableIdxes:

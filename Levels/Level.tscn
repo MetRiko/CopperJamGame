@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Gui/GUI.tscn" type="PackedScene" id=13]
 [ext_resource path="res://res/floor_cursor.png" type="Texture" id=14]
 [ext_resource path="res://Gui/ActionsPanel/ActionsPanel.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Levels/MachineOutlineRenderer.gd" type="Script" id=16]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -113,3 +114,6 @@ scale = Vector2( 0.12, 0.12 )
 z_index = -1
 z_as_relative = false
 texture = ExtResource( 14 )
+
+[node name="MachineOutlineRenderer" type="Node2D" parent="Renderers"]
+script = ExtResource( 16 )

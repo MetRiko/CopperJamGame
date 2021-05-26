@@ -29,44 +29,29 @@ func _ready():
 func onModuleSelected(module):
 	
 	var nextMachine = module.getMachine() if module != null else null
-	
-	if latestSelectedMachine != nextMachine and nextMachine != null:
-		nextMachine.connect("machine_state_changed", self, "onMachineStateChanged")
-		nextMachine.connect("machine_removed", self, "onMachineRemoved")
-		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-			if latestSelectedMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
-				latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
-				latestSelectedMachine.disconnect("machine_removed", self, "onMachineRemoved")
-		
+	_selectMachine(nextMachine)
+
+func _selectMachine(nextMachine):
+
+	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+		if latestSelectedMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
+			latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
+			latestSelectedMachine.disconnect("machine_removed", self, "onMachineRemoved")
+			
+	if nextMachine != null:
+		if not nextMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
+			nextMachine.connect("machine_state_changed", self, "onMachineStateChanged")
+			nextMachine.connect("machine_removed", self, "onMachineRemoved")
+
 	latestSelectedMachine = nextMachine
 	_calculateFreeSlots(nextMachine)
 
-#	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-#		if (module != null and latestSelectedMachine != module.getMachine()) or module == null:
-#			latestSelectedMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
-#			latestSelectedMachine.disconnect("machine_removed", self, "onMachineRemoved")
-#
-#	if module != null:
-#		var nextMachine = module.getMachine()
-#		if latestSelectedMachine != nextMachine:
-#			nextMachine.connect("machine_state_changed", self, "onMachineStateChanged")
-#			nextMachine.connect("machine_removed", self, "onMachineRemoved")
-#		latestSelectedMachine = nextMachine
-#		_calculateFreeSlots(latestSelectedMachine)
-#	else:
-#		latestSelectedMachine = null
-
 func onMachineStateChanged():
-	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-		if latestSelectedMachine.getModulesCount() == 0:
-			freeSlotsIdxes = []
-		else:
-			freeSlotsIdxes = latestSelectedMachine.getAllAvailableGlobalFreeSlotsWithOffsets()
-	else:
-		freeSlotsIdxes = []
+	_calculateFreeSlots(latestSelectedMachine)
 	update()
 
 func onNewMachinePlaced(newMachine):
+	_selectMachine(newMachine)
 	_calculateFreeSlots(newMachine)
 
 func onModuleToAttachChanged(moduleId, rot):
@@ -92,6 +77,7 @@ func onHoveredObjectChanged(newHoveredObject):
 	
 	_calculateConnections(latestModuleIdToAttach, latestRotModuleToAttach)
 	_updateGizmoColor()
+	update()
 
 func _updateGizmoColor():
 	if latestModuleIdToAttach != null:
@@ -138,16 +124,16 @@ func _calculateConnections(moduleId, rot):
 	update()
 
 func _draw():
-	var radius = 4.0
-	for idxWithOffset in freeSlotsIdxes:
-		var moduleIdx = idxWithOffset[0]
-		var offset = idxWithOffset[1]
-		print(offset)
-		var pos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
-		pos += offset * level.getHalfCellSize()
-		draw_circle(pos, radius, Color(1.0, 0.0, 0.0, 0.4))
-		
-	for offset in possibleConnectionsOffsets:
-		var idx = playerInputController.getMouseIdx() 
-		var pos = level.getPosFromCellIdx(idx) + level.getHalfCellSize() + offset * level.getHalfCellSize()
-		draw_circle(pos, radius, Color(0.0, 0.0, 1.0, 0.4))
+	if playerInputController.isBuildingState():
+		var radius = 4.0
+		for idxWithOffset in freeSlotsIdxes:
+			var moduleIdx = idxWithOffset[0]
+			var offset = idxWithOffset[1]
+			var pos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
+			pos += offset * level.getHalfCellSize()
+			draw_circle(pos, radius, Color(1.0, 0.0, 0.0, 0.4))
+			
+		for offset in possibleConnectionsOffsets:
+			var idx = playerInputController.getMouseIdx() 
+			var pos = level.getPosFromCellIdx(idx) + level.getHalfCellSize() + offset * level.getHalfCellSize()
+			draw_circle(pos, radius, Color(0.0, 0.0, 1.0, 0.4))
