@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -17,6 +17,46 @@
 [ext_resource path="res://Gui/ActionsPanel/ActionsPanel.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Levels/MachineOutlineRenderer.gd" type="Script" id=16]
 [ext_resource path="res://Levels/FloorGizmoShader.shader" type="Shader" id=17]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+
+bool isColorInRange(vec4 pixel, vec3 color, float dev) {
+	vec3 range = abs(pixel.rgb - color);
+	return range.r < dev && range.g < dev && range.b < dev;
+}
+
+void fragment() {
+
+	vec4 tex = textureLod(TEXTURE, UV, 1.0);
+
+	float dev = 0.18;
+
+	vec3 color1 = vec3(0.87, 0.6, 0.49);
+	vec3 color2 = vec3(0.55, 0.26, 0.14);
+
+	if (isColorInRange(tex, color1, dev) || isColorInRange(tex, color2, dev)) {
+//		c = vec4(0.0, 0.0, 0.0, 1.0);
+
+		float m = (TIME * 2.8 + (UV.x + UV.y) * 20.0 + (cos(SCREEN_UV.x) + sin(SCREEN_UV.y)) * 40.4);
+		m = (sin(m) + 1.0) * 0.5;
+		m = m * 0.6 + 3.6;
+
+		vec4 c = pow(m, 2.4) * tex * 0.04;
+//		c.b *= 0.7;
+		c.r *= 1.2;
+		COLOR = c;
+	}
+	else {
+		COLOR = tex;
+	}
+
+
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 17 )
@@ -74,6 +114,7 @@ margin_right = 0.0
 [node name="NodeEditor" parent="CanvasLayer" instance=ExtResource( 10 )]
 
 [node name="TileMap" type="TileMap" parent="."]
+material = SubResource( 6 )
 scale = Vector2( 0.125, 0.125 )
 z_index = -1
 z_as_relative = false
@@ -82,6 +123,7 @@ cell_size = Vector2( 256, 256 )
 cell_quadrant_size = 32
 cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 format = 1
+tile_data = PoolIntArray( 65541, 10, 0, 65542, 10, 0, 65543, 10, 0, 65544, 10, 0, 65545, 10, 0, 131077, 12, 0, 131078, 8, 0, 131079, 8, 0, 131080, 8, 0, 131081, 8, 0, 196612, 14, 0, 196613, 14, 0, 196614, 11, 0, 196615, 11, 0, 196616, 8, 0, 196617, 8, 0, 262149, 14, 0, 262150, 14, 0, 262151, 14, 0, 262152, 12, 0, 327687, 14, 0, 327688, 14, 0, 393224, 17, 0, 458765, 15, 0 )
 
 [node name="MapGenerator" type="Node" parent="TileMap"]
 script = ExtResource( 2 )
