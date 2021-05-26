@@ -6,7 +6,7 @@ signal machine_state_changed
 
 onready var level = Game.level
 
-onready var modules = $VC/Viewport/Modules
+onready var modules = $Modules
 onready var processor = $Processor
 onready var healthControllers = $HealthControllers
 
@@ -222,13 +222,12 @@ func _process(delta):
 
 func onModuleDestroyed():
 	if modulesQueuedToRemove.empty():
-		_recalculateViewportSize()
+#		_recalculateViewportSize()
 		
 		if installedModules.empty():
 			queue_free()
 
 func _ready():
-	$VC.material = $VC.material.duplicate()
 	for module in modules.get_children():
 		module.queue_free()
 
@@ -238,35 +237,35 @@ func setupPos(globalIdx : Vector2):
 	global_position = pos
 	addAvailableIdx(Vector2(0, 0))
 
-func _recalculateViewportSize():
-	
-	if installedModules.empty():
-		$VC/Viewport.size = level.getCellSize() + Vector2(20, 20)
-	
-	var minPoint = Vector2(10000000, 10000000)
-	var maxPoint = Vector2(-10000000, -10000000)
-	
-	for moduleData in installedModules.values():
-		var localIdx = moduleData.localIdx
-		if localIdx.x < minPoint.x:
-			minPoint.x = localIdx.x
-		if localIdx.y < minPoint.y:
-			minPoint.y = localIdx.y
-		if localIdx.x > maxPoint.x:
-			maxPoint.x = localIdx.x
-		if localIdx.y > maxPoint.y:
-			maxPoint.y = localIdx.y
-		
-	var margin = Vector2(20.0, 20.0)
-		
-	var viewPosition = minPoint * level.getCellSize()
-	$VC.rect_position = viewPosition - margin
-	
-	var viewSize = (maxPoint - minPoint + Vector2(1, 1)) * level.getCellSize()
-	$VC.rect_size = viewSize + margin * 2
-	
-	var dif = baseGlobalIdx - convertToGlobalIdx(minPoint)
-	modules.position = dif * level.getCellSize() + margin
+#func _recalculateViewportSize():
+#
+#	if installedModules.empty():
+#		$VC/Viewport.size = level.getCellSize() + Vector2(20, 20)
+#
+#	var minPoint = Vector2(10000000, 10000000)
+#	var maxPoint = Vector2(-10000000, -10000000)
+#
+#	for moduleData in installedModules.values():
+#		var localIdx = moduleData.localIdx
+#		if localIdx.x < minPoint.x:
+#			minPoint.x = localIdx.x
+#		if localIdx.y < minPoint.y:
+#			minPoint.y = localIdx.y
+#		if localIdx.x > maxPoint.x:
+#			maxPoint.x = localIdx.x
+#		if localIdx.y > maxPoint.y:
+#			maxPoint.y = localIdx.y
+#
+#	var margin = Vector2(20.0, 20.0)
+#
+#	var viewPosition = minPoint * level.getCellSize()
+#	$VC.rect_position = viewPosition - margin
+#
+#	var viewSize = (maxPoint - minPoint + Vector2(1, 1)) * level.getCellSize()
+#	$VC.rect_size = viewSize + margin * 2
+#
+#	var dif = baseGlobalIdx - convertToGlobalIdx(minPoint)
+#	modules.position = dif * level.getCellSize() + margin
 
 
 ############### Building
@@ -494,7 +493,7 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = 
 	for offsetId in offsetsIdForConnections: 
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)
 	
-	_recalculateViewportSize()
+#	_recalculateViewportSize()
 
 	if emitSignal == true:
 		emit_signal("machine_state_changed")
@@ -539,6 +538,6 @@ func hashIdx(idx : Vector2) -> int:
 
 ############### Outline
 
-func setOutline(width : float, color := Color.white):
-	$VC.material.set_shader_param('width', width)
-	$VC.material.set_shader_param('outline_color', color)
+#func setOutline(width : float, color := Color.white):
+#	$VC.material.set_shader_param('width', width)
+#	$VC.material.set_shader_param('outline_color', color)

@@ -186,17 +186,18 @@ func getCellIdxFromPos(pos) -> Vector2:
 	return tilemap.world_to_map(pos / tilemapScale)
 	
 func getPosFromCellIdx(cellIdx) -> Vector2:
-	var fixedCellIdx = cellIdx
-
-	fixedCellIdx.x = round(fixedCellIdx.x)
-	fixedCellIdx.y = round(fixedCellIdx.y)
-	
-	var finalPos = fixedCellIdx * cellSize
-	
-	var pos = tilemap.map_to_world(fixedCellIdx) * tilemapScale
-	pos.x = round(pos.x - 1)
-	pos.y = round(pos.y)
-	return pos
+	return tilemap.map_to_world(cellIdx) * tilemapScale
+#	var fixedCellIdx = cellIdx
+#
+#	fixedCellIdx.x = round(fixedCellIdx.x)
+#	fixedCellIdx.y = round(fixedCellIdx.y)
+#
+#	var finalPos = fixedCellIdx * cellSize
+#
+#	var pos = tilemap.map_to_world(fixedCellIdx) * tilemapScale
+#	pos.x = round(pos.x - 1)
+#	pos.y = round(pos.y)
+#	return pos
 
 func _input(event):
 	if event.is_action_pressed("x"): #just remove tile

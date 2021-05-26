@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -16,28 +16,44 @@
 [ext_resource path="res://res/floor_cursor.png" type="Texture" id=14]
 [ext_resource path="res://Gui/ActionsPanel/ActionsPanel.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Levels/MachineOutlineRenderer.gd" type="Script" id=16]
+[ext_resource path="res://Levels/FloorGizmoShader.shader" type="Shader" id=17]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 17 )
+
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 
 void fragment() {
-	vec4 stex = textureLod(SCREEN_TEXTURE, SCREEN_UV, 1.0);
-	vec4 tex = textureLod(TEXTURE, UV, 1.0);
 	
-	float m1 = ((sin(TIME * 3.0 + (UV.x + UV.y) * 4.0) + 1.0) * 0.5) * 1.0;
-	float m2 = ((cos(TIME * 3.0 - (UV.x + UV.y) * 4.0) + 1.0) * 0.5) * 1.0;
+	vec4 stex = textureLod(SCREEN_TEXTURE, SCREEN_UV, 3.0);
 	
-	vec4 c = stex;
+	vec4 c = stex.r * stex;
 	
-	c.g += c.g * (pow(tex.r, 4.0) * tex.a * pow((m1), 2.2)) * 0.8;
-	c.b -= c.b * (pow(tex.r, 4.0) * tex.a * pow((m2), 2.2)) * 0.8;
-	c.r += c.r * (pow(tex.r, 4.0) * tex.a * pow((m2 + m1), 2.2)) * 0.8;
+	COLOR = c;
+//	
+	
+//	vec4 stex = textureLod(SCREEN_TEXTURE, SCREEN_UV, 1.0);
+//	vec4 stex2 = textureLod(SCREEN_TEXTURE, SCREEN_UV + vec2(0.8, 0.8), 1.0);
+//	vec4 stex3 = textureLod(SCREEN_TEXTURE, SCREEN_UV + vec2(-0.8, 0.8), 1.0);
+//	vec4 stex4 = textureLod(SCREEN_TEXTURE, SCREEN_UV + vec2(0.8, -0.8), 1.0);
+//	vec4 stex5 = textureLod(SCREEN_TEXTURE, SCREEN_UV + vec2(-0.8, -0.8), 1.0);
+//	vec4 tex = textureLod(TEXTURE, UV, 1.0);
+//
+//	float m1 = ((sin(TIME * 3.0 + (UV.x + UV.y) * 4.0) + 1.0) * 0.5) * 1.0;
+//	float m2 = ((cos(TIME * 3.0 - (UV.x + UV.y) * 4.0) + 1.0) * 0.5) * 1.0;
+//
+//	vec4 c = (stex2 + stex3 + stex3 + stex4) * 0.25 + stex * (m1 + m2);
+	
+//	c.g += c.g * (pow(tex.r, 4.0) * tex.a * pow((m1), 2.2)) * 0.8;
+//	c.b -= c.b * (pow(tex.r, 4.0) * tex.a * pow((m2), 2.2)) * 0.8;
+//	c.r += c.r * (pow(tex.r, 4.0) * tex.a * pow((m2 + m1), 2.2)) * 0.8;
 	
 	COLOR = c;
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
@@ -56,6 +72,8 @@ z_index = -1
 z_as_relative = false
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 256, 256 )
+cell_quadrant_size = 32
+cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 format = 1
 
 [node name="MapGenerator" type="Node" parent="TileMap"]
@@ -81,9 +99,9 @@ script = ExtResource( 12 )
 position = Vector2( 64, 64 )
 
 [node name="ActionsPanel" parent="." instance=ExtResource( 15 )]
-margin_left = 96.0
+margin_left = 64.0
 margin_top = 160.0
-margin_right = 96.0
+margin_right = 64.0
 margin_bottom = 160.0
 
 [node name="ModuleUI" parent="." instance=ExtResource( 11 )]
@@ -115,5 +133,9 @@ z_index = -1
 z_as_relative = false
 texture = ExtResource( 14 )
 
-[node name="MachineOutlineRenderer" type="Node2D" parent="Renderers"]
+[node name="BackBufferCopy" type="BackBufferCopy" parent="Renderers"]
+copy_mode = 2
+
+[node name="MachineOutlineRenderer" type="Node2D" parent="Renderers/BackBufferCopy"]
+material = SubResource( 4 )
 script = ExtResource( 16 )

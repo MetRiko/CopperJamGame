@@ -52,9 +52,6 @@ func moveForward():
 func _playMoveAnimation(targetPos):
 	$Tween.interpolate_property(machine, "global_position", machine.global_position, targetPos, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
-#	yield($Tween, "tween_completed")
-#	print("x ",targetPos)
-#	machine.global_position = targetPos
 
 func move(offset : Vector2):
 

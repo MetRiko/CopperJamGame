@@ -132,11 +132,11 @@ func _hoverModule(module):
 			if latestHoveredModule != selectedModule:
 				latestHoveredModule.modulate = Color(1.0, 1.0, 1.0, 1.0)
 		
-			if (module != null and latestHoveredModule.getMachine() != module.getMachine()) or module == null:
-				latestHoveredModule.getMachine().setOutline(0.0)
+#			if (module != null and latestHoveredModule.getMachine() != module.getMachine()) or module == null:
+#				latestHoveredModule.getMachine().setOutline(0.0)
 
 	if module != null and module != selectedModule:
-		module.getMachine().setOutline(1.0, Color(1.0, 1.0, 1.0, 0.6))
+#		module.getMachine().setOutline(1.0, Color(1.0, 1.0, 1.0, 0.6))
 		module.modulate = Color(1.2, 1.2, 1.2, 1.0)
 
 	latestHoveredModule = module

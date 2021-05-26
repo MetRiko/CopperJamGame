@@ -19,6 +19,7 @@ func onHoveredObjectChanged(newHoveredObject):
 	else:
 		latestHoveredMachine = null
 		possibleConnectionsOffsetsForHoveredMachine = []
+		
 	update()
 
 func _draw():
@@ -64,4 +65,3 @@ func _draw():
 			var rectSize = Vector2(right - left, bottom - top)
 			
 			draw_rect(Rect2(rectPos, rectSize), Color.white, true, 1.0, false)
-			print(rectPos, rectSize)

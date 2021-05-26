@@ -72,8 +72,8 @@ func onHoveredObjectChanged(newHoveredObject):
 	var floorGizmoSize = floorGizmo.get_rect().size * floorGizmo.global_scale
 
 	var pos = level.getPosFromCellIdx(playerInputController.getMouseIdx())
-	gizmo.global_position = pos + level.getHalfCellSize() + Vector2(-1, 0)
-	floorGizmo.global_position = pos + level.getHalfCellSize() + Vector2(-1, 0)
+	gizmo.global_position = pos + level.getHalfCellSize()
+	floorGizmo.global_position = pos + level.getHalfCellSize()
 	
 	_calculateConnections(latestModuleIdToAttach, latestRotModuleToAttach)
 	_updateGizmoColor()

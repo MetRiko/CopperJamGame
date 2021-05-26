@@ -43,7 +43,6 @@ wait_time = 0.234
 autostart = true
 
 [node name="Level" parent="." instance=ExtResource( 4 )]
-position = Vector2( -2, 0 )
 
 [node name="Camera" parent="." instance=ExtResource( 2 )]
 position = Vector2( 512, 296 )
