@@ -61,7 +61,7 @@ func disablePlayerInput():
 	set_process(false)
 
 func _ready():
-	Game.beatController.connect("beat", self, "onBeat")
+	Game.beatController.connect("after_beat", self, "onAfterBeat")
 	changeStateToNormal()
 
 func _process(delta):
@@ -70,7 +70,7 @@ func _process(delta):
 		currentMouseIdx = mouseIdx
 		_hoverObject(mouseIdx)
 
-func onBeat(a, b):
+func onAfterBeat():
 	var mouseIdx = level.getCellIdxFromMousePos()
 	_hoverObject(mouseIdx)
 
@@ -217,6 +217,9 @@ func _leftClickWhenBuildingState():
 		# on floor - attach module / create new machine
 		elif hoveredObject == HOVERED_JUST_FLOOR:
 			
+			if not is_instance_valid(selectedModule):
+				selectedModule = null
+
 			# not selected module - create new machine
 			if selectedModule == null:
 				_placeNewMachine()

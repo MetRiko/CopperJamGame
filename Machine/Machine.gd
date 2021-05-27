@@ -119,7 +119,8 @@ func getAllAvailableGlobalFreeSlotsWithOffsets():
 	var ret = []
 	for module in installedModules.values():
 		for idx in module.availableIdxes:
-			if availableIdxes.values().has(idx):
+			var hashedIdx = hashIdx(idx)
+			if availableIdxes.has(hashedIdx):
 				var offset = idx - module.localIdx
 				var globalIdx = convertToGlobalIdx(module.localIdx)
 				ret.append([globalIdx, offset])
@@ -245,7 +246,7 @@ func getAvailableIdxes(moduleId : String, moduleLocalIdx : Vector2, rot := 0):
 	var offsetsIdAfterRotation = getOffsetsIdForAvailableConnections(moduleId, rot)
 	var availableIdxes = []
 	for offsetId in offsetsIdAfterRotation:
-		availableIdxes.append(OFFSETS[(offsetId + 2) % 4] + moduleLocalIdx)
+		availableIdxes.append(OFFSETS[offsetId] + moduleLocalIdx)
 	return availableIdxes
 
 func isAnyConnectionAvailable(moduleId : String, moduleLocalIdx : Vector2, rot := 0):
@@ -386,7 +387,10 @@ func _forceDetach(localIdx : Vector2, emitSignal = true):
 		modulesToRemove = installedModules.values()
 		emit_signal("machine_removed")
 	
-	_destroyModulesFromArray(modulesToRemove)
+	var nodesToRemove = []
+	for module in modulesToRemove:
+		nodesToRemove.append(module.module)
+	_destroyModulesFromArray(nodesToRemove)
 	
 	emit_signal("machine_state_changed")
 
@@ -404,7 +408,7 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = 
 		push_error("No available connection for this module!")
 		printerr("No available connection for this module!")
 		return
-		
+
 	var offsetsIdForConnections = getOffsetsIdForAvailableConnections(moduleId, rot)
 	var availableConnections = getAvailableConnections(moduleId, localIdx, rot)
 	var availableIdxes = getAvailableIdxes(moduleId, localIdx, rot)
@@ -429,7 +433,7 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = 
 
 	if emitSignal == true:
 		emit_signal("machine_state_changed")
-		
+
 func getLocalMouseIdx():
 	return level.getCellIdxFromPos(get_global_mouse_position()) - baseGlobalIdx
 

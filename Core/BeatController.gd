@@ -6,23 +6,30 @@ signal beat
 signal half_beat
 signal quarter_beat
 
+signal after_beat
+signal after_half_beat
+signal after_quarter_beat
+
 var currentBeat = 0
 var beatsCount = 10
 
 func _ready():
-	$Timer.connect("timeout", self, "_onTimeout")
-	$HalfTimer.connect("timeout", self, "_onTimeout2")
-	$QuarterTimer.connect("timeout", self, "_onTimeout3")
+	$Timer.connect("timeout", self, "_onBeat")
+	$HalfTimer.connect("timeout", self, "_onHalfBeat")
+	$QuarterTimer.connect("timeout", self, "_onQuarterBeat")
 
-func _onTimeout():
+func _onBeat():
 	currentBeat = (currentBeat + 1) % beatsCount
 	emit_signal("beat", currentBeat, beatsCount)
+	emit_signal("after_beat")
 
-func _onTimeout2():
+func _onHalfBeat():
 	emit_signal("half_beat")
-
-func _onTimeout3():
+	emit_signal("after_half_beat")
+	
+func _onQuarterBeat():
 	emit_signal("quarter_beat")
+	emit_signal("after_quarter_beat")
 
 #func setPause(isPaused):
 #	if pauseMenu.isPaused == false:
