@@ -47,8 +47,24 @@ func getMouseIdx():
 func getSelectedModule():
 	return selectedModule
 
+func getSelectedMachine():
+	if selectedModule != null and is_instance_valid(selectedModule):
+		var machine = selectedModule.getMachine()
+		if is_instance_valid(machine):
+			return machine
+	return null
+
 func getHoveredModule():
 	return latestHoveredModule
+
+func getIdModuleToAttach():
+	return moduleToAttach
+
+func getRotModuleToAttack():
+	return rotOfModuleToAttach
+
+func isModuleToAttachSelected():
+	return moduleToAttach != null
 
 # Core
 

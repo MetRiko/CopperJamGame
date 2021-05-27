@@ -1,11 +1,11 @@
 extends Node2D
 
 onready var level = get_parent().get_parent()
-onready var gizmo = $Gizmo
-onready var floorGizmo = $FloorGizmo
-onready var playerInputController = level.getPlayerInputController()
+onready var pic = level.getPlayerInputController()
 
 const ALL_SHOP_CONTENT = preload("res://Gui/AllShopContent.gd").ALL_SHOP_CONTENT
+
+var machineGd = preload("res://Machine/Machine.gd").new()
 
 var latestSelectedMachine = null
 var freeSlotsIdxes = []
@@ -16,11 +16,11 @@ var latestModuleIdToAttach = null
 var latestRotModuleToAttach = null
 
 func _ready():
-	playerInputController.connect("module_selected", self, "onModuleSelected")
-	playerInputController.connect("module_to_attach_changed", self, "onModuleToAttachChanged")
-	playerInputController.connect("hovered_object_changed", self, "onHoveredObjectChanged")
-	playerInputController.connect("new_machine_placed", self, "onNewMachinePlaced")
-	playerInputController.connect("state_changed", self, "onStateChanged")
+	pic.connect("module_selected", self, "onModuleSelected")
+	pic.connect("module_to_attach_changed", self, "onModuleToAttachChanged")
+	pic.connect("hovered_object_changed", self, "onHoveredObjectChanged")
+	pic.connect("new_machine_placed", self, "onNewMachinePlaced")
+	pic.connect("state_changed", self, "onStateChanged")
 	
 	onModuleSelected(null)
 	onModuleToAttachChanged(null, 0)
@@ -58,45 +58,20 @@ func onModuleToAttachChanged(moduleId, rot):
 	latestModuleIdToAttach = moduleId
 	latestRotModuleToAttach = rot
 	_calculateConnections(moduleId, rot)
-	for content in ALL_SHOP_CONTENT:
-		if content.moduleId == moduleId:
-			gizmo.frame = content.frameId
-			break
 	
 	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
 		_calculateFreeSlots(latestSelectedMachine)
 
-	_updateGizmoColor()
-
-func onHoveredObjectChanged(newHoveredObject):
-	var floorGizmoSize = floorGizmo.get_rect().size * floorGizmo.global_scale
-
-	var pos = level.getPosFromCellIdx(playerInputController.getMouseIdx())
-	gizmo.global_position = pos + level.getHalfCellSize()
-	floorGizmo.global_position = pos + level.getHalfCellSize()
-	
+func onHoveredObjectChanged(newHoveredObject):	
 	_calculateConnections(latestModuleIdToAttach, latestRotModuleToAttach)
-	_updateGizmoColor()
 	update()
 
-func _updateGizmoColor():
-	if latestModuleIdToAttach != null:
-		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-			var localIdx = latestSelectedMachine.convertToLocalIdx(playerInputController.getMouseIdx())
-			var isAttachable = latestSelectedMachine.canAttachModule(latestModuleIdToAttach, localIdx, latestRotModuleToAttach)
-			if isAttachable:
-				gizmo.modulate = Color(0.0, 1.0, 0.0, 1.0)
-			else:
-				gizmo.modulate = Color(1.0, 0.0, 0.0, 1.0)
-		else:
-			gizmo.modulate = Color(1.0, 1.0, 0.0, 1.0)
-
 func onStateChanged(state):
-	if state == playerInputController.BUILDING_STATE:
-		var selectedModule = playerInputController.getSelectedModule()
+	if state == pic.BUILDING_STATE:
+		var selectedModule = pic.getSelectedModule()
 		if selectedModule != null and is_instance_valid(selectedModule):
 			_calculateFreeSlots(selectedModule.getMachine())
-	elif state == playerInputController.NORMAL_STATE:
+	elif state == pic.NORMAL_STATE:
 		_calculateFreeSlots(null)
 
 func onMachineRemoved():
@@ -112,19 +87,13 @@ func _calculateFreeSlots(machine):
 
 func _calculateConnections(moduleId, rot):
 	if moduleId == null:
-		gizmo.visible = false
 		possibleConnectionsOffsets = []
 	else:
-		gizmo.visible = true
-		gizmo.rotation_degrees = rot * 90.0
-		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
-			possibleConnectionsOffsets = latestSelectedMachine.getOffsetsForAvailableConnections(moduleId, rot)
-		else:
-			possibleConnectionsOffsets = []
+		possibleConnectionsOffsets = machineGd.getOffsetsForAvailableConnections(moduleId, rot)
 	update()
 
 func _draw():
-	if playerInputController.isBuildingState():
+	if pic.isBuildingState():
 		var radius = 4.0
 		for idxWithOffset in freeSlotsIdxes:
 			var moduleIdx = idxWithOffset[0]
@@ -132,8 +101,12 @@ func _draw():
 			var pos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
 			pos += offset * level.getHalfCellSize()
 			draw_circle(pos, radius, Color(1.0, 0.0, 0.0, 0.4))
+			draw_circle(pos, radius * 0.85, Color(1.0, 0.0, 0.0, 0.4))
+			draw_circle(pos, radius * 0.65, Color(1.0, 0.0, 0.0, 0.4))
 			
 		for offset in possibleConnectionsOffsets:
-			var idx = playerInputController.getMouseIdx() 
+			var idx = pic.getMouseIdx() 
 			var pos = level.getPosFromCellIdx(idx) + level.getHalfCellSize() + offset * level.getHalfCellSize()
-			draw_circle(pos, radius, Color(0.0, 0.0, 1.0, 0.4))
+			draw_circle(pos, radius, Color(1.0, 0.0, 0.0, 0.4))
+			draw_circle(pos, radius * 0.85, Color(1.0, 0.0, 0.0, 0.4))
+			draw_circle(pos, radius * 0.65, Color(1.0, 0.0, 0.0, 0.4))
