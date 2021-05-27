@@ -53,20 +53,21 @@ func onQuitGame():
 	yield($Tween, "tween_completed")
 	exitGame()
 
-func startGame():
+func startGame(force = false):
 	Game.musicController.disableMainTheme()
 	
-	$Tween.interpolate_property($TextureRect, "modulate:a", 1.0, 0.0, 1.2, Tween.TRANS_SINE, Tween.EASE_OUT)
-	$Tween.start()
-	yield(get_tree().create_timer(0.4), "timeout")
-#	yield($Tween, "tween_completed")
-	
-	$Tween.interpolate_property($Logo, "modulate:a", 1.0, 0.0, 0.8, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-	$Tween.start()
-	yield(get_tree().create_timer(0.4), "timeout")
-	$Tween.interpolate_property($Back, "modulate:a", 1.0, 0.0, 1.2, Tween.TRANS_SINE, Tween.EASE_OUT)
-	$Tween.start()
-	yield($Tween, "tween_all_completed")
+	if force == false:
+		$Tween.interpolate_property($TextureRect, "modulate:a", 1.0, 0.0, 1.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+		$Tween.start()
+		yield(get_tree().create_timer(0.4), "timeout")
+	#	yield($Tween, "tween_completed")
+		
+		$Tween.interpolate_property($Logo, "modulate:a", 1.0, 0.0, 0.8, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		$Tween.start()
+		yield(get_tree().create_timer(0.4), "timeout")
+		$Tween.interpolate_property($Back, "modulate:a", 1.0, 0.0, 1.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+		$Tween.start()
+		yield($Tween, "tween_all_completed")
 	
 	camera.enableCamera()
 	level.set_process(true)

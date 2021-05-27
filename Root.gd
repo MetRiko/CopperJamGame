@@ -4,5 +4,6 @@ func _ready():
 	VisualServer.set_default_clear_color(Color('#252834'))
 	
 #	$MusicController.setup()
+	$MainMenu/Menu.startGame(true)
 	
 #	$AudioStreamPlayer.play()
