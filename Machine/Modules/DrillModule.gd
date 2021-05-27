@@ -42,6 +42,10 @@ func turnOffDrill():
 	drillOn = false
 	$Particles2D.emitting = false
 
+func _destroy():
+	$Tween.interpolate_property($Particles2D, "modulate:a", 1.0, 0.0, 0.4, Tween.TRANS_SINE, Tween.EASE_IN)
+	$Tween.start()
+
 func onBeat(a, b):
 	if drillOn == true and is_instance_valid(_machine):
 		_animateDrill()

@@ -198,37 +198,6 @@ func damageModuleOnLocalIdx(localIdx, damageValue):
 
 var clearingState = 0
 
-func _process(delta):
-	if not modulesQueuedToRemove.empty():
-		for module in modulesQueuedToRemove:
-			module.destroy()
-			modulesQueuedToRemove.erase(module)
-		if installedModules.empty():
-			$CoreBorder.visible = false
-
-#func _process(delta):
-#	if not modulesQueuedToRemove.empty() and clearingState == 0:
-#		if removeMachine == true:
-#			$CoreBorder.visible = false
-#		clearingState = 1
-#		for module in modulesQueuedToRemove:
-#			module.destroy()
-##		yield(get_tree().create_timer(0.8), "timeout")
-##		for module in modulesQueuedToRemove:
-##			module.queue_free()
-#		modulesQueuedToRemove = []
-#		_recalculateViewportSize()
-#		clearingState = 0
-#		if removeMachine == true:
-#			queue_free()
-
-func onModuleDestroyed():
-	if modulesQueuedToRemove.empty():
-#		_recalculateViewportSize()
-		
-		if installedModules.empty():
-			queue_free()
-
 func _ready():
 	for module in modules.get_children():
 		module.queue_free()
@@ -238,37 +207,6 @@ func setupPos(globalIdx : Vector2):
 	var pos = level.getPosFromCellIdx(globalIdx)
 	global_position = pos
 	addAvailableIdx(Vector2(0, 0))
-
-#func _recalculateViewportSize():
-#
-#	if installedModules.empty():
-#		$VC/Viewport.size = level.getCellSize() + Vector2(20, 20)
-#
-#	var minPoint = Vector2(10000000, 10000000)
-#	var maxPoint = Vector2(-10000000, -10000000)
-#
-#	for moduleData in installedModules.values():
-#		var localIdx = moduleData.localIdx
-#		if localIdx.x < minPoint.x:
-#			minPoint.x = localIdx.x
-#		if localIdx.y < minPoint.y:
-#			minPoint.y = localIdx.y
-#		if localIdx.x > maxPoint.x:
-#			maxPoint.x = localIdx.x
-#		if localIdx.y > maxPoint.y:
-#			maxPoint.y = localIdx.y
-#
-#	var margin = Vector2(20.0, 20.0)
-#
-#	var viewPosition = minPoint * level.getCellSize()
-#	$VC.rect_position = viewPosition - margin
-#
-#	var viewSize = (maxPoint - minPoint + Vector2(1, 1)) * level.getCellSize()
-#	$VC.rect_size = viewSize + margin * 2
-#
-#	var dif = baseGlobalIdx - convertToGlobalIdx(minPoint)
-#	modules.position = dif * level.getCellSize() + margin
-
 
 ############### Building
 
@@ -372,6 +310,21 @@ func recalculateAvailableIdxes():
 				newAvailableIdxes[hashedIdx] = idx
 	self.availableIdxes = newAvailableIdxes
 
+func _destroyModulesFromArray(modules : Array):
+	for module in modules:
+		var localIdx = module.getLocalIdx()
+		processor.removeNodesRelatedToModule(localIdx)
+		installedModules.erase(hashIdx(localIdx))
+		module.destroy()
+		emit_signal("module_removed", localIdx, module)
+		
+	recalculateAvailableIdxes()
+	if installedModules.empty():
+		$CoreBorder.visible = false
+
+func _destroyModule(module):
+	_destroyModulesFromArray([module])
+
 func detachModule(localIdx : Vector2, forceDetach = false, emitSignal = true):
 	if not canDetachModule(localIdx):
 		if forceDetach == true:
@@ -381,17 +334,8 @@ func detachModule(localIdx : Vector2, forceDetach = false, emitSignal = true):
 			push_error("Cannot detach module!")
 			return 
 	
-	var hashedLocalIdx = hashIdx(localIdx)
-	var moduleData = installedModules[hashedLocalIdx]
-	if installedModules.size() == 1:
-		baseGlobalIdx = convertToGlobalIdx(moduleData.localIdx)
-		global_position = level.getPosFromCellIdx(baseGlobalIdx)
-	
-	processor.removeNodesRelatedToModule(localIdx)
-	emit_signal("module_removed", localIdx, moduleData.module)
-	modulesQueuedToRemove.append(moduleData.module)
-	installedModules.erase(hashedLocalIdx)
-	recalculateAvailableIdxes()
+	var moduleData = installedModules[hashIdx(localIdx)]
+	_destroyModule(moduleData.module)
 	
 	if emitSignal == true:
 		emit_signal("machine_state_changed")
@@ -436,26 +380,15 @@ func _forceDetach(localIdx : Vector2, emitSignal = true):
 		for moduleId in installedModules.keys():
 			if not modulesConnectedToCore.has(moduleId):
 				var moduleToRemove = installedModules[moduleId]
-				var moduleToRemoveLocalIdx = moduleToRemove.localIdx
-				processor.removeNodesRelatedToModule(moduleToRemoveLocalIdx)
 				modulesToRemove.append(moduleToRemove)
 	else:
-		modulesToRemove = installedModules.values()
-	
-	for moduleToRemove in modulesToRemove:
-		emit_signal("module_removed", moduleToRemove.localIdx, moduleToRemove.module)
-		modulesQueuedToRemove.append(moduleToRemove.module)
-		installedModules.erase(hashIdx(moduleToRemove.localIdx))
-	
-	if localIdx == Vector2(0, 0):
-		emit_signal("machine_removed")
 		removeMachine = true
-		return
-		
-	recalculateAvailableIdxes()
+		modulesToRemove = installedModules.values()
+		emit_signal("machine_removed")
+	
+	_destroyModulesFromArray(modulesToRemove)
 	
 	emit_signal("machine_state_changed")
-	
 
 func canAttachModule(moduleId : String, localIdx : Vector2, rot := 0):
 	return checkIfIdxAvailable(localIdx) and isAnyConnectionAvailable(moduleId, localIdx, rot)
@@ -489,13 +422,10 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = 
 	modules.add_child(newModule)
 	newModule.position = level.getPosFromCellIdx(localIdx)
 	newModule.setupModule(self, localIdx, rot)
-	newModule.connect("module_destroyed", self, "onModuleDestroyed")
 
 	removeAvailableIdx(localIdx)
 	for offsetId in offsetsIdForConnections: 
 		addAvailableIdx(OFFSETS[(offsetId)%4] + localIdx)
-	
-#	_recalculateViewportSize()
 
 	if emitSignal == true:
 		emit_signal("machine_state_changed")
@@ -503,43 +433,9 @@ func attachModule(moduleId : String, localIdx : Vector2, rot := 0, emitSignal = 
 func getLocalMouseIdx():
 	return level.getCellIdxFromPos(get_global_mouse_position()) - baseGlobalIdx
 
-#func _unhandled_input(event):
-#	if event.is_action_pressed("LMB"):
-#		var mouseIdx = getLocalMouseIdx()
-#		var hashedMouseIdx = hashIdx(mouseIdx)
-#		if hashedMouseIdx in availableIdxes:
-#			if not level.isObstacle(mouseIdx + baseGlobalIdx):
-#				attachModule('empty_module', mouseIdx)
-#	if event.is_action_pressed("RMB"):
-#		var mouseIdx = getLocalMouseIdx()
-#		var hashedMouseIdx = hashIdx(mouseIdx)
-#		if hashedMouseIdx in installedModules:
-#			detachModule(mouseIdx)
-
-#func _process(delta):
-#	update()
-#
-#func _draw():
-#	var mouseIdx = getLocalMouseIdx()
-#	var hashedMouseIdx = hashIdx(mouseIdx)
-#	if hashedMouseIdx in availableIdxes:
-#		var rectPos = level.getPosFromCellIdx(mouseIdx)
-#		draw_rect(Rect2(rectPos, level.getCellSize()), Color.wheat, false, 1.0)
-#		print(rectPos)
-#
-#	for idx in getAvailableGlobalFreeSlots():
-#		var pos = level.getPosFromCellIdx(convertToLocalIdx(idx)) + level.getCellSize() * 0.5
-#		draw_circle(pos, 6.0, Color.wheat)
-
 func hashIdx(idx : Vector2) -> int:
 	var x = idx.x
 	var y = idx.y
 	var a = -2*x-1 if x < 0 else 2 * x
 	var b = -2*y-1 if y < 0 else 2 * y
 	return (a + b) * (a + b + 1) * 0.5 + b
-
-############### Outline
-
-#func setOutline(width : float, color := Color.white):
-#	$VC.material.set_shader_param('width', width)
-#	$VC.material.set_shader_param('outline_color', color)

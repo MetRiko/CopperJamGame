@@ -20,6 +20,8 @@ var _healthController = null
 
 var _rot := 0
 
+var _destroyed = false
+
 const OFFSETS = [
 	Vector2(0, -1),
 	Vector2(1, 0),
@@ -95,6 +97,9 @@ func getLocalIdx():
 func getGlobalIdx():
 	return _localIdx + _machine.getGlobalIdx()
 
+func isDestroyed():
+	return _destroyed
+
 # Core
 
 func doDamage(value):
@@ -110,19 +115,35 @@ func isConditionInstruction(instructionId):
 func onNoHealth():
 	_machine.detachModule(_localIdx, true)
 
+# func _destroy() -> GDScriptFunctionState:
+# 	return yield(get_tree().create_timer(0.0), "timeout")
+
+func _destroy():
+	pass
+
 func destroy():
+	
+	_destroyed = true
+	
 #	var pos = global_position
 	Game.level.moveObjectToDestroyedObjects(self)
 	global_position = Game.level.getPosFromCellIdx(getGlobalIdx())
 	
 	if is_instance_valid(_healthController):
 		_healthController.queue_free()
+		
+	emit_signal("module_destroyed")
+
+	_tween.resume_all()
+
+	# yield(_destroy(), "completed")
+	_destroy()
 
 	_tween.interpolate_property($Sprite, 'global_scale', $Sprite.global_scale, Vector2(0.125 * 1.2, 0.125 * 1.2), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
 	_tween.interpolate_property($Sprite, 'modulate', $Sprite.modulate, Color(3.0, 3.0, 3.0, 1.0), 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
-	yield(_tween, "tween_completed")
+	yield(_tween, "tween_all_completed")
 	
 	_tween.interpolate_property($Sprite, 'modulate', $Sprite.modulate, Color(0.0, 0.0, 0.0, 0.0), 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
 	_tween.start()
@@ -130,9 +151,8 @@ func destroy():
 	_tween.start()
 	yield(_tween, "tween_all_completed")
 	
-	emit_signal("module_destroyed")
 	queue_free()
-	
+		
 func _createHealthController():
 	_healthController = healthControllerTscn.instance()
 	_machine.healthControllers.add_child(_healthController)

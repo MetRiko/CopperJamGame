@@ -36,17 +36,19 @@ hframes = 7
 vframes = 7
 frame = 15
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Particles" type="Node2D" parent="."]
 position = Vector2( 16, 16 )
 
-[node name="Particles2D" type="Particles2D" parent="Node2D"]
+[node name="Particles2D" type="Particles2D" parent="Particles"]
 modulate = Color( 0.92549, 0.92549, 0.92549, 0.478431 )
 position = Vector2( 0, -13 )
 emitting = false
 amount = 24
-lifetime = 0.6
+lifetime = 0.8
 one_shot = true
 explosiveness = 0.85
 randomness = 0.5
 process_material = SubResource( 3 )
 texture = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]

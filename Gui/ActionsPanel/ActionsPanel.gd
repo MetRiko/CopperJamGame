@@ -72,6 +72,8 @@ func _getPosForPanel(machine):
 func _process(delta):
 	if enabled == true:
 		if latestSelectedModule != null and is_instance_valid(latestSelectedModule):
-			$Margin.rect_min_size = Vector2()
-			$Margin.rect_size = Vector2()
-			rect_global_position = _getPosForPanel(latestSelectedModule.getMachine())
+			var machine = latestSelectedModule.getMachine()
+			if is_instance_valid(machine):
+				$Margin.rect_min_size = Vector2()
+				$Margin.rect_size = Vector2()
+				rect_global_position = _getPosForPanel(latestSelectedModule.getMachine())
