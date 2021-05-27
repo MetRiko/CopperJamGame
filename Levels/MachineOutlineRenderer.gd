@@ -4,11 +4,25 @@ onready var level = Game.level
 onready var playerInputController = level.getPlayerInputController()
 
 var latestHoveredMachine = null
+var latestSelectedMachine = null
 
 var possibleConnectionsOffsetsForHoveredMachine = []
+var possibleConnectionsOffsetsForSelectedMachine = []
 
 func _ready():
 	playerInputController.connect("hovered_object_changed", self, "onHoveredObjectChanged")
+	playerInputController.connect("module_selected", self, "onModuleSelected")
+
+func onModuleSelected(module):
+	if module != null:
+		var machine = module.getMachine()
+		latestSelectedMachine = machine
+		possibleConnectionsOffsetsForSelectedMachine = machine.getAllGlobalNeighboursWithOffsets()
+	else:
+		latestSelectedMachine = null
+		possibleConnectionsOffsetsForSelectedMachine = []
+	
+	update()
 
 func onHoveredObjectChanged(newHoveredObject):
 	
@@ -22,11 +36,11 @@ func onHoveredObjectChanged(newHoveredObject):
 		
 	update()
 
-func _draw():
 
-	# hovered machine
+func _drawOutlineForMachine(machine, connectionsOffsets, color, thickness):
+		# hovered machine
 	
-	if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
+	if machine != null and is_instance_valid(machine):
 		
 		var OFFSETS = [
 			Vector2(0, -1),
@@ -35,11 +49,11 @@ func _draw():
 			Vector2(-1, 0)
 		]
 		
-		var halfWidth = 1.3
+		var halfWidth = thickness
 		var halfLength = level.getHalfCellSize().x
 		var size = Vector2(halfWidth * 2.0, halfLength * 2.0)
 		
-		for idxWithOffset in possibleConnectionsOffsetsForHoveredMachine:
+		for idxWithOffset in connectionsOffsets:
 			var moduleIdx = idxWithOffset[0]
 			var offset = idxWithOffset[1]
 			var offsetId = idxWithOffset[2]
@@ -72,4 +86,9 @@ func _draw():
 			var rectPos = Vector2(left, top) + rectCenterPos
 			var rectSize = Vector2(right - left, bottom - top)
 			
-			draw_rect(Rect2(rectPos, rectSize), Color.white, true, 1.0, false)
+			draw_rect(Rect2(rectPos, rectSize), color, true, 1.0, false)
+
+
+func _draw():
+	_drawOutlineForMachine(latestHoveredMachine, possibleConnectionsOffsetsForHoveredMachine, Color.white, 0.6)
+	_drawOutlineForMachine(latestSelectedMachine, possibleConnectionsOffsetsForSelectedMachine, Color.green, 1.3)

@@ -54,6 +54,13 @@ func getSelectedMachine():
 			return machine
 	return null
 
+func getHoveredMachine():
+	if latestHoveredModule != null and is_instance_valid(latestHoveredModule):
+		var machine = latestHoveredModule.getMachine()
+		if is_instance_valid(machine):
+			return machine
+	return null
+
 func getHoveredModule():
 	return latestHoveredModule
 
@@ -172,10 +179,12 @@ func _unhandled_input(event):
 	if event.is_action_pressed("space"):
 		if state == NORMAL_STATE:
 			_changeState(BUILDING_STATE)
-
-	if event.is_action_released("space"):
-		if state == BUILDING_STATE:
+		elif state == BUILDING_STATE:
 			_changeState(NORMAL_STATE)
+
+	# if event.is_action_released("space"):
+	# 	if state == BUILDING_STATE:
+	# 		_changeState(NORMAL_STATE)
 
 	if event.is_action_pressed("LMB"):
 
@@ -219,9 +228,9 @@ func _leftClickWhenBuildingState():
 		else:
 			_unselectModule()
 
-		# on floor - place/replace new machine
-		if hoveredObject == HOVERED_JUST_FLOOR:
-			_placeNewMachine()
+		# on floor - place/replace new machine - FEATURE DISABLED
+		# if hoveredObject == HOVERED_JUST_FLOOR:
+		# 	_placeNewMachine()
 
 	# with selected module to attach
 	else:
