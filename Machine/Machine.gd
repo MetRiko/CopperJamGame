@@ -129,7 +129,7 @@ func getAllAvailableGlobalFreeSlotsWithOffsets():
 func getAvailableGlobalFreeSlots():
 	var ret = []
 	for localIdx in availableIdxes.values():
-		if not level.isObstacle(convertToGlobalIdx(localIdx)):
+		if level.isFreeSpace(convertToGlobalIdx(localIdx)):
 			ret.append(convertToGlobalIdx(localIdx))
 	return ret
 	

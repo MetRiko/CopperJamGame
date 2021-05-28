@@ -45,6 +45,7 @@ vframes = 7
 frame = 42
 
 [node name="Light2D" type="Light2D" parent="."]
+visible = false
 texture = ExtResource( 3 )
 color = Color( 10, 10, 10, 1 )
 shadow_enabled = true

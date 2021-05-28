@@ -37,11 +37,11 @@ func onNoHealth():
 	print("Player is dead")
 	emit_signal("player_died")
 #	queue_free()
-	
+
 func doDamage(value):
 	healthController.doDamage(value)
 	playAnimationPulse($Sprite)
-	
+
 func _playRotateAnimation():
 	step += 1
 	if step % 2 == 0:
@@ -54,17 +54,17 @@ func _playRotateAnimation():
 		$Tween.start()
 		$Tween.interpolate_property($Sprite, "global_rotation_degrees", -30, 0, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 		$Tween.start()
-	
+
 func _onBeat():
 	healingBeat = (healingBeat + 1) % 5
 	if healingBeat == 0 and not healthController.isFullHp():
 		healthController.doDamage(-1.0)
 #	$Anim.play("Move", -1, 5.0)
 	playAnimationPulse($Sprite)
-	
+
 func playAnimation():
 	pass
-	
+
 func _onQuarterBeat():
 	if moveTargetIdx != null:
 		var pointPath = tilemap.get_node('Pathfinding').pathfind(currentCellIdx, moveTargetIdx)
@@ -80,24 +80,24 @@ func _onQuarterBeat():
 
 func moveForward():
 	var result = .moveForward()
-	
+
 	if result.success == false:
 #		Game.tilemap.set_cell(result.targetCellIdx.x, result.targetCellIdx.y, 1)
 #		Game.tilemap.get_node("FogOfWar").revealTerrain(result.targetCellIdx)
 		playAnimation()
-		
+
 func playAnimationAttack(offset : Vector2):
 	playAnimationPulse($Sprite)
-	
+
 func move(offset : Vector2):
-	
+
 	var oldCellIdx = currentCellIdx
 	var targetCellIdx = currentCellIdx + offset
 	var targetCell = level.getCellType(targetCellIdx)
-	
+
 	if level.isCellIdObstacle(targetCell):
 		return { success = false, targetCellIdx = targetCellIdx, targetCell = targetCell, action = "obstacle"}
-	
+
 	var machine = level.getMachineFromIdx(targetCellIdx)
 	if machine != null:
 		return { success = false, targetCellIdx = targetCellIdx, targetCell = targetCell, action = "module"}
@@ -107,12 +107,14 @@ func move(offset : Vector2):
 		playAnimationAttack(offset)
 		enemy.doDamage(1.0)
 		return { success = false, targetCellIdx = targetCellIdx, targetCell = targetCell, action = "enemy_attacked"}
-	
+
 	currentCellIdx += offset
 	var targetPos = getCellPos(currentCellIdx)
 	$Tween.interpolate_property(self, "global_position", global_position, targetPos, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
 	playAnimationPulse($Sprite)
+
+	emit_signal("moved", oldCellIdx, targetCellIdx) #from -> to
 	
 	return {
 		success = true, 
@@ -120,6 +122,5 @@ func move(offset : Vector2):
 		targetCell = targetCell,
 		action = "moved"
 	}
-	
-	emit_signal("moved", oldCellIdx, targetCellIdx) #from -> to
+
 

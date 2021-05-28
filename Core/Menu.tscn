@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://res/plansza_gra.png" type="Texture" id=1]
 [ext_resource path="res://Core/Menu.gd" type="Script" id=2]
@@ -17,6 +17,10 @@ font_data = ExtResource( 6 )
 
 [sub_resource type="Theme" id=2]
 default_font = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 22
+font_data = ExtResource( 6 )
 
 [sub_resource type="StyleBoxTexture" id=3]
 texture = ExtResource( 7 )
@@ -80,10 +84,11 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="TextureRect"]
 margin_left = 191.0
-margin_top = 349.0
+margin_top = 262.0
 margin_right = 691.0
-margin_bottom = 580.0
+margin_bottom = 667.0
 rect_min_size = Vector2( 500, 0 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0.941176, 0.807843, 0.772549, 1 )
 text = "Hello and welcome to the Drillstruct Project. Here, at Drillstruct we simulate the behavior of a person dropped very deep underground. You will be placed about 1300 to 1500 meters deep inside a copper reserve. Show us what you will do! Oh, and for convenience’s sake we removed all the other materials and left little caves for you. You might even encounter some previous participants of our Drillstruct Project, you might not want that though. Well, enjoy spending the rest of your life here. And remember, copper is the future! Well, your future at least…"
 align = 3

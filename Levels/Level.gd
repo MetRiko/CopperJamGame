@@ -130,6 +130,22 @@ func getCopperValueOnIdx(idx : Vector2):
 func isObstacle(idx : Vector2):
 	return isCellIdObstacle(getCellType(idx))
 
+func isFloorInIdx(idx : Vector2):
+	return isCellIdFloor(getCellType(idx))
+
+func isFreeSpace(idx : Vector2):
+	return isCellIdAnyFloor(getCellType(idx)) and not isMachineInIdx(idx) and not isAnyEntityInIdx(idx)
+
+func isAnyEntityInIdx(idx : Vector2):
+	var entity = getEntityFromIdx(idx)
+	if entity != null:
+		return true
+	return isPlayerIdx(idx)
+
+func isMachineInIdx(idx : Vector2):
+	var machine = getMachineFromIdx(idx)
+	return machine != null
+
 func getMachines():
 	return $Machines.get_children()
 
@@ -174,16 +190,17 @@ func getSquareIdxesFromCenter(idxCenter : Vector2, size : int):
 			idxes.append(cellIdx)
 	return idxes
 
-func getCircleIdxesFromCenter(idxCenter : Vector2, radius : int):
+func getCircleIdxesFromCenter(idxCenter : Vector2, radius):
 	var idxes = []
-	var leftTopIdx = idxCenter - Vector2(int(radius), int(radius)) 
+	var leftTopIdx = idxCenter - Vector2(radius, radius) 
 	var centerPos = getPosFromCellIdx(idxCenter)
-	for x in range(radius * 2):
-		for y in range(radius * 2):
+	for x in range(floor(radius) * 2):
+		for y in range(floor(radius) * 2):
 			var cellIdx = leftTopIdx + Vector2(x, y)
 #			var cellPos = getPosFromCellIdx(cellIdx)
 			if (cellIdx - idxCenter).length() <= radius:
 				idxes.append(cellIdx)
+#			print((cellIdx - idxCenter).length())
 	return idxes
 
 func _ready():

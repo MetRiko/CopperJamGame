@@ -26,7 +26,7 @@ func canMove(offset : Vector2):
 	for installedModule in machine.installedModules.values():
 		var localIdx = installedModule.localIdx
 		var globalIdx = machine.baseGlobalIdx + localIdx + offset
-		if level.isObstacle(globalIdx):
+		if not level.isFreeSpace(globalIdx):
 			return false
 	return true
 
