@@ -10,17 +10,13 @@ signal after_beat
 signal after_half_beat
 signal after_quarter_beat
 
-var currentBeat = 0
-var beatsCount = 10
-
 func _ready():
 	$Timer.connect("timeout", self, "_onBeat")
 	$HalfTimer.connect("timeout", self, "_onHalfBeat")
 	$QuarterTimer.connect("timeout", self, "_onQuarterBeat")
 
 func _onBeat():
-	currentBeat = (currentBeat + 1) % beatsCount
-	emit_signal("beat", currentBeat, beatsCount)
+	emit_signal("beat")
 	emit_signal("after_beat")
 
 func _onHalfBeat():

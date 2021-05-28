@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -18,6 +18,8 @@
 [ext_resource path="res://Levels/MachineOutlineRenderer.gd" type="Script" id=16]
 [ext_resource path="res://Levels/FloorGizmoShader.shader" type="Shader" id=17]
 [ext_resource path="res://Levels/Gizmo.gd" type="Script" id=18]
+[ext_resource path="res://Gui/ControlsTips/ControlsTips.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Levels/CopperValueController.gd" type="Script" id=20]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -61,7 +63,7 @@ void fragment() {
 shader = SubResource( 1 )
 shader_param/cameraPos = Vector2( 0, 0 )
 
-[sub_resource type="Shader" id=6]
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -110,13 +112,13 @@ void fragment() {
 	COLOR = c;
 }"
 
-[sub_resource type="ShaderMaterial" id=7]
-shader = SubResource( 6 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 17 )
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=6]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -157,8 +159,8 @@ void fragment() {
 	COLOR = c;
 }"
 
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
@@ -170,6 +172,10 @@ margin_left = 0.0
 margin_right = 0.0
 
 [node name="NodeEditor" parent="CanvasLayer" instance=ExtResource( 10 )]
+
+[node name="ControlsTips" parent="CanvasLayer" instance=ExtResource( 19 )]
+margin_left = 11.0
+margin_top = 11.0
 
 [node name="TileMap" type="TileMap" parent="."]
 material = SubResource( 2 )
@@ -221,10 +227,13 @@ margin_bottom = 160.0
 [node name="PlayerInputController" type="Node2D" parent="Controllers"]
 script = ExtResource( 9 )
 
+[node name="CopperValueController" type="Node" parent="Controllers"]
+script = ExtResource( 20 )
+
 [node name="Renderers" type="Node2D" parent="."]
 
 [node name="BuildingRenderer" type="Node2D" parent="Renderers"]
-material = SubResource( 7 )
+material = SubResource( 4 )
 z_index = -1
 z_as_relative = false
 script = ExtResource( 6 )
@@ -239,7 +248,7 @@ hframes = 7
 vframes = 7
 
 [node name="FloorGizmo" type="Sprite" parent="Renderers/Gizmo"]
-material = SubResource( 3 )
+material = SubResource( 5 )
 scale = Vector2( 0.12, 0.12 )
 z_index = -2
 z_as_relative = false
@@ -253,5 +262,5 @@ rect = Rect2( 0, 0, 0, 0 )
 
 [node name="MachineOutlineRenderer" type="Node2D" parent="Renderers/BackBufferCopy"]
 modulate = Color( 1, 1, 1, 0.576471 )
-material = SubResource( 5 )
+material = SubResource( 7 )
 script = ExtResource( 16 )

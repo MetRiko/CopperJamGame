@@ -66,7 +66,8 @@ func _getPosForPanel(machine):
 		if pos.y < top:
 			top = pos.y
 	
-	var pos = Vector2((right - left + level.getCellSize().x) * 0.5, top)
+	var pos = Vector2((right - left + level.getCellSize().x) * 0.5, top - 30.0)
+	pos.x -= get_global_rect().size.x * 0.5
 	return pos
 
 func _process(delta):

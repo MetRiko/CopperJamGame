@@ -13,12 +13,36 @@ func _ready():
 	playerInputController.connect("hovered_object_changed", self, "onHoveredObjectChanged")
 	playerInputController.connect("module_selected", self, "onModuleSelected")
 
+
+func onSelectedMachineChanged():
+	if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+		possibleConnectionsOffsetsForSelectedMachine = latestSelectedMachine.getAllGlobalNeighboursWithOffsets()
+	else:
+		possibleConnectionsOffsetsForSelectedMachine = []
+
+	update()
+
+func onHoveredMachineChanged():
+	if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
+		possibleConnectionsOffsetsForSelectedMachine = latestHoveredMachine.getAllGlobalNeighboursWithOffsets()
+	else:
+		possibleConnectionsOffsetsForHoveredMachine = []
+
+	update()
+
 func onModuleSelected(module):
-	if module != null:
+	if module != null:		
 		var machine = module.getMachine()
+
+		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+			latestSelectedMachine.disconnect("machine_state_changed", self, "onSelectedMachineChanged")
+
 		latestSelectedMachine = machine
 		possibleConnectionsOffsetsForSelectedMachine = machine.getAllGlobalNeighboursWithOffsets()
+		machine.connect("machine_state_changed", self, "onSelectedMachineChanged")
 	else:
+		if latestSelectedMachine != null and is_instance_valid(latestSelectedMachine):
+			latestSelectedMachine.disconnect("machine_state_changed", self, "onSelectedMachineChanged")
 		latestSelectedMachine = null
 		possibleConnectionsOffsetsForSelectedMachine = []
 	
@@ -27,13 +51,21 @@ func onModuleSelected(module):
 func onHoveredObjectChanged(newHoveredObject):
 	
 	if newHoveredObject == playerInputController.HOVERED_MODULE:
-		var module = playerInputController.getHoveredModule()
-		latestHoveredMachine = module.getMachine()
+		var machine = playerInputController.getHoveredMachine()
+
+		if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
+			latestHoveredMachine.disconnect("machine_state_changed", self, "onHoveredMachineChanged")
+
+		latestHoveredMachine = machine
 		possibleConnectionsOffsetsForHoveredMachine = latestHoveredMachine.getAllGlobalNeighboursWithOffsets()
+		latestHoveredMachine.connect("machine_state_changed", self, "onHoveredMachineChanged")
 	else:
+		if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
+			latestHoveredMachine.disconnect("machine_state_changed", self, "onHoveredMachineChanged")
+
 		latestHoveredMachine = null
 		possibleConnectionsOffsetsForHoveredMachine = []
-		
+
 	update()
 
 

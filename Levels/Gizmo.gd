@@ -17,13 +17,14 @@ func _ready():
 	pic.connect("module_to_attach_changed", self, "onModuleToAttachChanged")
 	pic.connect("hovered_object_changed", self, "onHoveredObjectChanged")
 	pic.connect("module_selected", self, "onModuleSelected")
+	pic.connect("state_changed", self, "onStateChanged")
 
 func _updateGizmoAlphaOnHover(objectType):
 	if objectType != pic.HOVERED_MODULE:
-		$Tween.interpolate_property(gizmo, "modulate:a", null, 1.0, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+		$Tween.interpolate_property(gizmo, "modulate:a", null, 1.0, 0.1, Tween.TRANS_SINE, Tween.EASE_OUT)
 		$Tween.start()
 	else:
-		$Tween.interpolate_property(gizmo, "modulate:a", null, 0.0, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
+		$Tween.interpolate_property(gizmo, "modulate:a", null, 0.0, 0.1, Tween.TRANS_SINE, Tween.EASE_OUT)
 		$Tween.start()
 
 func onModuleSelected(module):
@@ -37,26 +38,40 @@ func onModuleToAttachChanged(moduleId, rot):
 			gizmo.frame = content.frameId
 			break
 	_updateGizmoColor()
+	if moduleId == null:
+		_updateGizmoAlphaOnHover(null)
+	else:
+		_updateGizmoAlphaOnHover(pic.getHoveredObject())
+
+func onStateChanged(state):
+	if state == pic.NORMAL_STATE:
+		moduleIdToAttach = null
+	_updateGizmoColor()
+	_updateGizmoAlphaOnHover(pic.getHoveredObject())
+
+func onMachineStateChanged():
+	_updateGizmoColor()
+	_updateGizmoAlphaOnHover(pic.getHoveredObject())
 
 func onHoveredObjectChanged(objectType):	
 	var pos = level.getPosFromCellIdx(pic.getMouseIdx())
-	gizmo.global_position = pos + level.getHalfCellSize()	
+	gizmo.global_position = pos + level.getHalfCellSize()
 	floorGizmo.global_position = pos + level.getHalfCellSize()
 
 	_updateGizmoColor()
 	_updateGizmoAlphaOnHover(objectType)
-	
+
 	var machine = pic.getHoveredMachine()
-	if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
-		latestHoveredMachine.disconnect("machine_state_changed", self, "onHoveredobjectChanged")
+	if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine) and machine != latestHoveredMachine:
+		if latestHoveredMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
+			latestHoveredMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
 	if machine != null and is_instance_valid(machine):
-		machine.connect("machine_state_changed", self, "onHoveredobjectChanged")
+		if not machine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
+			machine.connect("machine_state_changed", self, "onMachineStateChanged")
 	latestHoveredMachine = machine
-		
-		
 
 func _updateGizmoColor():
-	if moduleIdToAttach != null:
+	if moduleIdToAttach != null and pic.isBuildingState():
 		gizmo.visible = true
 		gizmo.rotation_degrees = rotModuleToAttach * 90.0
 		var selectedMachine = pic.getSelectedMachine()

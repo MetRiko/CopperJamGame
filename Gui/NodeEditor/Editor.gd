@@ -21,6 +21,13 @@ var dragState = 0
 
 var connections = []
 
+var playing = false
+
+var playButton = null
+var pauseButton = null
+var restartButton = null
+var stopButton = null
+
 func _ready():
 	selectInstructionFromToolbar(null)
 
@@ -30,11 +37,20 @@ func _setup(nodeEditor):
 	
 	var toolbar = nodeEditor.getToolbar()
 	
-	toolbar.get_node("PlayButton").connect("pressed", self, "onPlayButtonPressed")
-	toolbar.get_node("PauseButton").connect("pressed", self, "onPauseButtonPressed")
-	toolbar.get_node("RestartButton").connect("pressed", self, "onRestartButtonPressed")
-	toolbar.get_node("StopButton").connect("pressed", self, "onStopButtonPressed")
+	playButton = toolbar.get_node("PlayButton")
+	pauseButton = toolbar.get_node("PauseButton")
+	restartButton = toolbar.get_node("RestartButton")
+	stopButton = toolbar.get_node("StopButton")
 	
+	playButton.connect("pressed", self, "onPlayButtonPressed")
+	pauseButton.connect("pressed", self, "onPauseButtonPressed")
+	restartButton.connect("pressed", self, "onRestartButtonPressed")
+	stopButton.connect("pressed", self, "onStopButtonPressed")
+	
+	pauseButton.hide()
+	stopButton.disabled = false
+	
+	Game.beatController.connect("beat", self, "onBeat")
 
 func updateEditor():
 	_redrawNodes()
@@ -170,21 +186,44 @@ func removeNode(editorIdx):
 	_redrawNodes()
 	_redrawConnections()
 	_redrawProcessingNodes()
-	
+
+func setPlaying(flag : bool):
+	playing = flag
+	playButton.visible = not playing
+	pauseButton.visible = playing
+
+func onBeat():
+	if playing == true:
+		var selectedMachine = nodeEditor.selectedMachine
+		if selectedMachine != null:
+			var processor = selectedMachine.getProcessor()
+			processor.makeStep()
+			_redrawProcessingNodes()
+
 func onPlayButtonPressed():
+	setPlaying(true)
 	var selectedMachine = nodeEditor.selectedMachine
 	if selectedMachine != null:
 		var processor = selectedMachine.getProcessor()
-		processor.makeStep()
-		_redrawProcessingNodes()
+		if not processor.isProcessing():
+			processor.restartProcess()
+			stopButton.disabled = false
+			_redrawProcessingNodes()
 	
 func onPauseButtonPressed():
-	pass
+	setPlaying(false)
 		
 func onStopButtonPressed():
-	pass
+	setPlaying(false)
+	var selectedMachine = nodeEditor.selectedMachine
+	if selectedMachine != null:
+		var processor = selectedMachine.getProcessor()
+		processor.stopProcess()
+		stopButton.disabled = true
+		_redrawProcessingNodes()
 	
 func onRestartButtonPressed():
+	setPlaying(true)
 	var selectedMachine = nodeEditor.selectedMachine
 	if selectedMachine != null:
 		var processor = selectedMachine.getProcessor()
@@ -249,6 +288,20 @@ func _draw():
 			pos.x += fmod(currentCameraPos.x, level.getCellSize().x * 2) - 2 * level.getCellSize().x
 			pos.y += fmod(currentCameraPos.y, level.getCellSize().y * 2) - 2 * level.getCellSize().y
 			draw_rect(Rect2(pos, level.getCellSize()), Color(0.12, 0.12, 0.12, 1.0), false, 1)
+
+#	var radius = level.getCellSize().x * 0.5
+#	for x in range(8):
+#		for y in range(10):
+#			var pos = Vector2(x * 2, y * 2 * 0.5) * level.getCellSize().x 
+#			pos.x += fmod(currentCameraPos.x, level.getCellSize().x * 2) - 2 * level.getCellSize().x + radius
+#			pos.y += fmod(currentCameraPos.y, level.getCellSize().y * 2) - 2 * level.getCellSize().y + radius
+#
+#			if y % 2 == 1:
+#				pos.x += level.getCellSize().x
+#
+#			draw_circle(pos, radius,  Color(0.12, 0.12, 0.12, 1.0))
+#			draw_circle(pos, radius - 2.0, Color('#101010'))
+
 
 	# Drag and drop arrow
 	

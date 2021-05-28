@@ -46,7 +46,7 @@ func _destroy():
 	$Tween.interpolate_property($Particles, "modulate:a", 1.0, 0.0, 0.4, Tween.TRANS_SINE, Tween.EASE_IN)
 	$Tween.start()
 
-func onBeat(a, b):
+func onBeat():
 	if isDestroyed() == false and enabled == true and is_instance_valid(_machine):
 		shoot()
 		playAnimationPulse($Sprite)

@@ -1,21 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://res/action_blocks.png" type="Texture" id=1]
 [ext_resource path="res://Gui/InstructionsButtons.gd" type="Script" id=3]
 [ext_resource path="res://Gui/NodeEditor/InstructionButton.tscn" type="PackedScene" id=4]
 
-[sub_resource type="StyleBoxTexture" id=1]
-texture = ExtResource( 1 )
-region_rect = Rect2( 108, 0, 54, 54 )
-modulate_color = Color( 0.678431, 0.65098, 0.882353, 1 )
-
-[sub_resource type="StyleBoxTexture" id=2]
-texture = ExtResource( 1 )
-region_rect = Rect2( 108, 0, 54, 54 )
-
 [node name="InstructionsButtons" type="HBoxContainer"]
-margin_right = 104.0
-margin_bottom = 32.0
 mouse_filter = 2
 script = ExtResource( 3 )
 __meta__ = {
@@ -27,10 +15,6 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 45.0
 margin_bottom = 45.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 1 )
-custom_styles/disabled = SubResource( 2 )
-custom_styles/normal = SubResource( 2 )
 
 [node name="InstructionButton2" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
@@ -38,10 +22,7 @@ anchor_bottom = 0.0
 margin_left = 49.0
 margin_right = 94.0
 margin_bottom = 45.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 1 )
-custom_styles/disabled = SubResource( 2 )
-custom_styles/normal = SubResource( 2 )
+focus_mode = 2
 
 [node name="InstructionButton3" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
@@ -49,7 +30,4 @@ anchor_bottom = 0.0
 margin_left = 98.0
 margin_right = 143.0
 margin_bottom = 45.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 1 )
-custom_styles/disabled = SubResource( 2 )
-custom_styles/normal = SubResource( 2 )
+focus_mode = 2

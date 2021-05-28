@@ -24,10 +24,12 @@ func moveLeft():
 		playAnimationPulse($Sprite)
 #		playAnimationRotateC($Sprite)
 		getMachine().move(dir)
+		getMachine().emit_signal("machine_state_changed")
 	
 func moveRight():
 	var dir = Vector2(1, 0)
 	if getMachine().canMove(dir):
 		playAnimationPulse($Sprite)
 		getMachine().move(dir)
+		getMachine().emit_signal("machine_state_changed")
 

@@ -392,7 +392,8 @@ func _forceDetach(localIdx : Vector2, emitSignal = true):
 		nodesToRemove.append(module.module)
 	_destroyModulesFromArray(nodesToRemove)
 	
-	emit_signal("machine_state_changed")
+	if emitSignal == true:
+		emit_signal("machine_state_changed")
 
 func canAttachModule(moduleId : String, localIdx : Vector2, rot := 0):
 	return checkIfIdxAvailable(localIdx) and isAnyConnectionAvailable(moduleId, localIdx, rot)

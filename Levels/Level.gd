@@ -42,6 +42,9 @@ func convertDarkFloorCellIdToFloor(cellId):
 func getPlayerInputController():
 	return $Controllers/PlayerInputController
 
+func getCopperValueController():
+	return $Controllers/CopperValueController
+	
 #func getAnyCopper():
 #	return getRandomInt([11,12,13,14])
 #func getAnyWall():

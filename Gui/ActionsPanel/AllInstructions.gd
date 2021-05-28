@@ -2,67 +2,67 @@ extends Resource
 
 const ALL_INSTRUCTIONS = {
 	'nop': {
-		'frameId': 3,
+		'frameId': 5,
 		'name': 'Empty instruction'
 	},
 	'missing_instruction': {
-		'frameId': 39,
+		'frameId': 29,
 		'name': 'Missing instruction'
 	},
 	'node_start': {
-		'frameId': 7,
+		'frameId': 3,
 		'name': 'Node start'
 	},
 	'node_end': {
-		'frameId': 8,
+		'frameId': 4,
 		'name': 'Node end'
 	},
 	'move_right': {
-		'frameId': 15,
+		'frameId': 8,
 		'name': 'Move right'
 	},
 	'move_left': {
-		'frameId': 17,
+		'frameId': 10,
 		'name': 'Move left'
 	},
 	'move_up': {
-		'frameId': 14,
+		'frameId': 7,
 		'name': 'Move up'
 	},
 	'move_down': {
-		'frameId': 16,
+		'frameId': 9,
 		'name': 'Move down'
 	},	
 	'turn_on_diode': {
-		'frameId': 36,
+		'frameId': 25,
 		'name': 'turn_on_diode'
 	},
 	'turn_off_diode': {
-		'frameId': 35,
+		'frameId': 24,
 		'name': 'turn_off_diode'
 	},
 	'is_diode_on': {
-		'frameId': 38,
+		'frameId': 27,
 		'name': 'is_diode_on'
 	},
 	'is_diode_off': {
-		'frameId': 37,
+		'frameId': 26,
 		'name': 'is_diode_off'
 	},
 	'turn_on_drill': {
-		'frameId': 31,
+		'frameId': 20,
 		'name': 'Turn on drill'
 	},
 	'turn_off_drill': {
-		'frameId': 32,
+		'frameId': 21,
 		'name': 'Turn off drill'
 	},
 	'turn_on_turret': {
-		'frameId': 30,
+		'frameId': 15,
 		'name': 'Włącz działko'
 	},
 	'turn_off_turret': {
-		'frameId': 25,
+		'frameId': 16,
 		'name': 'Wyłącz działko'
 	}
 }

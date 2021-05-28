@@ -75,7 +75,7 @@ func _ready():
 	Game.beatController.connect("beat", self, "onBeat")
 #	Game.tilemap.get_node("FogOfWar").revealTerrain(currentCellIdx, true)
 
-func onBeat(a, b):
+func onBeat():
 	autoMove()
 
 func onNoHealth():

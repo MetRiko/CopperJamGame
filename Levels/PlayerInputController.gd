@@ -5,6 +5,8 @@ signal module_to_attach_changed
 signal module_selected
 signal hovered_object_changed
 signal new_machine_placed
+signal module_attached
+signal module_detached
 
 onready var tilemap = Game.tilemap
 onready var level = Game.level
@@ -300,6 +302,7 @@ func _attachSelectedModule(idx : Vector2):
 			var localIdx = machine.convertToLocalIdx(idx)
 			if machine.canAttachModule(moduleToAttach, localIdx, rotOfModuleToAttach):
 				machine.attachModule(moduleToAttach, localIdx, rotOfModuleToAttach)
+				emit_signal("module_attached", moduleToAttach)
 			else:
 				pass # red pulse effect on gizmo TODO
 		elif latestNewMachine != null and is_instance_valid(latestNewMachine):
@@ -308,6 +311,7 @@ func _attachSelectedModule(idx : Vector2):
 				latestNewMachine.attachModule(moduleToAttach, localIdx, rotOfModuleToAttach)
 				var module = latestNewMachine.getModuleFromLocalIdx(localIdx)
 				_selectModule(module)
+				emit_signal("module_attached", moduleToAttach)
 			else:
 				pass # red pulse effect on gizmo TODO
 			 
@@ -324,7 +328,9 @@ func _removeModule(module):
 	if module != null and is_instance_valid(module):
 		var machine = module.getMachine()
 		if machine.canDetachModule(module.getLocalIdx()):
+			var moduleId = module.getModuleId()
 			machine.detachModule(module.getLocalIdx())
+			emit_signal("module_detached", moduleId)
 		else:
 			pass # red pulse animation from module
 

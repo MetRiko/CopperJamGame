@@ -6,8 +6,9 @@ onready var level = Game.level
 
 onready var editor = $Panel/Margin/VBox/Editor
 onready var instructionsButtons = $Panel/Margin/VBox/InstructionsButtons
-onready var instructionsButtons2 = $Panel/Margin/VBox/InstructionsButtons2
-onready var toolbar = $Panel/Margin/VBox/Toolbar
+onready var instructionsButtons2 = $Panel/Margin/VBox/HBox/InstructionsButtons2
+onready var toolbar = $Panel/Margin/VBox/HBox/Toolbar
+onready var pic = level.getPlayerInputController()
 
 var selectedMachine = null
 var selectedModuleLocalIdx = null
@@ -37,20 +38,35 @@ func _selectMachine(machine):
 			machine.connect("machine_removed", self, "onMachineRemoved")
 	selectedMachine = machine
 
-func selectModule(machine, moduleLocalIdx):
+func onModuleSelected(module):
+	if module != null:
+		selectModule(module.getMachine(), module.getLocalIdx())
+	else:
+		selectModule(null)
+
+func selectModule(machine, moduleLocalIdx := Vector2()):
 	if machine != null:
-		show()
 		_selectMachine(machine)
 		selectedModuleLocalIdx = moduleLocalIdx
 		_updateButtons()
 		_updateEditor()
 	else:
-		hide()
 		_selectMachine(machine)
 		selectedModuleLocalIdx = null
 		_updateButtons()
 		_updateEditor()
-		
+	
+	if machine != null and pic.isBuildingState():
+		show()
+	else:
+		hide()
+	
+func onStateChanged(state):
+	var machine = pic.getSelectedMachine()
+	if machine != null and is_instance_valid(machine) and pic.isBuildingState():
+		show()
+	else:
+		hide()
 	
 func _updateEditor():
 	editor.updateEditor()
@@ -107,7 +123,7 @@ func onMachineRemoved(removedMachine):
 		selectedMachine = null
 		selectModule(null, Vector2())
 
-func onModuleRemoved(machine, moduleLocalIdx, module):
+func onModuleRemoved(moduleLocalIdx, machine):
 	if machine == selectedMachine and selectedModuleLocalIdx == moduleLocalIdx:
 		selectModule(selectedMachine, moduleLocalIdx)
 	else:
@@ -119,6 +135,8 @@ func _ready():
 #		button.connect("pressed", self, "onInstructionButtonPressed", [button.get_index()])
 	
 	selectModule(null, Vector2(0, 0))
+	pic.connect("module_selected", self, "onModuleSelected")
+	pic.connect("state_changed", self, "onStateChanged")
 		
 func _input(event):
 	if event.is_action_pressed("num0"):

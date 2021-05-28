@@ -55,7 +55,7 @@ func _playRotateAnimation():
 		$Tween.interpolate_property($Sprite, "global_rotation_degrees", -30, 0, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 		$Tween.start()
 	
-func _onBeat(a, b):
+func _onBeat():
 	healingBeat = (healingBeat + 1) % 5
 	if healingBeat == 0 and not healthController.isFullHp():
 		healthController.doDamage(-1.0)

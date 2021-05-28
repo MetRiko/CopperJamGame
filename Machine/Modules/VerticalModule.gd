@@ -24,9 +24,11 @@ func moveUp():
 	if getMachine().canMove(dir):
 		playAnimationPulse($Sprite)
 		getMachine().move(dir)
+		getMachine().emit_signal("machine_state_changed")
 		
 func moveDown():
 	var dir = Vector2(0, 1)
 	if getMachine().canMove(dir):
 		playAnimationPulse($Sprite)
 		getMachine().move(dir)
+		getMachine().emit_signal("machine_state_changed")

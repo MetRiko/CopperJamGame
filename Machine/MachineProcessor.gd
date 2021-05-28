@@ -43,6 +43,9 @@ func _ready():
 func getNodes():
 	return nodes
 
+func isProcessing():
+	return not processingNodes.empty()
+
 func _resetProcessingInstructionsGroups():
 	processingInstructionsGroups = {}
 	
@@ -101,6 +104,8 @@ func _callProperInstructions():
 		var moduleLocalIdx = randomInstruction[1]
 		justCallInstruction(moduleLocalIdx, instructionId)
 		
+func stopProcess():
+	processingNodes = {}
 	
 func restartProcess():
 	processingNodes = {}

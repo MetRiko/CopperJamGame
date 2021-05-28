@@ -15,7 +15,7 @@ func _input(event):
 func _ready():
 	Game.beatController.connect("beat", self, "_onBeat")
 	
-func _onBeat(currentBeat, beats):
+func _onBeat():
 	moveForward()
 
 func moveForward():
