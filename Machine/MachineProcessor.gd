@@ -94,7 +94,7 @@ func _callProperInstructions():
 			var instructionId = groupElement[0]
 			var moduleLocalIdx = groupElement[1]
 			var module = machine.getModuleFromLocalIdx(moduleLocalIdx)
-			if module.isConditionInstruction(instructionId) == true:
+			if module != null and is_instance_valid(module) and module.isConditionInstruction(instructionId) == true:
 				var condition = justCallInstruction(moduleLocalIdx, instructionId)
 				if condition == false:
 					var processingNode = groupElement[2]
@@ -136,6 +136,9 @@ func restartProcess():
 	resume()
 
 func makeStep():
+	
+	if machine != null or not is_instance_valid(machine):
+		return
 	
 	_callProperInstructions()
 	
