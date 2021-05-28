@@ -183,7 +183,6 @@ func getCircleIdxesFromCenter(idxCenter : Vector2, radius : int):
 			var cellIdx = leftTopIdx + Vector2(x, y)
 #			var cellPos = getPosFromCellIdx(cellIdx)
 			if (cellIdx - idxCenter).length() <= radius:
-				print((cellIdx - idxCenter).length())
 				idxes.append(cellIdx)
 	return idxes
 
@@ -191,7 +190,7 @@ func _ready():
 	randomize()
 
 	mapGenerator.setSeed(randf())
-	generateChunks(5)
+	generateChunks(12)
 
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
 	pathfinding.astar_calculate_full_graph()

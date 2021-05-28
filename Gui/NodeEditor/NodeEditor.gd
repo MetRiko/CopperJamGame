@@ -39,7 +39,7 @@ func _selectMachine(machine):
 	selectedMachine = machine
 
 func onModuleSelected(module):
-	print(module)
+#	print(module)
 	if module != null:
 		selectModule(module.getMachine(), module.getLocalIdx())
 		editor.setCamera(Vector2(0.0, 0.0))

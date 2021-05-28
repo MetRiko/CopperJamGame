@@ -51,7 +51,7 @@ func _setup(nodeEditor):
 	pauseButton.hide()
 	stopButton.disabled = false
 	
-	Game.beatController.connect("beat", self, "onBeat")
+#	Game.beatController.connect("beat", self, "onBeat")
 
 func updateEditor():
 	_redrawNodes()
@@ -196,35 +196,38 @@ func setPlaying(flag : bool):
 	playButton.visible = not playing
 	pauseButton.visible = playing
 
-func onBeat():
-	if playing == true:
-		var selectedMachine = nodeEditor.selectedMachine
-		if selectedMachine != null:
-			var processor = selectedMachine.getProcessor()
-			processor.makeStep()
-			_redrawProcessingNodes()
+#func onBeat():
+#	if playing == true:
+#		var selectedMachine = nodeEditor.selectedMachine
+#		if selectedMachine != null:
+#			var processor = selectedMachine.getProcessor()
+#			processor.makeStep()
+#			_redrawProcessingNodes()
 
 func onPlayButtonPressed():
-	setPlaying(true)
 	var selectedMachine = nodeEditor.selectedMachine
 	if selectedMachine != null:
 		var processor = selectedMachine.getProcessor()
 		if not processor.isProcessing():
 			processor.restartProcess()
-			stopButton.disabled = false
-			_redrawProcessingNodes()
+		processor.resume()
+		_redrawProcessingNodes()
+		_visualUpdateButtons()
 	
 func onPauseButtonPressed():
-	setPlaying(false)
+	var selectedMachine = nodeEditor.selectedMachine
+	if selectedMachine != null:
+		var processor = selectedMachine.getProcessor()
+		processor.pause()
 		
 func onStopButtonPressed():
-	setPlaying(false)
 	var selectedMachine = nodeEditor.selectedMachine
 	if selectedMachine != null:
 		var processor = selectedMachine.getProcessor()
 		processor.stopProcess()
 		stopButton.disabled = true
 		_redrawProcessingNodes()
+		_visualUpdateButtons()
 	
 func onRestartButtonPressed():
 	setPlaying(true)
@@ -233,6 +236,22 @@ func onRestartButtonPressed():
 		var processor = selectedMachine.getProcessor()
 		processor.restartProcess()
 		_redrawProcessingNodes()
+		_visualUpdateButtons()
+	
+func _visualUpdateButtons():
+	var machine = nodeEditor.selectedMachine
+	if machine != null and is_instance_valid(machine):
+		var processor = machine.getProcessor()
+		if processor.isPaused():
+			playButton.hide()
+			pauseButton.show()
+		else:
+			playButton.show()
+			pauseButton.hide()
+		if processor.isProcessing():
+			stopButton.disabled = false
+		else:
+			stopButton.disabled = true
 	
 func _process(delta):
 	

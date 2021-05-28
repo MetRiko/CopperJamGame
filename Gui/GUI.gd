@@ -103,7 +103,7 @@ func onModuleButtonMouseExited():
 	moduleCostIcon.hide()
 
 func copper_value_changed(value):
-	print(value)
+#	print(value)
 	miedzCounter.text = str(value)
 
 func insufficient_copper():

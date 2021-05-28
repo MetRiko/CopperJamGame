@@ -10,22 +10,33 @@ signal after_beat
 signal after_half_beat
 signal after_quarter_beat
 
+var paused = false
+
 func _ready():
 	$Timer.connect("timeout", self, "_onBeat")
 	$HalfTimer.connect("timeout", self, "_onHalfBeat")
 	$QuarterTimer.connect("timeout", self, "_onQuarterBeat")
 
 func _onBeat():
-	emit_signal("beat")
-	emit_signal("after_beat")
+	if paused == false:
+		emit_signal("beat")
+		emit_signal("after_beat")
 
 func _onHalfBeat():
-	emit_signal("half_beat")
-	emit_signal("after_half_beat")
+	if paused == false:
+		emit_signal("half_beat")
+		emit_signal("after_half_beat")
 	
 func _onQuarterBeat():
-	emit_signal("quarter_beat")
-	emit_signal("after_quarter_beat")
+	if paused == false:
+		emit_signal("quarter_beat")
+		emit_signal("after_quarter_beat")
+
+func pauseGame():
+	paused = true
+	
+func resumeGame():
+	paused = false
 
 #func setPause(isPaused):
 #	if pauseMenu.isPaused == false:

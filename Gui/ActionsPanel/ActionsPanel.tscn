@@ -18,16 +18,19 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -32.0
-margin_top = -45.0
-margin_right = 32.0
+margin_left = -192.0
+margin_top = -52.0
+margin_right = 192.0
+margin_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_min_size = Vector2( 80, 60 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Back" type="NinePatchRect" parent="Margin"]
-margin_right = 80.0
+margin_right = 384.0
 margin_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -43,12 +46,14 @@ __meta__ = {
 }
 
 [node name="ActionButtons" type="HBoxContainer" parent="Margin"]
-margin_right = 80.0
-margin_bottom = 60.0
+margin_left = 169.0
+margin_top = 7.0
+margin_right = 214.0
+margin_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 4
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -57,9 +62,7 @@ __meta__ = {
 [node name="ActionButton" parent="Margin/ActionButtons" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 17.0
-margin_top = 7.0
-margin_right = 62.0
-margin_bottom = 52.0
+margin_right = 45.0
+margin_bottom = 45.0
 size_flags_horizontal = 0
 size_flags_vertical = 4

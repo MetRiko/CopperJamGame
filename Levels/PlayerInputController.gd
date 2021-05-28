@@ -378,6 +378,9 @@ func _changeState(newState):
 		if newState == NORMAL_STATE:
 			deselectModuleToAttach()
 			_cancelNewMachine()
+			Game.beatController.pauseGame()
+		elif newState == BUILDING_STATE:
+			Game.beatController.resumeGame()
 
 		emit_signal("state_changed", newState)
 

@@ -17,3 +17,4 @@ func _unhandled_input(event):
 		menu.gameStarted = false
 		menu.show()
 		hide()
+		Game.root.resetLevel()

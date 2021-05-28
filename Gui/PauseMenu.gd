@@ -7,13 +7,13 @@ var isPaused = true
 
 
 
-func _unhandled_input(event):
-	if event.is_action_pressed("pause") && beatController.isPaused() == false && menu.visible == false:
-		show()
-		beatController.setPause(true)
-	elif event.is_action_pressed("pause") && beatController.isPaused() == true:
-		hide()
-		beatController.setPause(false)
+#func _unhandled_input(event):
+#	if event.is_action_pressed("pause") && beatController.isPaused() == false && menu.visible == false:
+#		show()
+#		beatController.setPause(true)
+#	elif event.is_action_pressed("pause") && beatController.isPaused() == true:
+#		hide()
+#		beatController.setPause(false)
 
 #get_tree().quit()
 

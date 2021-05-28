@@ -37,11 +37,27 @@ var processingInstructionsGroups = {
 
 var nodes = {}
 
+var paused = true
+
 func _ready():
 	randomize()
+	Game.beatController.connect("beat", self, "onBeat")
+
+func onBeat():
+	if paused == false and processingNodes.size() > 0:
+		makeStep()
+
+func pause():
+	paused = true
+	
+func resume():
+	paused = false
 
 func getNodes():
 	return nodes
+
+func isPaused():
+	return paused
 
 func isProcessing():
 	return not processingNodes.empty()
@@ -105,6 +121,7 @@ func _callProperInstructions():
 		justCallInstruction(moduleLocalIdx, instructionId)
 		
 func stopProcess():
+	pause()
 	processingNodes = {}
 	
 func restartProcess():
@@ -116,6 +133,7 @@ func restartProcess():
 		processingNodes[hashedNodeEditorIdx] = node
 	
 	makeStep()
+	resume()
 
 func makeStep():
 	
