@@ -27,7 +27,7 @@ const COPPER = [11,12,13,14]
 const DARK_FLOOR = [16, 26, 27, 28]
 const FLOOR = [15, 23, 24, 25]
 
-const COPPER_VALUES = [1, 2, 3, 4]
+const COPPER_VALUES = [5, 5, 5, 5]
 
 func _process(delta):
 	tilemap.material.set_shader_param("cameraPos", Game.camera.global_position / get_viewport().size * get_viewport_transform().get_scale())

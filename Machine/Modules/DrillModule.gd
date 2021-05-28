@@ -52,8 +52,8 @@ func onBeat():
 		var obstacleGlobalIdx = getForwardVector() + getGlobalIdx()
 		if level.isObstacle(obstacleGlobalIdx):
 			var copperValue = level.getCopperValueOnIdx(obstacleGlobalIdx)
-			# if copperValue != null:
-				# gui.addCopper(copperValue) TODO
+			if copperValue != null:
+				level.getCopperValueController().addCopper(copperValue)
 			level.removeObstacle(obstacleGlobalIdx)
 		else:
 			var entity = level.getEntityFromIdx(obstacleGlobalIdx)
