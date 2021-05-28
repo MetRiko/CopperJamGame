@@ -284,9 +284,9 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="Control" parent="AllTips/BuildMode"]
-margin_top = 128.0
+margin_top = 136.0
 margin_right = 40.0
-margin_bottom = 168.0
+margin_bottom = 176.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false

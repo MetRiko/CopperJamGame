@@ -60,6 +60,7 @@ func selectModule(machine, moduleLocalIdx := Vector2()):
 	
 	if machine != null and pic.isBuildingState():
 		show()
+		editor.updateEditor()
 	else:
 		hide()
 	
@@ -67,6 +68,7 @@ func onStateChanged(state):
 	var machine = pic.getSelectedMachine()
 	if machine != null and is_instance_valid(machine) and pic.isBuildingState():
 		show()
+		editor.updateEditor()
 	else:
 		hide()
 	

@@ -54,6 +54,7 @@ func onQuitGame():
 	exitGame()
 
 func startGame(force = false):
+	Game.beatController.resumeGame()
 	Game.musicController.disableMainTheme()
 	
 	if force == false:

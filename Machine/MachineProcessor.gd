@@ -44,13 +44,15 @@ func _ready():
 	Game.beatController.connect("beat", self, "onBeat")
 
 func onBeat():
-	if paused == false and processingNodes.size() > 0:
+	if paused == false and not processingNodes.empty():
 		makeStep()
 
 func pause():
 	paused = true
 	
 func resume():
+	if processingNodes.empty():
+		restartProcess()
 	paused = false
 
 func getNodes():
@@ -137,7 +139,7 @@ func restartProcess():
 
 func makeStep():
 	
-	if machine != null or not is_instance_valid(machine):
+	if machine == null or not is_instance_valid(machine):
 		return
 	
 	_callProperInstructions()
