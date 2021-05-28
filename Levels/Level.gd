@@ -165,8 +165,32 @@ func generateChunks(size : int):
 			mapGenerator.generateChunk(x - size / 2, y - size / 2)
 #			yield(get_tree().create_timer(0.5), "timeout")
 
-func _ready():
+func getSquareIdxesFromCenter(idxCenter : Vector2, size : int):
+	var idxes = []
+	var leftTopIdx = idxCenter - Vector2(int(size * 0.5), int(size * 0.5)) 
+	for x in range(size):
+		for y in range(size):
+			var cellIdx = leftTopIdx + Vector2(x, y)
+			idxes.append(cellIdx)
+	return idxes
 
+func getCircleIdxesFromCenter(idxCenter : Vector2, radius : int):
+	var idxes = []
+	var leftTopIdx = idxCenter - Vector2(int(radius), int(radius)) 
+	var centerPos = getPosFromCellIdx(idxCenter)
+	for x in range(radius * 2):
+		for y in range(radius * 2):
+			var cellIdx = leftTopIdx + Vector2(x, y)
+#			var cellPos = getPosFromCellIdx(cellIdx)
+			if (cellIdx - idxCenter).length() <= radius:
+				print((cellIdx - idxCenter).length())
+				idxes.append(cellIdx)
+	return idxes
+
+func _ready():
+	randomize()
+
+	mapGenerator.setSeed(randf())
 	generateChunks(5)
 
 	mapGenerator.connect("new_chunk_generated", self, "_onChunkGenerated")
@@ -179,6 +203,10 @@ func _ready():
 	
 	for entity in $Entities.get_children():
 		entity.setupPosition(entity.global_position)
+	
+	var revealCenterIdx = getCellIdxFromPos($Player.global_position)
+	for idx in getCircleIdxesFromCenter(revealCenterIdx, 5):
+		removeObstacle(idx)
 	
 	$Player.setupPosition($Player.global_position)
 	$Player.connect("player_died", self, "onPlayerDied")

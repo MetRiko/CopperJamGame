@@ -101,6 +101,7 @@ func _input(event):
 		generateChunk(chunkId[0], chunkId[1])
 
 var randSeed = 0
+onready var rng = RandomNumberGenerator.new()
 
 func _ready():
 	randomize()
@@ -109,15 +110,33 @@ func _ready():
 func fract(x : float) -> float:
 	return x - floor(x)
 
+func setSeed(seeed : float):
+#	rng.seed  = seeed
+	randSeed = seeed
+
+func getRandf():
+	return rng.randf()
+
 func random3vec3(c : Vector3) -> Vector3:
 	var j := 4096.0*sin(c.dot(Vector3(17.0, 59.4, 15.0)))
 	var r := Vector3()
-	r.z = fract(512.0*j + randSeed)
+	var randValue = randSeed
+	r.z = fract(512.0*j + randValue)
 	j *= .125
-	r.x = fract(512.0*j + randSeed)
+	r.x = fract(512.0*j + randValue)
 	j *= .125
-	r.y = fract(512.0*j + randSeed)
+	r.y = fract(512.0*j + randValue)
 	return r-Vec3(0.5)
+
+#func random3vec3(c : Vector3) -> Vector3:
+#	var j := 4096.0*sin(c.dot(Vector3(17.0, 59.4, 15.0)))
+#	var r := Vector3()
+#	r.z = fract(512.0*j + randSeed)
+#	j *= .125
+#	r.x = fract(512.0*j + randSeed)
+#	j *= .125
+#	r.y = fract(512.0*j + randSeed)
+#	return r-Vec3(0.5)
 
 func random3():
 	return Vector3(randf(), randf(), randf())
