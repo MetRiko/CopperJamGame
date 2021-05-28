@@ -3,18 +3,26 @@ extends Control
 const ALL_SHOP_CONTENT = preload("res://Gui/AllShopContent.gd").ALL_SHOP_CONTENT
 
 onready var playerInputController = Game.level.getPlayerInputController()
+onready var copperValueController = Game.level.get_node("Controllers/CopperValueController")
 
 onready var buildModeButton = $BuildModeButton
 onready var shop = $Shop
 onready var buttons = $Shop/Panels/ModulesButtons/ButtonsGrid
 onready var moduleName = $Shop/Panels/Description/VBoxContainer/ModuleName
 onready var moduleTooltip = $Shop/Panels/Description/VBoxContainer/ModuleTooltip
+onready var miedzCounter = $CopperCounter/HBoxContainer/Label
+onready var moduleCost = $Shop/Panels/Cost/Label
+onready var moduleCostIcon = $Shop/Panels/Cost/CopperIcon
 
 # Core
 
 func _ready():
+	moduleCostIcon.hide()
+	moduleCost.text = ""
 	_initBuildModeButton()
 	playerInputController.connect("state_changed", self, "onStateChanged")
+	copperValueController.connect("copper_value_changed", self, "copper_value_changed")
+	copperValueController.connect("insufficient_copper", self, "insufficient_copper")
 	_initShopButtons()
 
 # BuildModeButton
@@ -80,13 +88,26 @@ func onModuleButtonMouseEntered(button):
 	if data != null:
 		moduleName.text = button.getModuleData().name
 		moduleTooltip.text = button.getModuleData().tooltip
+		moduleCost.text = str(button.getModuleData().cost)
+		moduleCostIcon.show()
 	else:
 		moduleName.text = ""
 		moduleTooltip.text = ""
+		moduleCost.text = ""
+		moduleCostIcon.hide()
 
 func onModuleButtonMouseExited():
 	moduleName.text = ""
 	moduleTooltip.text = ""
+	moduleCost.text = ""
+	moduleCostIcon.hide()
+
+func copper_value_changed(value):
+	print(value)
+	miedzCounter.text = str(value)
+
+func insufficient_copper():
+	moduleTooltip.text = "insufficient copper"
 
 
 
@@ -137,10 +158,6 @@ func onModuleButtonMouseExited():
 # 			$Control/VBoxContainer/ColorRect/Tooltip.text = data[groupId].elements[buttonId].tooltip
 # 			$ColorRect/Label.text = str(copperAmmount, "/",data[groupId].elements[buttonId].cost)
 
-# func addCopper(copperValue):
-# 	print(copperValue)
-# 	copperAmmount += copperValue
-# 	$MiedzCounter/Label.text = str(copperAmmount)
 
 # func button_exit(groupId, buttonId):
 # 	$Control/VBoxContainer/ColorRect/Tooltip.text = "Tooltip"
