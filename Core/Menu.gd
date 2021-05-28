@@ -5,7 +5,7 @@ onready var playerInputController = Game.level.getPlayerInputController()
 onready var gui = Game.gui
 var gameStarted := false
 
-onready var camera = Game.root.get_node("Camera")
+onready var camera = Game.camera
 onready var level = Game.level
 
 const buttonData = [

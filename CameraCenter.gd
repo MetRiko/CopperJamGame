@@ -24,10 +24,10 @@ func _ready():
 	speed = 500.0 * sqrt($CameraNode._zoom_level)
 
 func get_input(delta):
-	#if menu.gameStarted == true:
+#	if menu.gameStarted == true:
 #		if beatController.isPaused() == false:
 	var dir = Vector2()
-	
+
 	velocity *= 0.88
 	if pic.isNormalState():
 		if Input.is_action_pressed("right"):
@@ -38,7 +38,7 @@ func get_input(delta):
 			dir.y += 1
 		if Input.is_action_pressed("up"):
 			dir.y -= 1
-		
+
 	velocity += dir.normalized() * speed * delta * (pow(velocity.length(), 0.5) + 20.0) * 0.5
 
 
