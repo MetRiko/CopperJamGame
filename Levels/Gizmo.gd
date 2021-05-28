@@ -18,6 +18,7 @@ func _ready():
 	pic.connect("hovered_object_changed", self, "onHoveredObjectChanged")
 	pic.connect("module_selected", self, "onModuleSelected")
 	pic.connect("state_changed", self, "onStateChanged")
+	gizmo.visible = false
 
 func _updateGizmoAlphaOnHover(objectType):
 	if objectType != pic.HOVERED_MODULE:
