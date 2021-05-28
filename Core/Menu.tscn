@@ -19,28 +19,28 @@ font_data = ExtResource( 6 )
 [sub_resource type="Theme" id=2]
 default_font = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=6]
 size = 22
 outline_size = 1
 outline_color = Color( 0.0823529, 0.0823529, 0.133333, 1 )
 font_data = ExtResource( 6 )
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 12 )
 
-[sub_resource type="StyleBoxTexture" id=5]
+[sub_resource type="StyleBoxTexture" id=7]
 texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=6]
+[sub_resource type="StyleBoxTexture" id=8]
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=7]
+[sub_resource type="StyleBoxTexture" id=9]
 texture = ExtResource( 9 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=8]
+[sub_resource type="StyleBoxTexture" id=10]
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
@@ -90,7 +90,7 @@ margin_top = 262.0
 margin_right = 691.0
 margin_bottom = 667.0
 rect_min_size = Vector2( 500, 0 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.941176, 0.807843, 0.772549, 1 )
 text = "Hello and welcome to the Drillstruct Project. Here, at Drillstruct we simulate the behavior of a person dropped very deep underground. You will be placed about 1300 to 1500 meters deep inside a copper reserve. Show us what you will do! Oh, and for convenience’s sake we removed all the other materials and left little caves for you. You might even encounter some previous participants of our Drillstruct Project, you might not want that though. Well, enjoy spending the rest of your life here. And remember, copper is the future! Well, your future at least…"
 align = 3
@@ -125,7 +125,7 @@ margin_bottom = 431.0
 rect_min_size = Vector2( 0, 200 )
 
 [node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 4 )
+material = SubResource( 5 )
 margin_left = 13.0
 margin_top = 461.0
 margin_right = 386.5
@@ -135,12 +135,12 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 5 )
-custom_styles/pressed = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 4 )
+material = SubResource( 5 )
 margin_left = 13.0
 margin_top = 594.0
 margin_right = 386.5
@@ -150,9 +150,9 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/normal = SubResource( 8 )
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
@@ -178,7 +178,7 @@ centered = false
 [node name="Tween" type="Tween" parent="KGHM"]
 
 [node name="Logo" type="Sprite" parent="."]
-material = SubResource( 4 )
+material = SubResource( 5 )
 position = Vector2( 1056, 224 )
 scale = Vector2( 0.436759, 0.436759 )
 texture = ExtResource( 11 )

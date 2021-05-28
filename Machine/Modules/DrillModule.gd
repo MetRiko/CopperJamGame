@@ -59,5 +59,5 @@ func onBeat():
 			var entity = level.getEntityFromIdx(obstacleGlobalIdx)
 			if entity != null:
 				entity.doDamage(1.0)
-			
-			
+			elif obstacleGlobalIdx == level.getPlayer().getGlobalIdx():
+				level.getPlayer().doDamage(1.0)
