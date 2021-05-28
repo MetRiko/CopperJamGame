@@ -39,8 +39,10 @@ func _selectMachine(machine):
 	selectedMachine = machine
 
 func onModuleSelected(module):
+	print(module)
 	if module != null:
 		selectModule(module.getMachine(), module.getLocalIdx())
+		editor.setCamera(Vector2(0.0, 0.0))
 	else:
 		selectModule(null)
 
@@ -137,10 +139,6 @@ func _ready():
 	selectModule(null, Vector2(0, 0))
 	pic.connect("module_selected", self, "onModuleSelected")
 	pic.connect("state_changed", self, "onStateChanged")
-		
-func _input(event):
-	if event.is_action_pressed("num0"):
-		selectModule(Game.level.getFirstMachine(), Vector2(0, 0))
 		
 func onInstructionButtonPressed(buttonData):
 	editor.selectInstructionFromToolbar(buttonData)

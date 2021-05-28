@@ -69,9 +69,9 @@ font_data = ExtResource( 3 )
 [node name="GUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.37244
+margin_left = -2.31629
 margin_top = -0.297302
-margin_right = -1.37244
+margin_right = -2.31628
 margin_bottom = -0.297302
 mouse_filter = 2
 script = ExtResource( 2 )
@@ -326,18 +326,19 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Shop/Panels/Description"]
-margin_left = 21.0
-margin_top = 17.0
-margin_right = 180.0
-margin_bottom = 169.0
+margin_left = 25.0
+margin_top = 20.0
+margin_right = 176.0
+margin_bottom = 144.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ModuleName" type="Label" parent="Shop/Panels/Description/VBoxContainer"]
-margin_right = 159.0
+margin_right = 151.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 5, 0 )
 custom_fonts/font = SubResource( 9 )
@@ -349,13 +350,12 @@ __meta__ = {
 }
 
 [node name="ModuleTooltip" type="Label" parent="Shop/Panels/Description/VBoxContainer"]
-margin_top = 24.0
-margin_right = 159.0
-margin_bottom = 152.0
+margin_top = 40.0
+margin_right = 151.0
+margin_bottom = 124.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0.894118, 0.796078, 0.74902, 1 )
-valign = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false

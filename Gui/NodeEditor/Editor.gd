@@ -7,6 +7,7 @@ const processingNodeGizmoTscn = preload("res://Gui/NodeEditor/ProcessingNodeGizm
 onready var level = Game.level
 #onready var editor = $Panel/Margin/VBox/Editor
 onready var gizmoSprite = $Gizmo/Sprite
+onready var pic = level.getPlayerInputController()
 
 var currentGizmoIdx = null
 var currentCameraPos = Vector2()
@@ -66,11 +67,14 @@ func selectInstructionFromToolbar(instructionData):
 #	else:
 #		gizmoSprite.visible = false
 
-func moveCamera(offset : Vector2):
-	currentCameraPos += offset
+func setCamera(pos : Vector2):
+	currentCameraPos = pos
 	$Nodes.rect_position = currentCameraPos
 	$Connections.rect_position = currentCameraPos
 	$ProcessingGizmos.rect_position = currentCameraPos
+
+func moveCamera(offset : Vector2):
+	setCamera(currentCameraPos + offset)
 
 func _input(event):
 	if event.is_action_pressed("LMB"):
@@ -266,15 +270,15 @@ func _process(delta):
 		else:
 			gizmoSprite.visible = false
 			
-		
-	if Input.is_action_pressed("up"):
-		moveCamera(Vector2(0, -4.0))
-	if Input.is_action_pressed("down"):
-		moveCamera(Vector2(0, 4.0))
-	if Input.is_action_pressed("left"):
-		moveCamera(Vector2(-4.0, 0))
-	if Input.is_action_pressed("right"):
-		moveCamera(Vector2(4.0, 0))
+	if pic.isBuildingState() and pic.isModuleSelected():
+		if Input.is_action_pressed("up"):
+			moveCamera(Vector2(0, 7.0))
+		if Input.is_action_pressed("down"):
+			moveCamera(Vector2(0, -7.0))
+		if Input.is_action_pressed("left"):
+			moveCamera(Vector2(7.0, 0))
+		if Input.is_action_pressed("right"):
+			moveCamera(Vector2(-7.0, 0))
 		
 	update()
 	
@@ -283,7 +287,7 @@ func _draw():
 	# Editor grid
 	
 	for x in range(8):
-		for y in range(10):
+		for y in range(12):
 			var pos = Vector2(x * 2, y * 2) * level.getCellSize().x 
 			pos.x += fmod(currentCameraPos.x, level.getCellSize().x * 2) - 2 * level.getCellSize().x
 			pos.y += fmod(currentCameraPos.y, level.getCellSize().y * 2) - 2 * level.getCellSize().y

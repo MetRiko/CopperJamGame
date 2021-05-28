@@ -10,6 +10,8 @@ export var max_speed := 2400
 
 export (int) var speed = 800
 
+onready var pic = Game.level.getPlayerInputController()
+
 var velocity = Vector2()
 
 func disableCamera():
@@ -24,20 +26,20 @@ func _ready():
 func get_input(delta):
 	#if menu.gameStarted == true:
 #		if beatController.isPaused() == false:
-			
-			var dir = Vector2()
-			
-			velocity *= 0.88
-			if Input.is_action_pressed("right"):
-				dir.x += 1
-			if Input.is_action_pressed("left"):
-				dir.x -= 1
-			if Input.is_action_pressed("down"):
-				dir.y += 1
-			if Input.is_action_pressed("up"):
-				dir.y -= 1
-				
-			velocity += dir.normalized() * speed * delta * (pow(velocity.length(), 0.5) + 20.0) * 0.5
+	var dir = Vector2()
+	
+	velocity *= 0.88
+	if pic.isNormalState():
+		if Input.is_action_pressed("right"):
+			dir.x += 1
+		if Input.is_action_pressed("left"):
+			dir.x -= 1
+		if Input.is_action_pressed("down"):
+			dir.y += 1
+		if Input.is_action_pressed("up"):
+			dir.y -= 1
+		
+	velocity += dir.normalized() * speed * delta * (pow(velocity.length(), 0.5) + 20.0) * 0.5
 
 
 func _physics_process(delta):

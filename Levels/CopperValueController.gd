@@ -1,9 +1,9 @@
 extends Node
 
+signal copper_value_changed
 
 onready var level = Game.level
-onready var pic = level.getPlayerInputConctroller()
-
+onready var pic = level.getPlayerInputController()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

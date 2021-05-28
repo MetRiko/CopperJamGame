@@ -51,8 +51,9 @@ func onMachineStateChanged():
 	update()
 
 func onNewMachinePlaced(newMachine):
-	_selectMachine(newMachine)
-	_calculateFreeSlots(newMachine)
+	if newMachine != null:
+		_selectMachine(newMachine)
+		_calculateFreeSlots(newMachine)
 
 func onModuleToAttachChanged(moduleId, rot):
 	latestModuleIdToAttach = moduleId

@@ -9,7 +9,7 @@ func setPoints(beginPos, endPos, color := Color.white):
 	self.endPos = endPos - rect_global_position
 	self.color = color
 	$Sprite.global_position = endPos
-	var angle = (endPos - beginPos).angle() + PI * 0.5
+	var angle = (endPos - beginPos).angle()
 	$Sprite.global_rotation = angle
 	$Sprite.modulate = color
 
