@@ -1,5 +1,7 @@
 extends Node2D
 
+signal player_died
+
 onready var tilemap = $TileMap
 onready var entities = $Entities
 
@@ -179,8 +181,12 @@ func _ready():
 		entity.setupPosition(entity.global_position)
 	
 	$Player.setupPosition($Player.global_position)
+	$Player.connect("player_died", self, "onPlayerDied")
 	fogOfWar.revealTerrain($Player.getGlobalIdx(), true)
 	$TileMap/EntitySpawner.enableSpawner()
+
+func onPlayerDied():
+	emit_signal("player_died")
 
 func getCellIdxFromMousePos() -> Vector2:
 	return tilemap.world_to_map(get_global_mouse_position() / tilemapScale)# * tilemap.global_scale)
