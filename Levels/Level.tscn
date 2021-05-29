@@ -120,7 +120,7 @@ shader = SubResource( 3 )
 [sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 17 )
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=6]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -161,10 +161,10 @@ void fragment() {
 	COLOR = c;
 }"
 
-[sub_resource type="ShaderMaterial" id=9]
-shader = SubResource( 8 )
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
 
-[sub_resource type="Shader" id=10]
+[sub_resource type="Shader" id=8]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -205,8 +205,8 @@ void fragment() {
 	COLOR = c;
 }"
 
-[sub_resource type="ShaderMaterial" id=11]
-shader = SubResource( 10 )
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 5 )
@@ -311,10 +311,10 @@ rect = Rect2( 0, 0, 0, 0 )
 
 [node name="MachineOutlineRenderer" type="Node2D" parent="Renderers/BackBufferCopy"]
 modulate = Color( 1, 1, 1, 0.576471 )
-material = SubResource( 9 )
+material = SubResource( 7 )
 script = ExtResource( 16 )
 
 [node name="PlayerRangeRenderer" type="Node2D" parent="Renderers/BackBufferCopy"]
 modulate = Color( 1, 1, 1, 0.27451 )
-material = SubResource( 11 )
+material = SubResource( 9 )
 script = ExtResource( 22 )
