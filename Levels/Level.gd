@@ -34,6 +34,18 @@ const COPPER_VALUES = [5, 5, 5, 5]
 func _process(delta):
 	tilemap.material.set_shader_param("cameraPos", Game.camera.global_position / get_viewport().size * get_viewport_transform().get_scale())
 
+	
+	if Input.is_action_pressed("x"): #just remove tile
+		var cellIdx := getCellIdxFromMousePos()
+		var cell : = getCellType(cellIdx)
+		if isCellIdObstacle(cell):
+			removeObstacle(cellIdx)
+	if Input.is_action_just_pressed("z"): #reveal tiles
+		var cellIdx := getCellIdxFromMousePos()
+		var cell := getCellType(cellIdx)
+		if isCellIdDarkFloor(cell):
+			fogOfWar.revealTerrain(cellIdx, true)
+	
 func convertDarkFloorCellIdToFloor(cellId):
 	var id = DARK_FLOOR.find(cellId)
 	if id != -1:
@@ -192,10 +204,10 @@ func getSquareIdxesFromCenter(idxCenter : Vector2, size : int):
 
 func getCircleIdxesFromCenter(idxCenter : Vector2, radius):
 	var idxes = []
-	var leftTopIdx = idxCenter - Vector2(radius, radius) 
+	var leftTopIdx = idxCenter - Vector2(floor(radius), floor(radius)) 
 	var centerPos = getPosFromCellIdx(idxCenter)
-	for x in range(floor(radius) * 2):
-		for y in range(floor(radius) * 2):
+	for x in range(int(radius) * 2 + 1):
+		for y in range(int(radius) * 2 + 1):
 			var cellIdx = leftTopIdx + Vector2(x, y)
 #			var cellPos = getPosFromCellIdx(cellIdx)
 			if (cellIdx - idxCenter).length() <= radius:
@@ -255,17 +267,17 @@ func getPosFromCellIdx(cellIdx) -> Vector2:
 #	pos.y = round(pos.y)
 #	return pos
 
-func _input(event):
-	if event.is_action_pressed("x"): #just remove tile
-		var cellIdx := getCellIdxFromMousePos()
-		var cell : = getCellType(cellIdx)
-		if isCellIdObstacle(cell):
-			removeObstacle(cellIdx)
-	if event.is_action_pressed("z"): #reveal tiles
-		var cellIdx := getCellIdxFromMousePos()
-		var cell := getCellType(cellIdx)
-		if isCellIdDarkFloor(cell):
-			fogOfWar.revealTerrain(cellIdx, true)
+#func _input(event):
+#	if event.is_action_pressed("x"): #just remove tile
+#		var cellIdx := getCellIdxFromMousePos()
+#		var cell : = getCellType(cellIdx)
+#		if isCellIdObstacle(cell):
+#			removeObstacle(cellIdx)
+#	if event.is_action_pressed("z"): #reveal tiles
+#		var cellIdx := getCellIdxFromMousePos()
+#		var cell := getCellType(cellIdx)
+#		if isCellIdDarkFloor(cell):
+#			fogOfWar.revealTerrain(cellIdx, true)
 
 func createNewMachine(cellIdx : Vector2):
 	var newMachine = machineTscn.instance()
