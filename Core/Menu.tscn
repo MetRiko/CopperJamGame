@@ -23,32 +23,32 @@ default_font = SubResource( 1 )
 size = 22
 font_data = ExtResource( 6 )
 
-[sub_resource type="ShaderMaterial" id=9]
+[sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 12 )
 
-[sub_resource type="ShaderMaterial" id=10]
+[sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 12 )
-
-[sub_resource type="StyleBoxTexture" id=4]
-texture = ExtResource( 7 )
-region_rect = Rect2( 0, 0, 640, 192 )
-
-[sub_resource type="StyleBoxTexture" id=5]
-texture = ExtResource( 7 )
-region_rect = Rect2( 0, 0, 640, 192 )
 
 [sub_resource type="StyleBoxTexture" id=6]
-texture = ExtResource( 8 )
+texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="ShaderMaterial" id=11]
-shader = ExtResource( 12 )
-
 [sub_resource type="StyleBoxTexture" id=7]
-texture = ExtResource( 9 )
+texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
 [sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 640, 192 )
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = ExtResource( 12 )
+
+[sub_resource type="StyleBoxTexture" id=10]
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 640, 192 )
+
+[sub_resource type="StyleBoxTexture" id=11]
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
@@ -127,7 +127,7 @@ __meta__ = {
 }
 
 [node name="Logo" type="TextureRect" parent="TextureRect/VBoxContainer"]
-material = SubResource( 9 )
+material = SubResource( 4 )
 margin_top = 159.0
 margin_right = 450.0
 margin_bottom = 409.0
@@ -149,7 +149,7 @@ __meta__ = {
 }
 
 [node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 10 )
+material = SubResource( 5 )
 margin_left = 38.0
 margin_top = 419.0
 margin_right = 411.5
@@ -159,9 +159,9 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 4 )
-custom_styles/pressed = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 
 [node name="Control2" type="Control" parent="TextureRect/VBoxContainer"]
 margin_top = 522.0
@@ -170,7 +170,7 @@ margin_bottom = 547.0
 rect_min_size = Vector2( 0, 25 )
 
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 11 )
+material = SubResource( 9 )
 margin_left = 38.0
 margin_top = 547.0
 margin_right = 411.5
@@ -180,9 +180,9 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/normal = SubResource( 8 )
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
