@@ -26,7 +26,9 @@ func canMove(offset : Vector2):
 	for installedModule in machine.installedModules.values():
 		var localIdx = installedModule.localIdx
 		var globalIdx = machine.baseGlobalIdx + localIdx + offset
-		if not level.isFreeSpace(globalIdx):
+		var localIdxAfterMove = installedModule.localIdx + offset
+		var hashedLocalIdxAfterMove = machine.hashIdx(localIdxAfterMove)
+		if not level.isFreeSpace(globalIdx) and not machine.installedModules.has(hashedLocalIdxAfterMove):
 			return false
 	return true
 
