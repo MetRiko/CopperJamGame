@@ -221,6 +221,20 @@ func getCircleIdxesFromCenter(idxCenter : Vector2, radius):
 #			print((cellIdx - idxCenter).length())
 	return idxes
 
+func getRingIdxesFromCenter(idxCenter : Vector2, minRadius, maxRadius):
+	var idxes = []
+	var leftTopIdx = idxCenter - Vector2(floor(maxRadius), floor(maxRadius)) 
+	var centerPos = getPosFromCellIdx(idxCenter)
+	for x in range(int(maxRadius) * 2 + 1):
+		for y in range(int(maxRadius) * 2 + 1):
+			var cellIdx = leftTopIdx + Vector2(x, y)
+#			var cellPos = getPosFromCellIdx(cellIdx)
+			var length = (cellIdx - idxCenter).length()
+			if length <= maxRadius and length >= minRadius:
+				idxes.append(cellIdx)
+#			print((cellIdx - idxCenter).length())
+	return idxes
+
 func _ready():
 	randomize()
 

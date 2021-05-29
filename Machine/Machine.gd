@@ -46,6 +46,10 @@ const MODULES = {
 	'horizontal_module': {
 		'tscn': preload("res://Machine/Modules/HorizontalModule.tscn"),
 		'connections': ['left', 'right', 'up', 'down']
+	},
+	'tesla_module': {
+	'tscn': preload("res://Machine/Modules/TeslaModule.tscn"),
+	'connections': ['left', 'right', 'up', 'down']
 	}
 }
 
