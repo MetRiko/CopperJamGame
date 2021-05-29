@@ -64,5 +64,13 @@ const ALL_INSTRUCTIONS = {
 	'turn_off_turret': {
 		'frameId': 16,
 		'name': 'Wyłącz działko'
+	},
+	'turn_on_tesla': {
+		'frameId': 18,
+		'name': 'Włącz teslę'
+	},
+	'turn_off_tesla': {
+		'frameId': 19,
+		'name': 'Wyłącz teslę'
 	}
 }

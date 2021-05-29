@@ -66,6 +66,14 @@ const ALL_SHOP_CONTENT = [
 		'cost': 20,
 		'state':true
 	},
+#	{
+#	'name': "Tesla", 
+#	'moduleId' : "tesla_module",
+#	'frameId':21,
+#	'tooltip': "To jest zwojnica tesli",
+#	'cost': 40,
+#	'state':true
+#	},
 	# {
 	# 	'name': "Vertical", 
 	# 	'moduleId' : "vertical_module",
