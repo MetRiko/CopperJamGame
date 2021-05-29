@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://Core/Camera.tscn" type="PackedScene" id=21]
 [ext_resource path="res://Levels/PlayerRangeRenderer.gd" type="Script" id=22]
 [ext_resource path="res://Controllers/ObjectHoverController.gd" type="Script" id=23]
+[ext_resource path="res://Levels/PlayerRangeController.gd" type="Script" id=24]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -282,6 +283,9 @@ script = ExtResource( 20 )
 
 [node name="ObjectHoverController" type="Node2D" parent="Controllers"]
 script = ExtResource( 23 )
+
+[node name="PlayerRangeController" type="Node" parent="Controllers"]
+script = ExtResource( 24 )
 
 [node name="Renderers" type="Node2D" parent="."]
 

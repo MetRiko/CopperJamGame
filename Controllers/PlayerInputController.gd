@@ -11,6 +11,7 @@ onready var level = Game.level
 onready var player = level.getPlayer()
 
 onready var hoverCtrl = get_parent().get_node("ObjectHoverController")
+onready var playerRangeCtrl = get_parent().get_node("PlayerRangeController")
 
 enum {
 	NORMAL_STATE,
@@ -63,7 +64,15 @@ func disablePlayerInput():
 	set_process(false)
 
 func _ready():
+	playerRangeCtrl.connect("player_range_changed", self, "onPlayerRangeChanged")
 	changeStateToNormal()
+
+func onPlayerRangeChanged():
+	return
+	if selectedModule != null and is_instance_valid(selectedModule):
+		var isSelectedModuleInPlayerRange = playerRangeCtrl.isIdxInPlayerRange(selectedModule.getGlobalIdx())
+		if isSelectedModuleInPlayerRange == false:
+			_unselectModule()
 
 ############### Player input
 
@@ -102,8 +111,11 @@ func _unhandled_input(event):
 
 func _leftClickWhenNormalState(): 
 
+	var isMouseIdxInPlayerRange = playerRangeCtrl.isIdxInPlayerRange(hoverCtrl.getMouseIdx())
+	print(isMouseIdxInPlayerRange)
+	
 	# on module - select/unselect module
-	if hoverCtrl.isHoveredModule():
+	if hoverCtrl.isHoveredModule() and isMouseIdxInPlayerRange == true:
 		var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
 		_selectModule(module)
 	else:
@@ -111,14 +123,18 @@ func _leftClickWhenNormalState():
 
 func _leftClickWhenBuildingState(): 
 
+	var isMouseIdxInPlayerRange = playerRangeCtrl.isIdxInPlayerRange(hoverCtrl.getMouseIdx())
+
+	# select module
+	if hoverCtrl.isHoveredModule() and isMouseIdxInPlayerRange == true:
+		var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
+		_selectModule(module)
+
 	# without selected module to attach
 	if moduleToAttach == null:
 
 		# on module - select/unselect module
-		if hoverCtrl.isHoveredModule():
-			var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
-			_selectModule(module)
-		else:
+		if not hoverCtrl.isHoveredModule():
 			_unselectModule()
 
 		# on floor - place/replace new machine - FEATURE DISABLED
@@ -127,19 +143,13 @@ func _leftClickWhenBuildingState():
 
 	# with selected module to attach
 	else:
-		# on module - (only) select module
-		if hoverCtrl.isHoveredModule():
-			var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
-			_selectModule(module)
 
 		# on floor - attach module / create new machine
-		elif hoverCtrl.isHoveredFloor():
-			
-			if not is_instance_valid(selectedModule):
-				selectedModule = null
+		if hoverCtrl.isHoveredFloor() and isMouseIdxInPlayerRange == true:
 
 			# not selected module - create new machine
-			if selectedModule == null:
+			if selectedModule == null or not is_instance_valid(selectedModule):
+				selectedModule = null
 				_placeNewMachine()
 				_attachSelectedModule(hoverCtrl.getMouseIdx())
 				

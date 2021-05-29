@@ -61,6 +61,9 @@ func getHoverObjectController():
 
 func getCopperValueController():
 	return $Controllers/CopperValueController
+
+func getPlayerRangeController():
+	return $Controllers/PlayerRangeController
 	
 #func getAnyCopper():
 #	return getRandomInt([11,12,13,14])
@@ -243,6 +246,8 @@ func _ready():
 	$Player.connect("player_died", self, "onPlayerDied")
 	fogOfWar.revealTerrain($Player.getGlobalIdx(), true)
 	$TileMap/EntitySpawner.enableSpawner()
+	
+	getPlayerRangeController()._calculateRangeIdxes()
 
 func onPlayerDied():
 	emit_signal("player_died")
