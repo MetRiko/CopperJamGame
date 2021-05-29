@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://res/plansza_gra.png" type="Texture" id=1]
 [ext_resource path="res://Core/Menu.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://res/Menu/quit_hover.png" type="Texture" id=9]
 [ext_resource path="res://res/Menu/quit_normal.png" type="Texture" id=10]
 [ext_resource path="res://res/Menu/logo.png" type="Texture" id=11]
+[ext_resource path="res://Core/Menu.shader" type="Shader" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 6 )
@@ -22,7 +23,13 @@ default_font = SubResource( 1 )
 size = 22
 font_data = ExtResource( 6 )
 
-[sub_resource type="StyleBoxTexture" id=4]
+[sub_resource type="ShaderMaterial" id=9]
+shader = ExtResource( 12 )
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = ExtResource( 12 )
+
+[sub_resource type="StyleBoxTexture" id=5]
 texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
@@ -33,6 +40,9 @@ region_rect = Rect2( 0, 0, 640, 192 )
 [sub_resource type="StyleBoxTexture" id=6]
 texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 640, 192 )
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = ExtResource( 12 )
 
 [sub_resource type="StyleBoxTexture" id=7]
 texture = ExtResource( 9 )
@@ -52,10 +62,12 @@ __meta__ = {
 
 [node name="Back" type="NinePatchRect" parent="."]
 self_modulate = Color( 0.811765, 0.835294, 0.92549, 0.905882 )
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 1408.0
-margin_bottom = 768.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 60.0
+margin_top = 60.0
+margin_right = -60.0
+margin_bottom = -60.0
 texture = ExtResource( 4 )
 region_rect = Rect2( -12, -12, 1164, 492 )
 patch_margin_left = 60
@@ -72,8 +84,6 @@ __meta__ = {
 self_modulate = Color( 0.219608, 0.239216, 0.282353, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -64.0
-margin_bottom = 55.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource( 2 )
@@ -84,9 +94,9 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="TextureRect"]
 margin_left = 191.0
-margin_top = 262.0
+margin_top = 320.0
 margin_right = 691.0
-margin_bottom = 667.0
+margin_bottom = 725.0
 rect_min_size = Vector2( 500, 0 )
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.941176, 0.807843, 0.772549, 1 )
@@ -99,34 +109,51 @@ __meta__ = {
 
 [node name="Control2" type="Control" parent="TextureRect"]
 margin_left = 695.0
-margin_right = 845.0
-margin_bottom = 929.0
-rect_min_size = Vector2( 150, 0 )
+margin_right = 795.0
+margin_bottom = 1046.0
+rect_min_size = Vector2( 100, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
-margin_left = 849.0
+margin_left = 799.0
 margin_right = 1249.0
-margin_bottom = 929.0
+margin_bottom = 1046.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_min_size = Vector2( 400, 0 )
-custom_constants/separation = 30
+custom_constants/separation = 0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Logo" type="TextureRect" parent="TextureRect/VBoxContainer"]
+material = SubResource( 9 )
+margin_top = 277.0
+margin_right = 450.0
+margin_bottom = 527.0
+rect_min_size = Vector2( 450, 250 )
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Control" type="Control" parent="TextureRect/VBoxContainer"]
-margin_top = 231.0
-margin_right = 400.0
-margin_bottom = 431.0
-rect_min_size = Vector2( 0, 200 )
+margin_top = 527.0
+margin_right = 450.0
+margin_bottom = 537.0
+rect_min_size = Vector2( 0, 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_left = 13.0
-margin_top = 461.0
-margin_right = 386.5
-margin_bottom = 564.5
+material = SubResource( 10 )
+margin_left = 38.0
+margin_top = 537.0
+margin_right = 411.5
+margin_bottom = 640.5
 rect_min_size = Vector2( 373.5, 103.5 )
 rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
@@ -136,11 +163,18 @@ custom_styles/hover = SubResource( 4 )
 custom_styles/pressed = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
 
+[node name="Control2" type="Control" parent="TextureRect/VBoxContainer"]
+margin_top = 640.0
+margin_right = 450.0
+margin_bottom = 665.0
+rect_min_size = Vector2( 0, 25 )
+
 [node name="Quit" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-margin_left = 13.0
-margin_top = 594.0
-margin_right = 386.5
-margin_bottom = 697.5
+material = SubResource( 11 )
+margin_left = 38.0
+margin_top = 665.0
+margin_right = 411.5
+margin_bottom = 768.5
 rect_min_size = Vector2( 373.5, 103.5 )
 rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
@@ -156,14 +190,10 @@ margin_top = 485.0
 margin_right = 400.0
 margin_bottom = 555.0
 
-[node name="Logo" type="Sprite" parent="."]
-position = Vector2( 1056, 224 )
-scale = Vector2( 0.436759, 0.436759 )
-texture = ExtResource( 11 )
-
 [node name="Tween" type="Tween" parent="."]
 
 [node name="KGHM" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -172,10 +202,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="KGHM"]
-scale = Vector2( 0.75, 0.75 )
+[node name="Sprite" type="TextureRect" parent="KGHM"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 texture = ExtResource( 1 )
-centered = false
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Tween" type="Tween" parent="KGHM"]
 
