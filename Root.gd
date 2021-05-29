@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var levelTscn = preload("res://Levels/Level.tscn")
+onready var menu = $MainMenu/Menu
 
 func _ready():
 	VisualServer.set_default_clear_color(Color('#252834'))
@@ -11,6 +12,7 @@ func _ready():
 #	$AudioStreamPlayer.play()
 
 func resetLevel():
+	menu.showMenu()
 	var newLevel = levelTscn.instance()
 	var level = $LevelAnchor.get_child(0)
 	level.queue_free()

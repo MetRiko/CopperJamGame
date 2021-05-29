@@ -14,7 +14,5 @@ func onPlayerDied():
 
 func _unhandled_input(event):
 	if event.is_action_pressed("space") and visible == true:
-		menu.gameStarted = false
-		menu.show()
 		hide()
 		Game.root.resetLevel()

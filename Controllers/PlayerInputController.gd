@@ -112,7 +112,6 @@ func _unhandled_input(event):
 func _leftClickWhenNormalState(): 
 
 	var isMouseIdxInPlayerRange = playerRangeCtrl.isIdxInPlayerRange(hoverCtrl.getMouseIdx())
-	print(isMouseIdxInPlayerRange)
 	
 	# on module - select/unselect module
 	if hoverCtrl.isHoveredModule() and isMouseIdxInPlayerRange == true:

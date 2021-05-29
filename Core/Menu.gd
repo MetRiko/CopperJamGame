@@ -1,13 +1,10 @@
 extends Control
 
 onready var beatController = Game.beatController
-onready var playerInputController = Game.level.getPlayerInputController()
-onready var gui = Game.gui
 onready var logo = $TextureRect/VBoxContainer/Logo
 
 var gameStarted := false
 
-onready var camera = Game.camera
 onready var level = Game.level
 
 const buttonData = [
@@ -25,16 +22,31 @@ const buttonData = [
 	}
 ]
 
+func showMenu():
+	show()
+	gameStarted = false
+	$Tween.interpolate_property($Back, "modulate:a", null, 1.0, 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.start()
+	yield($Tween, "tween_all_completed")
+	
+	$Tween.interpolate_property(logo, "modulate:a", null, 1.0, 0.4, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+	$Tween.start()
+	yield(get_tree().create_timer(0.4), "timeout")
+	
+	$Tween.interpolate_property($TextureRect, "modulate:a", null, 1.0, 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
+	$Tween.start()
+	yield(get_tree().create_timer(0.4), "timeout")
+	
 
 func _ready():
 	$TextureRect/VBoxContainer/Start.connect("pressed", self, "onStartGame")
 	$TextureRect/VBoxContainer/Quit.connect("pressed", self, "onQuitGame")
-	camera.disableCamera()
+	Game.camera.disableCamera()
 	level.set_process(false)
 	Game.musicController.enableMainTheme()
 	Game.musicController.enableChillTheme()
-	playerInputController.disablePlayerInput()
-	gui.hide()
+	Game.level.getPlayerInputController().disablePlayerInput()
+	Game.gui.hide()
 
 func onStartGame():
 	startGame()
@@ -72,11 +84,11 @@ func startGame(force = false):
 		$Tween.start()
 		yield($Tween, "tween_all_completed")
 	
-	camera.enableCamera()
-	level.set_process(true)
-	playerInputController.enablePlayerInput()
-	gui.show()
-	playerInputController.changeStateToNormal()
+	Game.camera.enableCamera()
+	Game.level.set_process(true)
+	Game.level.getPlayerInputController().enablePlayerInput()
+	Game.gui.show()
+	Game.level.getPlayerInputController().changeStateToNormal()
 	gameStarted = true
 	hide()
 
