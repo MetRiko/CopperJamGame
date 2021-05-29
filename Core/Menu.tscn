@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://res/plansza_gra.png" type="Texture" id=1]
 [ext_resource path="res://Core/Menu.gd" type="Script" id=2]
@@ -19,22 +19,22 @@ font_data = ExtResource( 6 )
 [sub_resource type="Theme" id=2]
 default_font = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=10]
 size = 22
 font_data = ExtResource( 6 )
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=11]
 shader = ExtResource( 12 )
 
-[sub_resource type="ShaderMaterial" id=5]
+[sub_resource type="ShaderMaterial" id=12]
 shader = ExtResource( 12 )
 
-[sub_resource type="StyleBoxTexture" id=6]
+[sub_resource type="StyleBoxTexture" id=13]
 texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=7]
-texture = ExtResource( 7 )
+[sub_resource type="StyleBoxTexture" id=14]
+texture = ExtResource( 8 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
 [sub_resource type="StyleBoxTexture" id=8]
@@ -44,11 +44,15 @@ region_rect = Rect2( 0, 0, 640, 192 )
 [sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 12 )
 
-[sub_resource type="StyleBoxTexture" id=10]
+[sub_resource type="StyleBoxTexture" id=15]
 texture = ExtResource( 9 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
-[sub_resource type="StyleBoxTexture" id=11]
+[sub_resource type="StyleBoxTexture" id=16]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 640, 192 )
+
+[sub_resource type="StyleBoxTexture" id=17]
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 640, 192 )
 
@@ -98,7 +102,7 @@ margin_top = 202.0
 margin_right = 691.0
 margin_bottom = 607.0
 rect_min_size = Vector2( 500, 0 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 10 )
 custom_colors/font_color = Color( 0.941176, 0.807843, 0.772549, 1 )
 text = "Hello and welcome to the Drillstruct Project. Here, at Drillstruct we simulate the behavior of a person dropped very deep underground. You will be placed about 1300 to 1500 meters deep inside a copper reserve. Show us what you will do! Oh, and for convenience’s sake we removed all the other materials and left little caves for you. You might even encounter some previous participants of our Drillstruct Project, you might not want that though. Well, enjoy spending the rest of your life here. And remember, copper is the future! Well, your future at least…"
 align = 3
@@ -127,7 +131,7 @@ __meta__ = {
 }
 
 [node name="Logo" type="TextureRect" parent="TextureRect/VBoxContainer"]
-material = SubResource( 4 )
+material = SubResource( 11 )
 margin_top = 159.0
 margin_right = 450.0
 margin_bottom = 409.0
@@ -149,7 +153,7 @@ __meta__ = {
 }
 
 [node name="Start" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
-material = SubResource( 5 )
+material = SubResource( 12 )
 margin_left = 38.0
 margin_top = 419.0
 margin_right = 411.5
@@ -159,8 +163,8 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 14 )
 custom_styles/normal = SubResource( 8 )
 
 [node name="Control2" type="Control" parent="TextureRect/VBoxContainer"]
@@ -180,9 +184,9 @@ rect_pivot_offset = Vector2( 186.75, 51.75 )
 focus_mode = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_styles/hover = SubResource( 10 )
-custom_styles/pressed = SubResource( 10 )
-custom_styles/normal = SubResource( 11 )
+custom_styles/hover = SubResource( 15 )
+custom_styles/pressed = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
 
 [node name="Options" parent="TextureRect/VBoxContainer" instance=ExtResource( 3 )]
 visible = false
