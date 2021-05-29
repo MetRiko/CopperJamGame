@@ -238,6 +238,7 @@ func _unselectModule():
 
 func _selectModule(module):
 	if selectedModule != null and is_instance_valid(selectedModule) and module != selectedModule:
+#		if hoverCtrl.getHoveredModule() != selectedModule:
 		selectedModule.modulate = Color(1.0, 1.0, 1.0, 1.0)
 		
 		var machine = selectedModule.getMachine()
@@ -247,7 +248,7 @@ func _selectModule(module):
 	_cancelNewMachine()
 		
 	if module != null:
-		module.modulate = Color(1.4, 1.4, 1.4, 1.0)
+		module.modulate = Color("#ff8d6a")
 
 	selectedModule = module
 	emit_signal("module_selected", module)

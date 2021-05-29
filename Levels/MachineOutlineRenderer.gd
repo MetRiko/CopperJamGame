@@ -70,6 +70,7 @@ func onHoveredObjectChanged(newHoveredObject):
 	update()
 
 
+
 func _drawOutlineForMachine(machine, connectionsOffsets, color, thickness):
 		# hovered machine
 	
@@ -90,10 +91,21 @@ func _drawOutlineForMachine(machine, connectionsOffsets, color, thickness):
 			var moduleIdx = idxWithOffset[0]
 			var offset = idxWithOffset[1]
 			var offsetId = idxWithOffset[2]
+			var module = idxWithOffset[3].module
 			
-			var modulePos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
+#			var modulePos = level.getPosFromCellIdx(moduleIdx) + level.getHalfCellSize()
+			if module == null or not is_instance_valid(module):
+				continue 
+			var modulePos = module.global_position + level.getHalfCellSize()
+#			
+#			var module = machine.getModuleFromLocalIdx(moduleIdx)
+#			if module == null or not is_instance_valid(module):
+#				continue
+#			var modulePos = module.global_position + level.getHalfCellSize()
+#			var modulePos = level.getHalfCellSize() + machine.global_position + (machine.getGlobalIdx() - moduleIdx) * level.getCellSize()
 			
 			var rectCenterPos = modulePos + offset * 16.0 + OFFSETS[(offsetId + 1)%4] * halfWidth
+#			var rectCenterPos = level.getPosFromCellIdx(machine.getGlobalIdx() - moduleIdx) + offset * 16.0 + OFFSETS[(offsetId + 1)%4] * halfWidth
 
 			var pointsOffsets = [
 				Vector2(offset.x, offset.y) * halfWidth,
@@ -116,11 +128,21 @@ func _drawOutlineForMachine(machine, connectionsOffsets, color, thickness):
 				if bottom < pointOffset.y:
 					bottom = pointOffset.y
 			
-			var rectPos = Vector2(left, top) + rectCenterPos
+			var globalOffset = Vector2(
+				fmod(machine.global_position.x, level.getCellSize().x),
+				fmod(machine.global_position.y, level.getCellSize().y)
+			)
+			
+#			var offset2 = modulePos - machine.global_position
+			
+			var rectPos = Vector2(left, top) + rectCenterPos # - globalOffset
+#			var rectPos = Vector2(left, top) + rectCenterPos
 			var rectSize = Vector2(right - left, bottom - top)
 			
 			draw_rect(Rect2(rectPos, rectSize), color, true, 1.0, false)
 
+func _process(delta):
+	update()
 
 func _draw():
 	_drawOutlineForMachine(latestHoveredMachine, possibleConnectionsOffsetsForHoveredMachine, Color.white, 0.6)

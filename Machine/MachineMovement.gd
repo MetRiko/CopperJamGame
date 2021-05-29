@@ -1,5 +1,7 @@
 extends Node2D
 
+signal machine_moved
+
 onready var level = Game.level
 onready var machine = get_parent()
 
@@ -54,6 +56,22 @@ func moveForward():
 func _playMoveAnimation(targetPos):
 	$Tween.interpolate_property(machine, "global_position", machine.global_position, targetPos, 0.2, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
+	yield($Tween, "tween_completed")
+
+var nextMove = null
+
+func _ready():
+	Game.beatController.connect("beat", self, "onBeat")
+
+func onBeat():
+	if nextMove != null:
+		var oldCellIdx = machine.baseGlobalIdx
+		machine.baseGlobalIdx += nextMove
+		var targetPos = level.getPosFromCellIdx(machine.baseGlobalIdx)
+		_playMoveAnimation(targetPos)
+		nextMove = null
+		yield($Tween, "tween_completed")
+		emit_signal("machine_moved", oldCellIdx, machine.baseGlobalIdx) #from -> to
 
 func move(offset : Vector2):
 
@@ -62,24 +80,19 @@ func move(offset : Vector2):
 	var targetCell = level.getCellType(targetCellIdx)
 	
 	if not canMove(offset):
+		nextMove = null
 		return {
 			success = false, 
 			targetCellIdx = targetCellIdx, 
 			targetCell = targetCell
 		}
 	
-	machine.baseGlobalIdx.x += offset.x
-	machine.baseGlobalIdx.y += offset.y
-	var targetPos = level.getPosFromCellIdx(machine.baseGlobalIdx)
-	_playMoveAnimation(targetPos)
-	
+	nextMove = offset
 	return {
 		success = true, 
 		targetCellidx = targetCellIdx, 
 		targetCell = targetCell
 	}
-	
-	emit_signal("moved", oldCellIdx, targetCellIdx) #from -> to
 	
 #
 #func moveRight():

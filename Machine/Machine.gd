@@ -8,6 +8,7 @@ onready var level = Game.level
 
 onready var modules = $Modules
 onready var processor = $Processor
+onready var movement = $Movement
 onready var healthControllers = $HealthControllers
 
 const MODULES = {
@@ -116,7 +117,7 @@ func getAllGlobalNeighboursWithOffsets():
 			var idx = module.localIdx + offset
 			var hashedIdx = hashIdx(idx)
 			if not installedModules.has(hashedIdx):
-				neighbours.append([convertToGlobalIdx(module.localIdx), offset, i])
+				neighbours.append([convertToGlobalIdx(module.localIdx), offset, i, module])
 	return neighbours
 
 func getAllAvailableGlobalFreeSlotsWithOffsets():
@@ -206,6 +207,11 @@ var clearingState = 0
 func _ready():
 	for module in modules.get_children():
 		module.queue_free()
+
+	movement.connect("machine_moved", self, "onMachineMoved")
+	
+func onMachineMoved(from, to):
+	emit_signal("machine_state_changed")
 
 func setupPos(globalIdx : Vector2):
 	baseGlobalIdx = globalIdx

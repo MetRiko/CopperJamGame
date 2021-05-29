@@ -13,7 +13,7 @@ var enabled = false
 
 func _ready():
 	playerInputController.connect("module_selected", self, "onModuleSelected")
-	playerInputController.connect("state_changed", self, "onStateChanged")
+#	playerInputController.connect("state_changed", self, "onStateChanged")
 	hidePanel()
 	
 func showPanel():
@@ -24,26 +24,27 @@ func hidePanel():
 	enabled = false
 	hide()
 	
-func onStateChanged(state):
-	if state == playerInputController.NORMAL_STATE:
-		if latestSelectedModule != null and is_instance_valid(latestSelectedModule) and $Margin/ActionButtons.get_child_count() > 0:
-			showPanel()
-		
-	elif state == playerInputController.BUILDING_STATE:
-		hidePanel()
+#func onStateChanged(state):
+#	if state == playerInputController.NORMAL_STATE:
+#		if latestSelectedModule != null and is_instance_valid(latestSelectedModule) and $Margin/ActionButtons.get_child_count() > 0:
+#			showPanel()
+#
+#	elif state == playerInputController.BUILDING_STATE:
+#		hidePanel()
 	
 var latestMachine = null
 	
 func onModuleSelected(module):
 	latestSelectedModule = module
 	
-	if module != null and playerInputController.isNormalState():
+	if module != null:
 		if latestMachine != null and is_instance_valid(latestMachine):
 			if latestMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
 				latestMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
 			latestMachine = module.getMachine()
 			if not latestMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
 				latestMachine.connect("machine_state_changed", self, "onMachineStateChanged")
+		print(module.getOrderedInstructions())
 		_setInstructions(module.getOrderedInstructions())
 		showPanel()
 #		_updatePanelVisuals()

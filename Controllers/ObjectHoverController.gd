@@ -4,6 +4,8 @@ signal hovered_object_changed
 
 onready var level = Game.level
 
+onready var pic = get_parent().get_node("PlayerInputController")
+
 enum {
 	HOVERED_OBSTACLE,
 	HOVERED_MODULE,
@@ -16,11 +18,11 @@ var hoveredObject = HOVERED_JUST_FLOOR
 var currentMouseIdx = Vector2(-100, -100)
 
 var latestHoveredModule = null
-var selectedModule = null
-
-var latestNewMachine = null
 
 # Getters
+
+func getHoveredModule():
+	return latestHoveredModule if latestHoveredModule != null and is_instance_valid(latestHoveredModule) else null
 
 func getMouseIdx():
 	return currentMouseIdx
@@ -31,9 +33,6 @@ func getHoveredMachine():
 		if is_instance_valid(machine):
 			return machine
 	return null
-
-func getHoveredModule():
-	return latestHoveredModule
 
 # Core
 
@@ -105,13 +104,13 @@ func _hoverModule(module):
 	if module != latestHoveredModule:
 
 		if latestHoveredModule != null and is_instance_valid(latestHoveredModule):
-			if latestHoveredModule != selectedModule:
+			if latestHoveredModule != pic.getSelectedModule():
 				latestHoveredModule.modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 #			if (module != null and latestHoveredModule.getMachine() != module.getMachine()) or module == null:
 #				latestHoveredModule.getMachine().setOutline(0.0)
 
-	if module != null and module != selectedModule:
+	if module != null and module != pic.getSelectedModule():
 #		module.getMachine().setOutline(1.0, Color(1.0, 1.0, 1.0, 0.6))
 		module.modulate = Color(1.2, 1.2, 1.2, 1.0)
 
