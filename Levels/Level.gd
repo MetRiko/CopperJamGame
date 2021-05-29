@@ -56,6 +56,9 @@ func convertDarkFloorCellIdToFloor(cellId):
 func getPlayerInputController():
 	return $Controllers/PlayerInputController
 
+func getHoverObjectController():
+	return $Controllers/ObjectHoverController
+
 func getCopperValueController():
 	return $Controllers/CopperValueController
 	

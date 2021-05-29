@@ -2,6 +2,7 @@ extends Node2D
 
 onready var level = get_parent().get_parent()
 onready var pic = level.getPlayerInputController()
+onready var hoverCtrl = level.getHoverObjectController()
 
 const ALL_SHOP_CONTENT = preload("res://Gui/AllShopContent.gd").ALL_SHOP_CONTENT
 
@@ -18,7 +19,7 @@ var latestRotModuleToAttach = null
 func _ready():
 	pic.connect("module_selected", self, "onModuleSelected")
 	pic.connect("module_to_attach_changed", self, "onModuleToAttachChanged")
-	pic.connect("hovered_object_changed", self, "onHoveredObjectChanged")
+	hoverCtrl.connect("hovered_object_changed", self, "onHoveredObjectChanged")
 	pic.connect("new_machine_placed", self, "onNewMachinePlaced")
 	pic.connect("state_changed", self, "onStateChanged")
 	
@@ -106,7 +107,7 @@ func _draw():
 			draw_circle(pos, radius * 0.65, Color(1.0, 0.0, 0.0, 0.4))
 			
 		for offset in possibleConnectionsOffsets:
-			var idx = pic.getMouseIdx() 
+			var idx = hoverCtrl.getMouseIdx() 
 			var pos = level.getPosFromCellIdx(idx) + level.getHalfCellSize() + offset * level.getHalfCellSize()
 			draw_circle(pos, radius, Color(1.0, 0.0, 0.0, 0.4))
 			draw_circle(pos, radius * 0.85, Color(1.0, 0.0, 0.0, 0.4))

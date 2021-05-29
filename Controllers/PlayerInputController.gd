@@ -3,37 +3,24 @@ extends Node2D
 signal state_changed
 signal module_to_attach_changed
 signal module_selected
-signal hovered_object_changed
 signal new_machine_placed
 signal module_attached
 signal module_detached
 
-onready var tilemap = Game.tilemap
 onready var level = Game.level
-onready var gui = Game.gui
-onready var nodeEditor = Game.nodeEditor
 onready var player = level.getPlayer()
+
+onready var hoverCtrl = get_parent().get_node("ObjectHoverController")
 
 enum {
 	NORMAL_STATE,
 	BUILDING_STATE
 }
 
-enum {
-	HOVERED_OBSTACLE,
-	HOVERED_MODULE,
-	HOVERED_ENEMY,
-	HOVERED_JUST_FLOOR,
-}
-
 var state = null
 
-var hoveredObject = HOVERED_JUST_FLOOR
-
 var currentSelectedModuleIdx = Vector2()
-var currentMouseIdx = Vector2(-100, -100)
 
-var latestHoveredModule = null
 var selectedModule = null
 
 var latestNewMachine = null
@@ -42,9 +29,6 @@ var moduleToAttach = null
 var rotOfModuleToAttach = 0
 
 # Getters
-
-func getMouseIdx():
-	return currentMouseIdx
 
 func getSelectedModule():
 	return selectedModule
@@ -55,16 +39,6 @@ func getSelectedMachine():
 		if is_instance_valid(machine):
 			return machine
 	return null
-
-func getHoveredMachine():
-	if latestHoveredModule != null and is_instance_valid(latestHoveredModule):
-		var machine = latestHoveredModule.getMachine()
-		if is_instance_valid(machine):
-			return machine
-	return null
-
-func getHoveredModule():
-	return latestHoveredModule
 
 func getIdModuleToAttach():
 	return moduleToAttach
@@ -89,93 +63,7 @@ func disablePlayerInput():
 	set_process(false)
 
 func _ready():
-	Game.beatController.connect("after_beat", self, "onAfterBeat")
 	changeStateToNormal()
-
-func _process(delta):
-	var mouseIdx = level.getCellIdxFromMousePos()
-	if mouseIdx != currentMouseIdx:
-		currentMouseIdx = mouseIdx
-		_hoverObject(mouseIdx)
-
-func onAfterBeat():
-	var mouseIdx = level.getCellIdxFromMousePos()
-	_hoverObject(mouseIdx)
-
-func _hoverObject(idx):
-
-	var isObstacle = level.isObstacle(idx)
-	if isObstacle:
-		_hoverObstacle()
-		emit_signal("hovered_object_changed", hoveredObject)
-		return
-	
-	var machine = level.getMachineFromIdx(idx)
-	if machine != null:
-		_hoverModule(machine.getModuleFromLocalIdx(machine.convertToLocalIdx(idx)))
-		emit_signal("hovered_object_changed", hoveredObject)
-		return
-	else:
-		_unhoverLatestModule()
-
-	var isEnemy = level.getEntityFromIdx(idx) != null
-	if isEnemy:
-		_hoverEnemy()
-		emit_signal("hovered_object_changed", hoveredObject)
-		return
-	
-	_hoverFloor()
-
-	emit_signal("hovered_object_changed", hoveredObject)
-
-############### Hovering
-
-func getHoveredObject():
-	return hoveredObject
-
-func isHoveredObstacle():
-	return hoveredObject == HOVERED_OBSTACLE
-
-func isHoveredModule():
-	return hoveredObject == HOVERED_MODULE
-
-func isHoveredEnemy():
-	return hoveredObject == HOVERED_ENEMY
-
-func isHoveredFloor():
-	return hoveredObject == HOVERED_JUST_FLOOR
-
-func _unhoverLatestModule():
-	_hoverModule(null)
-
-func _hoverObstacle():
-	hoveredObject = HOVERED_OBSTACLE
-
-func _hoverModule(module):
-	hoveredObject = HOVERED_MODULE
-
-	if module != latestHoveredModule:
-
-		if latestHoveredModule != null and is_instance_valid(latestHoveredModule):
-			if latestHoveredModule != selectedModule:
-				latestHoveredModule.modulate = Color(1.0, 1.0, 1.0, 1.0)
-		
-#			if (module != null and latestHoveredModule.getMachine() != module.getMachine()) or module == null:
-#				latestHoveredModule.getMachine().setOutline(0.0)
-
-	if module != null and module != selectedModule:
-#		module.getMachine().setOutline(1.0, Color(1.0, 1.0, 1.0, 0.6))
-		module.modulate = Color(1.2, 1.2, 1.2, 1.0)
-
-	latestHoveredModule = module
-
-func _hoverEnemy():
-	hoveredObject = HOVERED_ENEMY
-
-func _hoverFloor():
-	hoveredObject = HOVERED_JUST_FLOOR
-
-	# red or green gizmo if can attach module TODO
 
 ############### Player input
 
@@ -215,8 +103,8 @@ func _unhandled_input(event):
 func _leftClickWhenNormalState(): 
 
 	# on module - select/unselect module
-	if hoveredObject == HOVERED_MODULE:
-		var module = level.getModuleFromIdx(currentMouseIdx)
+	if hoverCtrl.isHoveredModule():
+		var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
 		_selectModule(module)
 	else:
 		_unselectModule()
@@ -227,8 +115,8 @@ func _leftClickWhenBuildingState():
 	if moduleToAttach == null:
 
 		# on module - select/unselect module
-		if hoveredObject == HOVERED_MODULE:
-			var module = level.getModuleFromIdx(currentMouseIdx)
+		if hoverCtrl.isHoveredModule():
+			var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
 			_selectModule(module)
 		else:
 			_unselectModule()
@@ -240,12 +128,12 @@ func _leftClickWhenBuildingState():
 	# with selected module to attach
 	else:
 		# on module - (only) select module
-		if hoveredObject == HOVERED_MODULE:
-			var module = level.getModuleFromIdx(currentMouseIdx)
+		if hoverCtrl.isHoveredModule():
+			var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
 			_selectModule(module)
 
 		# on floor - attach module / create new machine
-		elif hoveredObject == HOVERED_JUST_FLOOR:
+		elif hoverCtrl.isHoveredFloor():
 			
 			if not is_instance_valid(selectedModule):
 				selectedModule = null
@@ -253,15 +141,15 @@ func _leftClickWhenBuildingState():
 			# not selected module - create new machine
 			if selectedModule == null:
 				_placeNewMachine()
-				_attachSelectedModule(currentMouseIdx)
+				_attachSelectedModule(hoverCtrl.getMouseIdx())
 				
 			# selected module - attach module / unselect module 
 			elif selectedModule != null and is_instance_valid(selectedModule):
 				var machine = selectedModule.getMachine()
-				var localIdx = machine.convertToLocalIdx(currentMouseIdx)
+				var localIdx = machine.convertToLocalIdx(hoverCtrl.getMouseIdx())
 				var isAttachable = machine.canAttachModule(moduleToAttach, localIdx, rotOfModuleToAttach)
 				if isAttachable:
-					_attachSelectedModule(currentMouseIdx)
+					_attachSelectedModule(hoverCtrl.getMouseIdx())
 				else:
 					_unselectModule()
 					
@@ -269,19 +157,19 @@ func _leftClickWhenBuildingState():
 func _rightClickWhenNormalState(): 
 	
 	# on floor - move player @TODO
-	if hoveredObject == HOVERED_JUST_FLOOR or hoveredObject == HOVERED_ENEMY:
-		player.autoMoveToIdx(currentMouseIdx)
+	if hoverCtrl.isHoveredFloor() or hoverCtrl.isHoveredEnemy():
+		player.autoMoveToIdx(hoverCtrl.getMouseIdx())
 
 func _rightClickWhenBuildingState(): # remove module / 
 	
 	# on not module - cancel new machine
-	if hoveredObject != HOVERED_MODULE:
+	if not hoverCtrl.isHoveredModule():
 		_cancelNewMachine()
 		deselectModuleToAttach()
 
 	# on module - remove module
 	else:
-		var module = level.getModuleFromIdx(currentMouseIdx)
+		var module = level.getModuleFromIdx(hoverCtrl.getMouseIdx())
 		_removeModule(module)
 
 func _qClickWhenBuildingState():
@@ -317,7 +205,6 @@ func _attachSelectedModule(idx : Vector2):
 				emit_signal("module_attached", moduleToAttach)
 			else:
 				pass # red pulse effect on gizmo TODO
-			 
 
 func deselectModuleToAttach():
 	selectModuleToAttach(null)
@@ -358,7 +245,7 @@ func _selectModule(module):
 
 func _placeNewMachine():
 	_cancelNewMachine(false)
-	latestNewMachine = level.createNewMachine(currentMouseIdx)
+	latestNewMachine = level.createNewMachine(hoverCtrl.getMouseIdx())
 	emit_signal("new_machine_placed", latestNewMachine)
 
 func _cancelNewMachine(emitSignal = true):

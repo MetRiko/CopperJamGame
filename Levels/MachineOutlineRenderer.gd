@@ -1,7 +1,8 @@
 extends Node2D
 
 onready var level = Game.level
-onready var playerInputController = level.getPlayerInputController()
+onready var pic = level.getPlayerInputController()
+onready var hoverCtrl = level.getHoverObjectController()
 
 var latestHoveredMachine = null
 var latestSelectedMachine = null
@@ -10,8 +11,8 @@ var possibleConnectionsOffsetsForHoveredMachine = []
 var possibleConnectionsOffsetsForSelectedMachine = []
 
 func _ready():
-	playerInputController.connect("hovered_object_changed", self, "onHoveredObjectChanged")
-	playerInputController.connect("module_selected", self, "onModuleSelected")
+	hoverCtrl.connect("hovered_object_changed", self, "onHoveredObjectChanged")
+	pic.connect("module_selected", self, "onModuleSelected")
 
 
 func onSelectedMachineChanged():
@@ -50,8 +51,8 @@ func onModuleSelected(module):
 
 func onHoveredObjectChanged(newHoveredObject):
 	
-	if newHoveredObject == playerInputController.HOVERED_MODULE:
-		var machine = playerInputController.getHoveredMachine()
+	if newHoveredObject == hoverCtrl.HOVERED_MODULE:
+		var machine = hoverCtrl.getHoveredMachine()
 
 		if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine):
 			latestHoveredMachine.disconnect("machine_state_changed", self, "onHoveredMachineChanged")

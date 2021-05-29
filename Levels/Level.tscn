@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Levels/MainTileMap.tres" type="TileSet" id=1]
 [ext_resource path="res://Levels/MapGenerator.gd" type="Script" id=2]
@@ -8,7 +8,7 @@
 [ext_resource path="res://Levels/BuildingRenderer.gd" type="Script" id=6]
 [ext_resource path="res://Pathfinding.gd" type="Script" id=7]
 [ext_resource path="res://Entities/Player.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Levels/PlayerInputController.gd" type="Script" id=9]
+[ext_resource path="res://Controllers/PlayerInputController.gd" type="Script" id=9]
 [ext_resource path="res://Gui/NodeEditor/NodeEditor.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Levels/TilemapModulator.gd" type="Script" id=11]
 [ext_resource path="res://Levels/EntitySpawner.gd" type="Script" id=12]
@@ -19,9 +19,10 @@
 [ext_resource path="res://Levels/FloorGizmoShader.shader" type="Shader" id=17]
 [ext_resource path="res://Levels/Gizmo.gd" type="Script" id=18]
 [ext_resource path="res://Gui/ControlsTips/ControlsTips.tscn" type="PackedScene" id=19]
-[ext_resource path="res://Levels/CopperValueController.gd" type="Script" id=20]
+[ext_resource path="res://Controllers/CopperValueController.gd" type="Script" id=20]
 [ext_resource path="res://Core/Camera.tscn" type="PackedScene" id=21]
 [ext_resource path="res://Levels/PlayerRangeRenderer.gd" type="Script" id=22]
+[ext_resource path="res://Controllers/ObjectHoverController.gd" type="Script" id=23]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -278,6 +279,9 @@ script = ExtResource( 9 )
 
 [node name="CopperValueController" type="Node" parent="Controllers"]
 script = ExtResource( 20 )
+
+[node name="ObjectHoverController" type="Node2D" parent="Controllers"]
+script = ExtResource( 23 )
 
 [node name="Renderers" type="Node2D" parent="."]
 

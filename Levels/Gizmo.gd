@@ -2,6 +2,7 @@ extends Node2D
 
 onready var level = get_parent().get_parent()
 onready var pic = level.getPlayerInputController()
+onready var hoverCtrl = level.getHoverObjectController()
 
 const ALL_SHOP_CONTENT = preload("res://Gui/AllShopContent.gd").ALL_SHOP_CONTENT
 
@@ -15,13 +16,13 @@ var latestHoveredMachine = null
 
 func _ready():
 	pic.connect("module_to_attach_changed", self, "onModuleToAttachChanged")
-	pic.connect("hovered_object_changed", self, "onHoveredObjectChanged")
+	hoverCtrl.connect("hovered_object_changed", self, "onHoveredObjectChanged")
 	pic.connect("module_selected", self, "onModuleSelected")
 	pic.connect("state_changed", self, "onStateChanged")
 	gizmo.visible = false
 
 func _updateGizmoAlphaOnHover(objectType):
-	if objectType != pic.HOVERED_MODULE:
+	if objectType != hoverCtrl.HOVERED_MODULE:
 		$Tween.interpolate_property(gizmo, "modulate:a", null, 1.0, 0.1, Tween.TRANS_SINE, Tween.EASE_OUT)
 		$Tween.start()
 	else:
@@ -42,27 +43,27 @@ func onModuleToAttachChanged(moduleId, rot):
 	if moduleId == null:
 		_updateGizmoAlphaOnHover(null)
 	else:
-		_updateGizmoAlphaOnHover(pic.getHoveredObject())
+		_updateGizmoAlphaOnHover(hoverCtrl.getHoveredObject())
 
 func onStateChanged(state):
 	if state == pic.NORMAL_STATE:
 		moduleIdToAttach = null
 	_updateGizmoColor()
-	_updateGizmoAlphaOnHover(pic.getHoveredObject())
+	_updateGizmoAlphaOnHover(hoverCtrl.getHoveredObject())
 
 func onMachineStateChanged():
 	_updateGizmoColor()
-	_updateGizmoAlphaOnHover(pic.getHoveredObject())
+	_updateGizmoAlphaOnHover(hoverCtrl.getHoveredObject())
 
 func onHoveredObjectChanged(objectType):	
-	var pos = level.getPosFromCellIdx(pic.getMouseIdx())
+	var pos = level.getPosFromCellIdx(hoverCtrl.getMouseIdx())
 	gizmo.global_position = pos + level.getHalfCellSize()
 	floorGizmo.global_position = pos + level.getHalfCellSize()
 
 	_updateGizmoColor()
 	_updateGizmoAlphaOnHover(objectType)
 
-	var machine = pic.getHoveredMachine()
+	var machine = hoverCtrl.getHoveredMachine()
 	if latestHoveredMachine != null and is_instance_valid(latestHoveredMachine) and machine != latestHoveredMachine:
 		if latestHoveredMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
 			latestHoveredMachine.disconnect("machine_state_changed", self, "onMachineStateChanged")
@@ -78,7 +79,7 @@ func _updateGizmoColor():
 		var selectedMachine = pic.getSelectedMachine()
 		var alpha = gizmo.modulate.a
 		if selectedMachine != null and is_instance_valid(selectedMachine):
-			var localIdx = selectedMachine.convertToLocalIdx(pic.getMouseIdx())
+			var localIdx = selectedMachine.convertToLocalIdx(hoverCtrl.getMouseIdx())
 			var isAttachable = selectedMachine.canAttachModule(moduleIdToAttach, localIdx, rotModuleToAttach)
 			if isAttachable:
 				gizmo.modulate = Color(0.0, 1.0, 0.0, 1.0)
