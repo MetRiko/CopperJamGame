@@ -218,38 +218,53 @@ size_flags_horizontal = 8
 size_flags_vertical = 4
 alignment = 2
 
-[node name="Editor" type="ColorRect" parent="Panel/Margin/VBox"]
+[node name="EditorAnchor" type="Control" parent="Panel/Margin/VBox"]
 margin_top = 145.0
 margin_right = 376.0
-margin_bottom = 752.0
+margin_bottom = 145.0
+
+[node name="Editor" type="ColorRect" parent="Panel/Margin/VBox/EditorAnchor"]
+margin_top = 4.0
+margin_right = 376.0
+margin_bottom = 611.0
 rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Nodes" type="Control" parent="Panel/Margin/VBox/Editor"]
+[node name="Nodes" type="Control" parent="Panel/Margin/VBox/EditorAnchor/Editor"]
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Connections" type="Control" parent="Panel/Margin/VBox/Editor"]
+[node name="Connections" type="Control" parent="Panel/Margin/VBox/EditorAnchor/Editor"]
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gizmo" type="Control" parent="Panel/Margin/VBox/Editor"]
+[node name="ProcessingGizmos" type="Control" parent="Panel/Margin/VBox/EditorAnchor/Editor"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gizmo" type="Control" parent="Panel/Margin/VBox/EditorAnchor"]
+margin_top = 145.0
+margin_bottom = 145.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo"]
+[node name="Sprite" type="Sprite" parent="Panel/Margin/VBox/EditorAnchor/Gizmo"]
 position = Vector2( 22, 6 )
 scale = Vector2( 0.125, 0.125 )
 texture = ExtResource( 5 )
@@ -257,14 +272,9 @@ centered = false
 hframes = 7
 vframes = 7
 
-[node name="Background" type="Sprite" parent="Panel/Margin/VBox/Editor/Gizmo/Sprite"]
+[node name="Background" type="Sprite" parent="Panel/Margin/VBox/EditorAnchor/Gizmo/Sprite"]
 modulate = Color( 1, 1, 1, 0.294118 )
 texture = ExtResource( 5 )
 centered = false
 hframes = 7
 vframes = 7
-
-[node name="ProcessingGizmos" type="Control" parent="Panel/Margin/VBox/Editor"]
-__meta__ = {
-"_edit_use_anchors_": false
-}

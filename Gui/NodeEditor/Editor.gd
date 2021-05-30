@@ -6,7 +6,7 @@ const processingNodeGizmoTscn = preload("res://Gui/NodeEditor/ProcessingNodeGizm
 
 onready var level = Game.level
 #onready var editor = $Panel/Margin/VBox/Editor
-onready var gizmoSprite = $Gizmo/Sprite
+onready var gizmoSprite = get_parent().get_node("Gizmo/Sprite")
 onready var pic = level.getPlayerInputController()
 
 var currentGizmoIdx = null
@@ -263,7 +263,7 @@ func _process(delta):
 	mouseIdx.x = floor(mouseIdx.x)
 	mouseIdx.y = floor(mouseIdx.y)
 	
-	if int(mouseIdx.x) % 2 == 0 and int(mouseIdx.y) % 2 == 0:
+	if int(mouseIdx.x) % 2 == 0 and int(mouseIdx.y) % 2 == 0 and get_global_rect().has_point(get_global_mouse_position()):
 		currentGizmoIdx = mouseIdx / 2
 		var pos = level.getCellSize() * mouseIdx + rect_global_position + currentCameraPos
 		gizmoSprite.global_position = pos

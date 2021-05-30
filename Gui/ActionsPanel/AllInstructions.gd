@@ -3,7 +3,7 @@ extends Resource
 const ALL_INSTRUCTIONS = {
 	'nop': {
 		'frameId': 5,
-		'name': 'Pust instrukcja (NOP)'
+		'name': 'Pusta instrukcja (NOP)'
 	},
 	'missing_instruction': {
 		'frameId': 29,

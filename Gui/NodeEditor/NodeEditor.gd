@@ -4,7 +4,7 @@ signal buttons_instructions_changed
 
 onready var level = Game.level
 
-onready var editor = $Panel/Margin/VBox/Editor
+onready var editor = $Panel/Margin/VBox/EditorAnchor/Editor
 onready var instructionsButtons = $Panel/Margin/VBox/InstructionsButtons
 onready var instructionsButtons2 = $Panel/Margin/VBox/HBox/InstructionsButtons2
 onready var toolbar = $Panel/Margin/VBox/HBox/Toolbar
