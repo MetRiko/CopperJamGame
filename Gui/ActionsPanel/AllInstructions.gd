@@ -58,11 +58,11 @@ const ALL_INSTRUCTIONS = {
 		'name': 'Turn off drill'
 	},
 	'turn_on_turret': {
-		'frameId': 15,
+		'frameId': 14,
 		'name': 'Włącz działko'
 	},
 	'turn_off_turret': {
-		'frameId': 16,
+		'frameId': 15,
 		'name': 'Wyłącz działko'
 	},
 	'turn_on_tesla': {
