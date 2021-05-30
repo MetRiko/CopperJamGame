@@ -135,7 +135,7 @@ func restartProcess():
 		processingNodes[hashedNodeEditorIdx] = node
 	
 	makeStep()
-	resume()
+	paused = false
 
 func makeStep():
 	
