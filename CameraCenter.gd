@@ -29,7 +29,7 @@ func get_input(delta):
 	var dir = Vector2()
 
 	velocity *= 0.88
-	if pic.isNormalState():
+	if pic.isNormalState() or (pic.isBuildingState() and pic.getSelectedModule() == null):
 		if Input.is_action_pressed("right"):
 			dir.x += 1
 		if Input.is_action_pressed("left"):
