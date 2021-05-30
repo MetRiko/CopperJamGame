@@ -8,6 +8,7 @@ onready var editor = $Panel/Margin/VBox/Editor
 onready var instructionsButtons = $Panel/Margin/VBox/InstructionsButtons
 onready var instructionsButtons2 = $Panel/Margin/VBox/HBox/InstructionsButtons2
 onready var toolbar = $Panel/Margin/VBox/HBox/Toolbar
+onready var actionInfo = $Panel/Margin/VBox/ActionInfoBack/ActionInfo
 onready var pic = level.getPlayerInputController()
 
 var selectedMachine = null
@@ -75,6 +76,12 @@ func onStateChanged(state):
 func _updateEditor():
 	editor.updateEditor()
 
+func onInstructionButtonHover(button, hovered):
+	if hovered == true:
+		actionInfo.text = button.getInstructionData().name
+	else:
+		actionInfo.text = ""
+
 func _updateButtons():
 	
 	var module = getSelectedModule()
@@ -99,10 +106,17 @@ func _updateButtons():
 	instructionsButtons2.setButtons(ALL_INSTRUCTIONS_FOR_BOTTOM)
 	
 	instructionsButtons.connectButtons(self, "onInstructionButtonPressed")
+	instructionsButtons.connectButtonsHover(self, "onInstructionButtonHover")
+	
 	instructionsButtons2.connectButtons(self, "onInstructionButtonPressed")
+	instructionsButtons2.connectButtonsHover(self, "onInstructionButtonHover")
+	
 	emit_signal("buttons_instructions_changed", allInstructionsButtons, module)
 	
-#	for i in range(instructionsButtons.get_child_count()):
+	
+	
+	
+	#	for i in range(instructionsButtons.get_child_count()):
 #		var button = instructionsButtons.get_child(i)
 #		if i < instructionsOrder.size():
 #			button.setInstructionData(ALL_INSTRUCTIONS[instructionsOrder[i]])

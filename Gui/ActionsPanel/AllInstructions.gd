@@ -3,59 +3,59 @@ extends Resource
 const ALL_INSTRUCTIONS = {
 	'nop': {
 		'frameId': 5,
-		'name': 'Empty instruction'
+		'name': 'Pust instrukcja (NOP)'
 	},
 	'missing_instruction': {
 		'frameId': 29,
-		'name': 'Missing instruction'
+		'name': 'Nieznana instrukcji'
 	},
 	'node_start': {
 		'frameId': 3,
-		'name': 'Node start'
+		'name': 'START'
 	},
 	'node_end': {
 		'frameId': 4,
-		'name': 'Node end'
+		'name': 'KONIEC (wróć na START)'
 	},
 	'move_right': {
 		'frameId': 8,
-		'name': 'Move right'
+		'name': 'Ruch w prawo'
 	},
 	'move_left': {
 		'frameId': 10,
-		'name': 'Move left'
+		'name': 'Ruch w lewo'
 	},
 	'move_up': {
 		'frameId': 7,
-		'name': 'Move up'
+		'name': 'Ruch w górę'
 	},
 	'move_down': {
 		'frameId': 9,
-		'name': 'Move down'
+		'name': 'Ruch w dół'
 	},	
 	'turn_on_diode': {
 		'frameId': 25,
-		'name': 'turn_on_diode'
+		'name': 'Włącz diodę'
 	},
 	'turn_off_diode': {
 		'frameId': 24,
-		'name': 'turn_off_diode'
+		'name': 'Wyłącz diodę'
 	},
 	'is_diode_on': {
 		'frameId': 27,
-		'name': 'is_diode_on'
+		'name': 'Czy dioda jest włączona?'
 	},
 	'is_diode_off': {
 		'frameId': 26,
-		'name': 'is_diode_off'
+		'name': 'Czy dioda jest wyłączona?'
 	},
 	'turn_on_drill': {
 		'frameId': 20,
-		'name': 'Turn on drill'
+		'name': 'Włącz wiertło'
 	},
 	'turn_off_drill': {
 		'frameId': 21,
-		'name': 'Turn off drill'
+		'name': 'Wyłącz wiertło'
 	},
 	'turn_on_turret': {
 		'frameId': 14,
