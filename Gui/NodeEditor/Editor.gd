@@ -79,18 +79,21 @@ func moveCamera(offset : Vector2):
 func _input(event):
 	if event.is_action_pressed("LMB"):
 		if nodeEditor.selectedMachine != null:
+			if selectedInstructionFromToolbar == null and dragState == 0 and currentGizmoIdx != null:
+				var processor = nodeEditor.selectedMachine.getProcessor()
+				var node = processor.getNodeFromEditorIdx(currentGizmoIdx)
+				if node != null:
+					selectedNode = node
+					dragState = 1
+					
+	if event.is_action_released("LMB"):
+		if nodeEditor.selectedMachine != null:
 			if selectedInstructionFromToolbar != null:
 				if currentGizmoIdx != null:
 					var instructionId = selectedInstructionFromToolbar.instructionId
 					var moduleLocalIdx = nodeEditor.selectedModuleLocalIdx
 					createNode(instructionId, currentGizmoIdx, moduleLocalIdx, {})
 				selectInstructionFromToolbar(null)
-			elif dragState == 0 and currentGizmoIdx != null:
-				var processor = nodeEditor.selectedMachine.getProcessor()
-				var node = processor.getNodeFromEditorIdx(currentGizmoIdx)
-				if node != null:
-					selectedNode = node
-					dragState = 1
 
 	if event.is_action_released("LMB"):
 		if dragState == 1:
@@ -284,7 +287,7 @@ func _process(delta):
 		var pos = get_global_mouse_position() - level.getHalfCellSize()
 		gizmoSprite.global_position = pos
 		if selectedInstructionFromToolbar != null:
-			gizmoSprite.modulate.a = 0.1
+			gizmoSprite.modulate.a = 0.4
 			gizmoSprite.visible = true
 		else:
 			gizmoSprite.visible = false

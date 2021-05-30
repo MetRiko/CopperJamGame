@@ -44,7 +44,6 @@ func onModuleSelected(module):
 			latestMachine = module.getMachine()
 			if not latestMachine.is_connected("machine_state_changed", self, "onMachineStateChanged"):
 				latestMachine.connect("machine_state_changed", self, "onMachineStateChanged")
-		print(module.getOrderedInstructions())
 		_setInstructions(module.getOrderedInstructions())
 		showPanel()
 #		_updatePanelVisuals()
